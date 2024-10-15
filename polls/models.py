@@ -151,7 +151,13 @@ class Request(models.Model):
     '''
     Запросы на ремонт / замену
     '''
+    class RequestStatus(models.IntegerChoices):
+        CREATED = 0, 'Создан'
+        IN_WORK = 1, 'В работе'
+        COMPLETED = 2, 'Выполнен'
+
     description = models.TextField(default='', verbose_name='Описание запроса')
+    status = models.IntegerField(choices=RequestStatus, verbose_name='Статус запроса')
     created_at = models.DateTimeField(null=True, verbose_name='Создан')
     completed_at = models.DateTimeField(null=True, verbose_name='Выполнен')
 
