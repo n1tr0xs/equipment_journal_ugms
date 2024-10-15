@@ -134,7 +134,7 @@ class Server(NamedEntity, Inventoried, TechnicalConditionEntity):
     '''
     Сервер.
     '''
-    purpose = models.TextField(default='', verbose_name='')
+    purpose = models.TextField(default='', verbose_name='Назначение')
 
     structure = models.ForeignKey(Structure, on_delete=models.CASCADE, verbose_name='Структура')
 
