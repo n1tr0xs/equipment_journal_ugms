@@ -4,11 +4,6 @@ from .models import *
 # Register your models here.
 
 
-@admin.register(TechnicalCondition)
-class TechnicalConditionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
-
-
 @admin.register(PeripheralType)
 class PeripheralTypeAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
@@ -36,49 +31,49 @@ class WorksiteAdmin(admin.ModelAdmin):
 
 @admin.register(Peripheral)
 class PeripheralAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'peripheral_type', 'technical_condition', 'worksite')
+    list_display = ('id', 'name', 'peripheral_type', 'worksite', 'technical_condition', 'disabling_reason')
 
 
 @admin.register(NetworkEquipment)
 class NetworkEquipmentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'technical_condition', 'structure')
+    list_display = ('id', 'name', 'structure', 'technical_condition', 'disabling_reason')
 
 
 @admin.register(Computer)
 class ComputerAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'configuration', 'technical_condition', 'worksite')
+    list_display = ('id', 'name', 'configuration', 'worksite', 'technical_condition', 'disabling_reason')
 
 
 @admin.register(Monitor)
 class MonitorAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'technical_condition', 'worksite')
+    list_display = ('id', 'name', 'worksite', 'technical_condition', 'disabling_reason')
 
 
 @admin.register(MFP)
 class MFPAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'technical_condition', 'worksite')
+    list_display = ('id', 'name', 'worksite', 'technical_condition', 'disabling_reason')
 
 
 @admin.register(UPS)
 class UPSAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'technical_condition', 'worksite')
+    list_display = ('id', 'name', 'worksite', 'technical_condition', 'disabling_reason')
 
 
 @admin.register(MeteoUnit)
 class MeteoUnitAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'technical_condition', 'structure')
+    list_display = ('id', 'name', 'structure', 'technical_condition', 'disabling_reason')
 
 
 @admin.register(Server)
 class ServerAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'purpose', 'technical_condition', 'structure')
+    list_display = ('id', 'name', 'purpose', 'structure', 'technical_condition', 'disabling_reason')
 
 
 @admin.register(Cartridge)
 class CartridgeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'mfp', 'technical_condition')
+    list_display = ('id', 'name', 'mfp', 'technical_condition', 'disabling_reason')
 
 
 @admin.register(Request)
 class RequestAdmin(admin.ModelAdmin):
-    list_display = ('id', 'worksite', 'description')
+    list_display = ('id', 'worksite', 'description', 'status', 'created_at', 'completed_at')
