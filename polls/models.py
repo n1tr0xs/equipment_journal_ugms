@@ -4,7 +4,10 @@ from django.db import models
 
 
 class NamedEntity(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, default='')
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         abstract = True
@@ -14,8 +17,11 @@ class Inventoried(models.Model):
     '''
     Родительский класс для классов с инвентарным номером и серийным номером.
     '''
-    inventory_number = models.CharField(max_length=100)
-    serial_number = models.CharField(max_length=100)
+    inventory_number = models.CharField(max_length=100, default='')
+    serial_number = models.CharField(max_length=100, default='')
+
+    def __str__(self):
+        return f'{self.name}\nИН: {self.inventory_number}\nS/N: {self.serial_number}'
 
     class Meta:
         abstract = True
@@ -65,68 +71,68 @@ class Worksite(NamedEntity):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
 
-class Peripheral(Inventoried):
+class Peripheral(NamedEntity, Inventoried):
     '''
     Периферийное устройство (мышь, клавиатура).
     '''
 
     peripheral_type = models.ForeignKey(PeripheralType, on_delete=models.CASCADE)
-    technial_condition = models.ForeignKey(TechnicalCondition, on_delete=models.CASCADE)
+    technical_condition = models.ForeignKey(TechnicalCondition, on_delete=models.CASCADE)
     worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE)
 
 
-class NetworkEquipment(Inventoried):
+class NetworkEquipment(NamedEntity, Inventoried):
     '''
     Сетевое обородувание (роутеры, коммутаторы).
     '''
 
     structure = models.ForeignKey(Structure, on_delete=models.CASCADE)
-    technial_condition = models.ForeignKey(TechnicalCondition, on_delete=models.CASCADE)
+    technical_condition = models.ForeignKey(TechnicalCondition, on_delete=models.CASCADE)
 
 
-class Computer(Inventoried):
+class Computer(NamedEntity, Inventoried):
     '''
     Копьютер.
     '''
 
     configuration = models.ForeignKey(ComputerConfiguration, on_delete=models.CASCADE)
-    technial_condition = models.ForeignKey(TechnicalCondition, on_delete=models.CASCADE)
+    technical_condition = models.ForeignKey(TechnicalCondition, on_delete=models.CASCADE)
     worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE)
 
 
-class Monitor(Inventoried):
+class Monitor(NamedEntity, Inventoried):
     '''
     Монитор.
     '''
 
-    technial_condition = models.ForeignKey(TechnicalCondition, on_delete=models.CASCADE)
+    technical_condition = models.ForeignKey(TechnicalCondition, on_delete=models.CASCADE)
     worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE)
 
 
-class MFP(Inventoried):
+class MFP(NamedEntity, Inventoried):
     '''
     МФУ, принтер
     '''
 
-    technial_condition = models.ForeignKey(TechnicalCondition, on_delete=models.CASCADE)
+    technical_condition = models.ForeignKey(TechnicalCondition, on_delete=models.CASCADE)
     worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE)
 
 
-class UPS(Inventoried):
+class UPS(NamedEntity, Inventoried):
     '''
     ИБП (источник бесперебойного питания)
     '''
 
-    technial_condition = models.ForeignKey(TechnicalCondition, on_delete=models.CASCADE)
+    technical_condition = models.ForeignKey(TechnicalCondition, on_delete=models.CASCADE)
     worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE)
 
 
-class MeteoUnit(Inventoried):
+class MeteoUnit(NamedEntity, Inventoried):
     '''
     Метео/гидро/агро оборудование
     '''
     structure = models.ForeignKey(Structure, on_delete=models.CASCADE)
-    technial_condition = models.ForeignKey(TechnicalCondition, on_delete=models.CASCADE)
+    technical_condition = models.ForeignKey(TechnicalCondition, on_delete=models.CASCADE)
 
 
 class Server(NamedEntity, Inventoried):
@@ -137,7 +143,7 @@ class Server(NamedEntity, Inventoried):
     purpose = models.TextField()
 
     structure = models.ForeignKey(Structure, on_delete=models.CASCADE)
-    technial_condition = models.ForeignKey(TechnicalCondition, on_delete=models.CASCADE)
+    technical_condition = models.ForeignKey(TechnicalCondition, on_delete=models.CASCADE)
 
 
 class Cartridge(NamedEntity):
@@ -145,12 +151,15 @@ class Cartridge(NamedEntity):
     Картридж.
     '''
     mfp = models.ForeignKey(MFP, on_delete=models.CASCADE)
-    technial_condition = models.ForeignKey(TechnicalCondition, on_delete=models.CASCADE)
+    technical_condition = models.ForeignKey(TechnicalCondition, on_delete=models.CASCADE)
 
 
 class Request(models.Model):
     '''
     Запросы на ремонт / замену
     '''
-    worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE)
     description = models.TextField(default='')
+    created_at = models.DateTimeField(null=True)
+    completed_at = models.DateTimeField(null=True)
+
+    worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE)
