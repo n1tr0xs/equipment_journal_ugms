@@ -20,8 +20,8 @@ class Inventoried(models.Model):
     class Meta:
         abstract = True
 
-    inventory_number = models.CharField(max_length=100, default='', verbose_name='Инвентарный номер')
-    serial_number = models.CharField(max_length=100, default='', verbose_name='Серийный номер')
+    inventory_number = models.CharField(max_length=50, unique=True, default='', verbose_name='Инвентарный номер')
+    serial_number = models.CharField(max_length=50, unique=True, default='', verbose_name='Серийный номер')
 
     def __str__(self):
         return f'Название: {self.name}\nИнвентарный номер: {self.inventory_number}\nСерийный номер: {self.serial_number}'
@@ -37,7 +37,7 @@ class TechnicalConditionEntity(models.Model):
         DISABLED = 2, 'Снят'
         REPAIRING = 3, 'Ремонт'
 
-    technical_condition = models.IntegerField(choices=TechnicalCondition, verbose_name='Техническое состояние')
+    technical_condition = models.IntegerField(choices=TechnicalCondition, verbose_name='Техническое состояние', default=0)
     disabling_reason = models.TextField(default='', verbose_name='Причина снятия')
 
 
@@ -156,7 +156,7 @@ class Request(models.Model):
         COMPLETED = 2, 'Выполнен'
 
     description = models.TextField(default='', verbose_name='Описание запроса')
-    status = models.IntegerField(choices=RequestStatus, verbose_name='Статус запроса')
+    status = models.IntegerField(choices=RequestStatus, verbose_name='Статус запроса', default=0)
     created_at = models.DateTimeField(null=True, verbose_name='Создан')
     completed_at = models.DateTimeField(null=True, verbose_name='Выполнен')
 
