@@ -2,11 +2,33 @@
 
 {% block content %}
 {% if cartridge_list %}
-    <ul>
-    {% for cartridge in cartridge_list %}
-        <li><a href="{% url 'cartridge_detail' cartridge.id %}">{{ cartridge }}</a></li>
-    {% endfor %}
-    </ul>
+    <table>
+        <caption> {{ "Картриджи"|title }} </caption>
+        <thead>
+            <tr>
+                <td> Название </td>
+                <td> Номер картриджа </td>
+                <td> Техническое состояние </td>
+                <td> Причина снятия/ремонта </td>
+                <td> МФУ </td>
+                <td> Заправок </td>
+                <td></td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cartridge in cartridge_list %}
+                <tr>
+                    <td> {{ cartridge.name }} </td>
+                    <td> {{ cartridge.number }} </td>
+                    <td> {{ cartridge.get_technical_condition_display }} </td>
+                    <td> {{ cartridge.disabling_reason|default:"-" }} </td>
+                    <td> {{ cartridge.mfp|default:'-' }} </td>
+                    <td> {{ cartridge.refills }} </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% else %}
     <p> Список картриджей пуст. </p>
 {% endif %}
