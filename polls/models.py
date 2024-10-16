@@ -38,7 +38,7 @@ class TechnicalConditionEntity(models.Model):
         REPAIRING = 3, 'Ремонт'
 
     technical_condition = models.IntegerField(choices=TechnicalCondition, verbose_name='Техническое состояние', default=0)
-    disabling_reason = models.TextField(default='', verbose_name='Причина снятия')
+    disabling_reason = models.TextField(default='', verbose_name='Причина снятия', blank=True)
 
 
 class PeripheralType(NamedEntity):
@@ -143,7 +143,7 @@ class Cartridge(NamedEntity, TechnicalConditionEntity):
     '''
     Картридж.
     '''
-    mfp = models.ForeignKey(MFP, on_delete=models.CASCADE, verbose_name='МФУ')
+    mfp = models.ForeignKey(MFP, on_delete=models.CASCADE, verbose_name='МФУ', null=True, blank=True)
 
 
 class Request(models.Model):
