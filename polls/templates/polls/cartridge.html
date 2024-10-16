@@ -6,7 +6,7 @@
     <tbody>
         <tr>
             <td> Техническое состояние </td>
-            <td> {{ cartridge.technical_condition }} </td>
+            <td> {{ cartridge.get_technical_condition_display }} </td>
         </tr>
         <tr>
             {% if cartridge.mfp %}
