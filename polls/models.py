@@ -38,23 +38,6 @@ class TechnicalConditionEntity(models.Model):
     disabling_reason = models.TextField(default='', verbose_name='Причина снятия', blank=True)
 
 
-class PeripheralType(NamedEntity):
-    '''
-    Тип переферии.
-    '''
-
-
-class ComputerConfiguration(NamedEntity):
-    '''
-    Конфигурация (сборка) компьютера.
-    '''
-    processor = models.CharField(max_length=50, verbose_name='Процессор')
-    ram = models.CharField(max_length=50, verbose_name='Оперативная память')
-    motherboard = models.CharField(max_length=50, verbose_name='Материнская плата')
-    drives = models.TextField(verbose_name='Накопители')
-    power_supply = models.CharField(max_length=50, verbose_name='Блок питания')
-
-
 class Structure(NamedEntity):
     '''
     Струтурное подразделения.
@@ -76,64 +59,92 @@ class Worksite(NamedEntity):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name='Должность')
 
 
-class Peripheral(NamedEntity, Inventoried, TechnicalConditionEntity):
+class WorksitePlaced(models.Model):
+    '''
+    Базовый класс для оборудования, привязанного к рабочему месту
+    '''
+    class Meta:
+        abstract = True
+
+    worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE, verbose_name='Рабочее место', null=True, blank=True)
+
+
+class StructurePlaced(models.Model):
+    '''
+    Базовый класс для оборудования, привязанного к рабочему месту
+    '''
+    class Meta:
+        abstract = True
+
+    structure = models.ForeignKey(Structure, on_delete=models.CASCADE, verbose_name='Структура', null=True, blank=True)
+
+
+class PeripheralType(NamedEntity):
+    '''
+    Тип переферии.
+    '''
+
+
+class ComputerConfiguration(NamedEntity):
+    '''
+    Конфигурация (сборка) компьютера.
+    '''
+    processor = models.CharField(max_length=50, verbose_name='Процессор')
+    ram = models.CharField(max_length=50, verbose_name='Оперативная память')
+    motherboard = models.CharField(max_length=50, verbose_name='Материнская плата')
+    drives = models.TextField(verbose_name='Накопители')
+    power_supply = models.CharField(max_length=50, verbose_name='Блок питания')
+
+
+class Peripheral(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlaced):
     '''
     Периферийное устройство (мышь, клавиатура).
     '''
     peripheral_type = models.ForeignKey(PeripheralType, on_delete=models.CASCADE, verbose_name='Тип переферии')
-    worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE, verbose_name='Рабочее место', null=True, blank=True)
 
 
-class NetworkEquipment(NamedEntity, Inventoried, TechnicalConditionEntity):
+class NetworkEquipment(NamedEntity, Inventoried, TechnicalConditionEntity, StructurePlaced):
     '''
     Сетевое обородувание (роутеры, коммутаторы).
     '''
-    structure = models.ForeignKey(Structure, on_delete=models.CASCADE, verbose_name='Структура', null=True, blank=True)
 
 
-class Computer(NamedEntity, Inventoried, TechnicalConditionEntity):
+class Computer(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlaced):
     '''
     Копьютер.
     '''
     configuration = models.ForeignKey(ComputerConfiguration, on_delete=models.CASCADE, verbose_name='Конфигурация (сборка)')
-    worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE, verbose_name='Рабочее место', null=True, blank=True)
 
 
-class Monitor(NamedEntity, Inventoried, TechnicalConditionEntity):
+class Monitor(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlaced):
     '''
     Монитор.
     '''
-    worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE, verbose_name='Рабочее место', null=True, blank=True)
 
 
-class MFP(NamedEntity, Inventoried, TechnicalConditionEntity):
+class MFP(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlaced):
     '''
     МФУ, принтер
     '''
-    worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE, verbose_name='Рабочее место', null=True, blank=True)
 
 
-class UPS(NamedEntity, Inventoried, TechnicalConditionEntity):
+class UPS(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlaced):
     '''
     ИБП (источник бесперебойного питания)
     '''
-    worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE, verbose_name='Рабочее место', null=True, blank=True)
 
 
-class MeteoUnit(NamedEntity, Inventoried, TechnicalConditionEntity):
+class MeteoUnit(NamedEntity, Inventoried, TechnicalConditionEntity, StructurePlaced):
     '''
     Метео/гидро/агро оборудование
     '''
-    structure = models.ForeignKey(Structure, on_delete=models.CASCADE, verbose_name='Структура', null=True, blank=True)
 
 
-class Server(NamedEntity, Inventoried, TechnicalConditionEntity):
+class Server(NamedEntity, Inventoried, TechnicalConditionEntity, StructurePlaced):
     '''
     Сервер.
     '''
     purpose = models.TextField(default='', verbose_name='Назначение')
-
-    structure = models.ForeignKey(Structure, on_delete=models.CASCADE, verbose_name='Структура', null=True, blank=True)
 
 
 class Cartridge(NamedEntity, TechnicalConditionEntity):
@@ -154,7 +165,7 @@ class Cartridge(NamedEntity, TechnicalConditionEntity):
                 return f'{self.name} на ремонте/обслуживании по причине {self.disabling_reason}.'
 
 
-class Request(models.Model):
+class Request(WorksitePlaced):
     '''
     Запросы на ремонт / замену
     '''
@@ -167,5 +178,3 @@ class Request(models.Model):
     status = models.IntegerField(choices=RequestStatus, verbose_name='Статус запроса', default=RequestStatus.CREATED)
     created_at = models.DateTimeField(null=True, verbose_name='Создан')
     completed_at = models.DateTimeField(null=True, verbose_name='Выполнен')
-
-    worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE, verbose_name='Рабочее место', null=True, blank=True)
