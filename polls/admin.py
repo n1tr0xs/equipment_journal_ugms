@@ -47,7 +47,7 @@ class PeripheralAdmin(admin.ModelAdmin):
 
 @admin.register(NetworkEquipment)
 class NetworkEquipmentAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'structure', 'technical_condition', 'disabling_reason']
+    list_display = ['id', 'name', 'structure', 'technical_condition', 'disabling_reason', 'ip_address']
     list_filter = ['structure', 'technical_condition']
     search_fields = ['name']
 
@@ -82,23 +82,23 @@ class UPSAdmin(admin.ModelAdmin):
 
 @admin.register(MeteoUnit)
 class MeteoUnitAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'structure', 'technical_condition', 'disabling_reason']
+    list_display = ['id', 'name', 'structure', 'technical_condition', 'disabling_reason', 'verification_date']
     list_filter = ['structure', 'technical_condition']
     search_fields = ['name']
 
 
 @admin.register(Server)
 class ServerAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'purpose', 'structure', 'technical_condition', 'disabling_reason']
+    list_display = ['id', 'name', 'purpose', 'structure', 'technical_condition', 'disabling_reason', 'ip_address']
     list_filter = ['structure', 'technical_condition']
     search_fields = ['name', 'purpose']
 
 
 @admin.register(Cartridge)
 class CartridgeAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'mfp', 'technical_condition', 'disabling_reason']
+    list_display = ['id', 'name', 'number', 'mfp', 'technical_condition', 'disabling_reason']
     list_filter = ['technical_condition']
-    search_fields = ['name', 'mfp']
+    search_fields = ['name']
 
 
 @admin.register(Request)
