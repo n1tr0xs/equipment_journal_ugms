@@ -42,6 +42,10 @@ class Structure(NamedEntity):
     '''
     Струтурное подразделения.
     '''
+    class Meta:
+        verbose_name = 'Структура'
+        verbose_name_plural = 'Структуры'
+
     physical_place = models.TextField(verbose_name='Физическое расположение')
 
 
@@ -49,6 +53,10 @@ class Post(NamedEntity):
     '''
     Должность работника.
     '''
+    class Meta:
+        verbose_name = 'Должность'
+        verbose_name_plural = 'Должности'
+
     structure = models.ForeignKey(Structure, on_delete=models.CASCADE, verbose_name='Структура')
 
 
@@ -56,6 +64,10 @@ class Worksite(NamedEntity):
     '''
     Рабочее место.
     '''
+    class Meta:
+        verbose_name = 'Рабочее место'
+        verbose_name_plural = 'Рабочие места'
+
     post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name='Должность')
 
 
@@ -83,12 +95,19 @@ class PeripheralType(NamedEntity):
     '''
     Тип переферии.
     '''
+    class Meta:
+        verbose_name = 'Тип периферии'
+        verbose_name_plural = 'Типы периферии'
 
 
 class ComputerConfiguration(NamedEntity):
     '''
     Конфигурация (сборка) компьютера.
     '''
+    class Meta:
+        verbose_name = 'Конфигурация (сборка) компьютера'
+        verbose_name_plural = 'Конфигурации (сборки) компьютеров'
+
     processor = models.CharField(max_length=50, verbose_name='Процессор')
     ram = models.CharField(max_length=50, verbose_name='Оперативная память')
     motherboard = models.CharField(max_length=50, verbose_name='Материнская плата')
@@ -100,19 +119,30 @@ class Peripheral(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePla
     '''
     Периферийное устройство (мышь, клавиатура).
     '''
-    peripheral_type = models.ForeignKey(PeripheralType, on_delete=models.CASCADE, verbose_name='Тип переферии')
+    class Meta:
+        verbose_name = 'Периферия'
+        verbose_name_plural = 'Периферия'
+
+    peripheral_type = models.ForeignKey(PeripheralType, on_delete=models.CASCADE, verbose_name='Тип периферии')
 
 
 class NetworkEquipment(NamedEntity, Inventoried, TechnicalConditionEntity, StructurePlaced):
     '''
     Сетевое обородувание (роутеры, коммутаторы).
     '''
+    class Meta:
+        verbose_name = 'Сетевое оборудование'
+        verbose_name_plural = 'Сетевое оборудование'
 
 
 class Computer(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlaced):
     '''
     Копьютер.
     '''
+    class Meta:
+        verbose_name = 'Компьютер'
+        verbose_name_plural = 'Компьютеры'
+
     configuration = models.ForeignKey(ComputerConfiguration, on_delete=models.CASCADE, verbose_name='Конфигурация (сборка)')
 
 
@@ -120,30 +150,46 @@ class Monitor(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlaced
     '''
     Монитор.
     '''
+    class Meta:
+        verbose_name = 'Монитор'
+        verbose_name_plural = 'Мониторы'
 
 
 class MFP(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlaced):
     '''
     МФУ, принтер
     '''
+    class Meta:
+        verbose_name = 'МФУ'
+        verbose_name_plural = 'МФУ'
 
 
 class UPS(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlaced):
     '''
     ИБП (источник бесперебойного питания)
     '''
+    class Meta:
+        verbose_name = 'ИБП'
+        verbose_name_plural = 'ИБП'
 
 
 class MeteoUnit(NamedEntity, Inventoried, TechnicalConditionEntity, StructurePlaced):
     '''
     Метео/гидро/агро оборудование
     '''
+    class Meta:
+        verbose_name = 'Прибор (гидро / метео / агро)'
+        verbose_name_plural = 'Приборы (гидро / метео / агро)'
 
 
 class Server(NamedEntity, Inventoried, TechnicalConditionEntity, StructurePlaced):
     '''
     Сервер.
     '''
+    class Meta:
+        verbose_name = 'Сервер'
+        verbose_name_plural = 'Сервера'
+
     purpose = models.TextField(default='', verbose_name='Назначение')
 
 
@@ -151,6 +197,10 @@ class Cartridge(NamedEntity, TechnicalConditionEntity):
     '''
     Картридж.
     '''
+    class Meta:
+        verbose_name = 'Картридж'
+        verbose_name_plural = 'Картриджы'
+
     mfp = models.ForeignKey(MFP, on_delete=models.CASCADE, verbose_name='МФУ', null=True, blank=True)
 
     def __str__(self):
@@ -169,6 +219,10 @@ class Request(WorksitePlaced):
     '''
     Запросы на ремонт / замену
     '''
+    class Meta:
+        verbose_name = 'Запрос'
+        verbose_name_plural = 'Запросы'
+
     class RequestStatus(models.IntegerChoices):
         CREATED = 0, 'Создан'
         IN_WORK = 1, 'В работе'
