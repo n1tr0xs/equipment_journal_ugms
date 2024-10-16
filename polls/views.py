@@ -1,13 +1,14 @@
 from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView, ListView
 
 
 from .models import Structure, Post, Worksite, PeripheralType, ComputerConfiguration, Peripheral, NetworkEquipment, Computer, Monitor, MFP, UPS, MeteoUnit, Server, Cartridge, Request
 
-
 def index(request):
     return render(request, 'polls/base.html')
 
+class LoginRequiredListView(LoginRequiredMixin, ListView): pass
 
 class StructureListView(ListView):
     model = Structure
@@ -87,7 +88,7 @@ class ServerListView(ListView):
     template_name = ''
 
 
-class CartridgeListView(ListView):
+class CartridgeListView(LoginRequiredListView):
     model = Cartridge
     context_object_name = 'cartridge_list'
     template_name = 'polls/cartridge_list.html'
