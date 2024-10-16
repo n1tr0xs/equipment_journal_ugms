@@ -6,18 +6,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'polls/master.css' %}">
+    <link rel="stylesheet" href="{% static 'polls/dark-mode.css' %}">
     {% block head %} {% endblock %}
     <title> {% block title %} Журнал оргтехники УГМС по ЛНР {% endblock %}</title>
 </head>
 <body>
     <div id='container'>
         <header id='header'>
+            {% block header %}
+            {% endblock %}
         </header>
         <div id='content'>
             {% block content %}
             {% endblock %}
         </div>
         <footer id='footer'>
+            {% block footer %}
+            {% endblock %}
         </footer>
     </div>
 </body>
