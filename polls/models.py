@@ -174,7 +174,7 @@ class Cartridge(NamedEntity, TechnicalConditionEntity):
     class Meta:
         verbose_name = 'Картридж'
         verbose_name_plural = 'Картриджы'
-        ordering = ['name', 'technical_condition']
+        ordering = ['name', 'technical_condition', 'refills']
 
     mfp = models.ForeignKey(MFP, on_delete=models.CASCADE, verbose_name='МФУ', null=True, blank=True)
     number = models.CharField(max_length=50, verbose_name='Номер картриджа', default='')
