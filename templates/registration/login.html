@@ -7,6 +7,11 @@
 {% endblock %}
 
 {% block title %} Войти {% endblock %}
+
+{% block header %}
+<h1> Вход в аккаунт </h1>
+{% endblock %}
+
 {% block content %}
     {% if form.errors %}
         <p>Неправильное имя пользователя или пароль.</p>
@@ -27,4 +32,7 @@
         </div>
         <input type="hidden" name="next" value="{{ next }}">
     </form>
+{% endblock %}
+
+{% block footer %}
 {% endblock %}

@@ -1,29 +1,29 @@
 /* LOGIN FORM */
-.login {
+body {
     background: var(--darkened-bg);
     height: auto;
 }
 
-.login #header {
+body #header {
     height: auto;
     padding: 15px 16px;
     justify-content: center;
 }
 
-.login #header h1 {
+body #header h1 {
     font-size: 1.125rem;
     margin: 0;
 }
 
-.login #header h1 a {
+body #header h1 a {
     color: var(--header-link-color);
 }
 
-.login #content {
+body #content {
     padding: 20px;
 }
 
-.login #container {
+body #container {
     background: var(--body-bg);
     border: 1px solid var(--hairline-color);
     border-radius: 4px;
@@ -34,27 +34,27 @@
     height: auto;
 }
 
-.login .form-row {
+body .form-row {
     padding: 4px 0;
 }
 
-.login .form-row label {
+body .form-row label {
     display: block;
     line-height: 2em;
 }
 
-.login .form-row #id_username, .login .form-row #id_password {
+body .form-row #id_username, body .form-row #id_password {
     padding: 8px;
     width: 100%;
     box-sizing: border-box;
 }
 
-.login .submit-row {
+body .submit-row {
     padding: 1em 0 0 0;
     margin: 0;
     text-align: center;
 }
 
-.login .password-reset-link {
+body .password-reset-link {
     text-align: center;
 }
