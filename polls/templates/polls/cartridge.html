@@ -1,0 +1,26 @@
+{% extends "polls/base.html" %}
+
+{% block content %}
+<h1> Картридж №{{ cartridge.id }} </h1>
+<table>    
+    <tbody>
+        <tr>
+            <td> Техническое состояние </td>
+            <td> {{ cartridge.technical_condition }} </td>
+        </tr>
+        <tr>
+            {% if cartridge.mfp %}
+                <td> Установлен в принтер </td>
+                <td> {{ cartridge.mfp }} </td>
+            {% endif %}
+        </tr>
+            {% if cartridge.disabling_reason %}
+                <td> Причина снятия</td>
+                <td> {{ cartridge.disabling_reason }} </td>
+            {% endif %}
+        </tr>
+    </tbody>
+</table>
+
+<a href="{% url 'cartridges_list' %}"> Список картриджей </a>
+{% endblock %}

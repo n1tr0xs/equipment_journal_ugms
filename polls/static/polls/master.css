@@ -1,0 +1,24 @@
+:root {
+    --background-color: #1f2123;
+    --text-color: #e8e6e3;
+    --link-color: var(--text-color);
+    --table-border: 1px solid white;
+}
+
+body {
+    color: var(--text-color);
+    background-color: var(--background-color);
+    font-size: 1em;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+table, tr, td {
+    border: var(--table-border);
+    border-collapse: collapse;
+}

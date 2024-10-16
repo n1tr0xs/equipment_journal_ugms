@@ -1,0 +1,13 @@
+{% extends "polls/base.html" %}
+
+{% block content %}
+{% if cartridges_list %}
+    <ul>
+    {% for cartridge in cartridges_list %}
+        <li><a href="{% url 'cartridge_detail' cartridge.id %}">{{ cartridge }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p> Список картриджей пуст. </p>
+{% endif %}
+{% endblock %}
