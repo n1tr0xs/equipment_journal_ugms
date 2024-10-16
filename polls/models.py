@@ -180,17 +180,6 @@ class Cartridge(NamedEntity, TechnicalConditionEntity):
     number = models.CharField(max_length=50, verbose_name='Номер картриджа', default='')
     refills = models.PositiveIntegerField(default=0, verbose_name='Количество заправок')
 
-    def __str__(self):
-        match self.technical_condition:
-            case self.TechnicalCondition.READY_TO_USE:
-                return f'{self.name} готов к установке.'
-            case self.TechnicalCondition.IN_WORK:
-                return f'{self.name} установлен в {self.mfp}.'
-            case self.TechnicalCondition.DISABLED:
-                return f'{self.name} снят по причине {self.disabling_reason}.'
-            case self.TechnicalCondition.REPAIRING:
-                return f'{self.name} на ремонте/обслуживании по причине {self.disabling_reason}.'
-
 
 class Request(WorksitePlaced):
     class Meta:
