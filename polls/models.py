@@ -6,6 +6,7 @@ from django.db import models
 class NamedEntity(models.Model):
     class Meta:
         abstract = True
+        ordering = ['name']
 
     name = models.CharField(max_length=100, default='', verbose_name='Название')
 
@@ -27,6 +28,7 @@ class Inventoried(models.Model):
 class TechnicalConditionEntity(models.Model):
     class Meta:
         abstract = True
+        ordering = ['technical_condition']
 
     class TechnicalCondition(models.IntegerChoices):
         READY_TO_USE = 0, 'Готов к установке'
@@ -56,6 +58,7 @@ class Post(NamedEntity):
     class Meta:
         verbose_name = 'Должность'
         verbose_name_plural = 'Должности'
+        ordering = ['name', 'structure']
 
     structure = models.ForeignKey(Structure, on_delete=models.CASCADE, verbose_name='Структура')
 
@@ -67,6 +70,7 @@ class Worksite(NamedEntity):
     class Meta:
         verbose_name = 'Рабочее место'
         verbose_name_plural = 'Рабочие места'
+        ordering = ['name', 'post']
 
     post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name='Должность')
 
@@ -77,6 +81,7 @@ class WorksitePlaced(models.Model):
     '''
     class Meta:
         abstract = True
+        ordering = ['worksite']
 
     worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE, verbose_name='Рабочее место', null=True, blank=True)
 
@@ -87,6 +92,7 @@ class StructurePlaced(models.Model):
     '''
     class Meta:
         abstract = True
+        ordering = ['structure']
 
     structure = models.ForeignKey(Structure, on_delete=models.CASCADE, verbose_name='Структура', null=True, blank=True)
 
@@ -98,6 +104,7 @@ class PeripheralType(NamedEntity):
     class Meta:
         verbose_name = 'Тип периферии'
         verbose_name_plural = 'Типы периферии'
+        ordering = ['name']
 
 
 class ComputerConfiguration(NamedEntity):
@@ -107,6 +114,7 @@ class ComputerConfiguration(NamedEntity):
     class Meta:
         verbose_name = 'Конфигурация (сборка) компьютера'
         verbose_name_plural = 'Конфигурации (сборки) компьютеров'
+        ordering = ['name']
 
     processor = models.CharField(max_length=50, verbose_name='Процессор')
     ram = models.CharField(max_length=50, verbose_name='Оперативная память')
@@ -122,6 +130,7 @@ class Peripheral(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePla
     class Meta:
         verbose_name = 'Периферия'
         verbose_name_plural = 'Периферия'
+        ordering = ['name', 'peripheral_type']
 
     peripheral_type = models.ForeignKey(PeripheralType, on_delete=models.CASCADE, verbose_name='Тип периферии')
 
@@ -133,6 +142,7 @@ class NetworkEquipment(NamedEntity, Inventoried, TechnicalConditionEntity, Struc
     class Meta:
         verbose_name = 'Сетевое оборудование'
         verbose_name_plural = 'Сетевое оборудование'
+        ordering = ['name', 'technical_condition', 'structure']
 
 
 class Computer(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlaced):
@@ -142,6 +152,7 @@ class Computer(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlace
     class Meta:
         verbose_name = 'Компьютер'
         verbose_name_plural = 'Компьютеры'
+        ordering = ['name', 'technical_condition', 'worksite']
 
     configuration = models.ForeignKey(ComputerConfiguration, on_delete=models.CASCADE, verbose_name='Конфигурация (сборка)')
 
@@ -153,6 +164,7 @@ class Monitor(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlaced
     class Meta:
         verbose_name = 'Монитор'
         verbose_name_plural = 'Мониторы'
+        ordering = ['name', 'technical_condition', 'worksite']
 
 
 class MFP(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlaced):
@@ -162,6 +174,7 @@ class MFP(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlaced):
     class Meta:
         verbose_name = 'МФУ'
         verbose_name_plural = 'МФУ'
+        ordering = ['name', 'technical_condition', 'worksite']
 
 
 class UPS(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlaced):
@@ -171,6 +184,7 @@ class UPS(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlaced):
     class Meta:
         verbose_name = 'ИБП'
         verbose_name_plural = 'ИБП'
+        ordering = ['name', 'technical_condition', 'worksite']
 
 
 class MeteoUnit(NamedEntity, Inventoried, TechnicalConditionEntity, StructurePlaced):
@@ -180,6 +194,7 @@ class MeteoUnit(NamedEntity, Inventoried, TechnicalConditionEntity, StructurePla
     class Meta:
         verbose_name = 'Прибор (гидро / метео / агро)'
         verbose_name_plural = 'Приборы (гидро / метео / агро)'
+        ordering = ['name', 'technical_condition', 'structure']
 
 
 class Server(NamedEntity, Inventoried, TechnicalConditionEntity, StructurePlaced):
@@ -189,6 +204,7 @@ class Server(NamedEntity, Inventoried, TechnicalConditionEntity, StructurePlaced
     class Meta:
         verbose_name = 'Сервер'
         verbose_name_plural = 'Сервера'
+        ordering = ['name', 'technical_condition', 'structure']
 
     purpose = models.TextField(default='', verbose_name='Назначение')
 
@@ -200,6 +216,7 @@ class Cartridge(NamedEntity, TechnicalConditionEntity):
     class Meta:
         verbose_name = 'Картридж'
         verbose_name_plural = 'Картриджы'
+        ordering = ['name', 'technical_condition']
 
     mfp = models.ForeignKey(MFP, on_delete=models.CASCADE, verbose_name='МФУ', null=True, blank=True)
 
@@ -222,6 +239,7 @@ class Request(WorksitePlaced):
     class Meta:
         verbose_name = 'Запрос'
         verbose_name_plural = 'Запросы'
+        ordering = ['status', 'created_at', 'completed_at']
 
     class RequestStatus(models.IntegerChoices):
         CREATED = 0, 'Создан'
