@@ -1,4 +1,5 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
+from django.views.generic import DetailView, ListView
 
 
 from .models import Cartridge
@@ -8,14 +9,14 @@ def index(request):
     return render(request, 'polls/base.html')
 
 
-def cartridges_list(request):
-    cartridges = Cartridge.objects.order_by('id')
-    context = {
-        'cartridges_list': cartridges,
-    }
-    return render(request, 'polls/cartridges.html', context)
+class CartridgeListView(ListView):
+    model = Cartridge
+    context_object_name = 'cartridge_list'
+    template_name = 'polls/cartridge_list.html'
+    queryset = Cartridge.objects.order_by('id')
 
 
-def cartridge_detail(request, cartridge_id):
-    cartridge = get_object_or_404(Cartridge, pk=cartridge_id)
-    return render(request, 'polls/cartridge.html', {'cartridge': cartridge})
+class CartridgeDetailView(DetailView):
+    model = Cartridge
+    context_object_name = 'cartridge'
+    template_name = 'polls/cartridge_detail.html'

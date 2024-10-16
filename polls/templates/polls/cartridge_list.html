@@ -1,9 +1,9 @@
 {% extends "polls/base.html" %}
 
 {% block content %}
-{% if cartridges_list %}
+{% if cartridge_list %}
     <ul>
-    {% for cartridge in cartridges_list %}
+    {% for cartridge in cartridge_list %}
         <li><a href="{% url 'cartridge_detail' cartridge.id %}">{{ cartridge }}</a></li>
     {% endfor %}
     </ul>
