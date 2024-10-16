@@ -178,6 +178,7 @@ class Cartridge(NamedEntity, TechnicalConditionEntity):
 
     mfp = models.ForeignKey(MFP, on_delete=models.CASCADE, verbose_name='МФУ', null=True, blank=True)
     number = models.CharField(max_length=50, verbose_name='Номер картриджа', default='')
+    refills = models.PositiveIntegerField(default=0, verbose_name='Количество заправок')
 
     def __str__(self):
         match self.technical_condition:
