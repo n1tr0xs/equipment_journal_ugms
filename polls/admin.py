@@ -104,5 +104,5 @@ class CartridgeAdmin(admin.ModelAdmin):
 @admin.register(Request)
 class RequestAdmin(admin.ModelAdmin):
     list_display = ['id', 'worksite', 'description', 'status', 'created_at', 'completed_at']
-    list_filter = ['worksite', 'status']
+    list_filter = ['worksite', 'status', 'created_at', 'completed_at']
     search_fields = ['description']
