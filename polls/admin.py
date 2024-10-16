@@ -72,6 +72,8 @@ class ServerAdmin(admin.ModelAdmin):
 @admin.register(Cartridge)
 class CartridgeAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'mfp', 'technical_condition', 'disabling_reason')
+    list_filter = ('technical_condition', )
+    search_fields = ('name', )
 
 
 @admin.register(Request)
