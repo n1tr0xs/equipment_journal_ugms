@@ -1193,3 +1193,7 @@ a.deletelink:focus, a.deletelink:hover {
     width: 100%;
     height: 1.5em;
 }   
+
+.cartridge-form {
+    padding: 20px;
+}

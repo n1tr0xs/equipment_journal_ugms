@@ -1,35 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% if cartridge_list %}
-    <table>
-        <caption> {{ "Картриджи"|title }} </caption>
-        <thead>
-            <tr>
-                <td> Название </td>
-                <td> Номер картриджа </td>
-                <td> Техническое состояние </td>
-                <td> Причина снятия/ремонта </td>
-                <td> МФУ </td>
-                <td> Заправок </td>
-                <td></td>
-                <td></td>
-            </tr>
-        </thead>
-        <tbody>
-            {% for cartridge in cartridge_list %}            
-                <tr>
-                    <td><a href="{{ cartridge.get_absolute_url }}" class='rowlink'> {{ cartridge.name }} </a></td>
-                    <td> {{ cartridge.number }} </td>
-                    <td> {{ cartridge.get_technical_condition_display }} </td>
-                    <td> {{ cartridge.disabling_reason|default:"-" }} </td>
-                    <td> {{ cartridge.mfp|default:'-' }} </td>
-                    <td> {{ cartridge.refills }} </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% else %}
-    <p> Список картриджей пуст. </p>
-{% endif %}
+    <h1> Cartridge list </h1>
+    <a href="{% url 'add-cartridge' %}"> Add cartridge </a>
+    {% for cartridge in object_list %}
+        <p> {{ cartridge.name }}: {{ cartridge.number }} </p>
+    {% endfor %}
 {% endblock %}
