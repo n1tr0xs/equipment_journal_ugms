@@ -17,9 +17,9 @@
             </tr>
         </thead>
         <tbody>
-            {% for cartridge in cartridge_list %}
+            {% for cartridge in cartridge_list %}            
                 <tr>
-                    <td> {{ cartridge.name }} </td>
+                    <td><a href="{{ cartridge.get_absolute_url }}" class='rowlink'> {{ cartridge.name }} </a></td>
                     <td> {{ cartridge.number }} </td>
                     <td> {{ cartridge.get_technical_condition_display }} </td>
                     <td> {{ cartridge.disabling_reason|default:"-" }} </td>

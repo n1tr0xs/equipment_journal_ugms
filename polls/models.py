@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 
@@ -179,6 +180,9 @@ class Cartridge(NamedEntity, TechnicalConditionEntity):
     mfp = models.ForeignKey(MFP, on_delete=models.CASCADE, verbose_name='МФУ', null=True, blank=True)
     number = models.CharField(max_length=50, verbose_name='Номер картриджа', default='')
     refills = models.PositiveIntegerField(default=0, verbose_name='Количество заправок')
+
+    def get_absolute_url(self):
+        return reverse('cartridge-detail', kwargs={'pk': self.pk})
 
 
 class Request(WorksitePlaced):
