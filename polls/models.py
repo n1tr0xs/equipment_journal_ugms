@@ -19,7 +19,7 @@ class IPEntity(models.Model):
     class Meta:
         abstract = True
 
-    ip_address = models.CharField(max_length=15, verbose_name='IP адрес', null=True, blank=True)
+    ip_address = models.CharField(max_length=15, verbose_name='IP адрес', null=True, blank=True, unique=True)
 
 
 class Inventoried(models.Model):
@@ -177,7 +177,7 @@ class Cartridge(NamedEntity, TechnicalConditionEntity):
         verbose_name_plural = 'Картриджы'
         ordering = ['name', 'technical_condition', 'refills']
 
-    mfp = models.ForeignKey(MFP, on_delete=models.CASCADE, verbose_name='МФУ', null=True, blank=True)
+    mfp = models.ForeignKey(MFP, on_delete=models.CASCADE, verbose_name='МФУ', null=True, blank=True, unique=True)
     number = models.CharField(max_length=50, verbose_name='Номер картриджа', default='')
     refills = models.PositiveIntegerField(default=0, verbose_name='Количество заправок')
 

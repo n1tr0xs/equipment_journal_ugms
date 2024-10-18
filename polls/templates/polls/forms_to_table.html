@@ -1,0 +1,47 @@
+{% comment %}
+`heading` - Heading for page
+`forms` - List of forms to render
+{% endcomment %}
+
+
+{{ forms.not_form_errors }}
+<h1 class="text-center"> {{ heading|title }} </h1>
+<table class="table-centered" style="width: 100%">
+    <thead name="Table header row">
+        <tr>
+            {% for field in forms.0.visible_fields %}
+            <td> {{ field.label }} </td>
+            {% endfor %}
+            {% if deletion_flag %}
+            <td> Удалить </td>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody name="visible forms fields" id="form-container">
+        {% for form in forms %}
+        <tr class="object-form">
+            {% for field in form.visible_fields %}
+            <td>
+                {{ field.errors }}
+                {{ field }}
+            </td>
+            {% endfor %}
+            {% if deletion_flag %}
+                <td> <input type="checkbox" name="form-{{ forloop.counter0 }}-delete" /> </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+    <tbody name="hidden forms fields">
+        {% for form in forms %}
+        <tr>
+            {% for field in form.hidden_fields %}
+            {{ field }}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+    <tbody name="forms management form">
+        {{ forms.management_form }}
+    </tbody>
+</table>

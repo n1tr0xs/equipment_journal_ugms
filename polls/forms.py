@@ -1,14 +1,27 @@
-from django.forms import ModelForm, modelformset_factory
+from django import forms
 
 from .models import Cartridge
 
 
-class CartridgeAddForm(ModelForm):
+class CartridgeForm(forms.ModelForm):
     class Meta:
         model = Cartridge
-        fields = ['name', 'number']
+        fields = ['name', 'number', 'technical_condition', 'mfp', 'disabling_reason', 'refills']
+        widgets = {
+            'disabling_reason': forms.Textarea(attrs={'cols': 80, 'rows': 1})
+        }
 
 
-CartridgeFormSet = modelformset_factory(
-    Cartridge, fields='__all__', extra=1,
+CartridgeAddFormSet = forms.modelformset_factory(
+    Cartridge,
+    form=CartridgeForm,
+    fields=['name', 'number', 'technical_condition', 'mfp', 'disabling_reason', 'refills'],
+    extra=1,
+)
+
+CartridgeEditFormSet = forms.modelformset_factory(
+    Cartridge,
+    form=CartridgeForm,
+    fields=['name', 'number', 'technical_condition', 'mfp', 'disabling_reason', 'refills'],
+    extra=0,
 )

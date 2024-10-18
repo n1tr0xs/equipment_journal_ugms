@@ -509,3 +509,29 @@ form .related-widget-wrapper ul {
 .clearable-file-input input {
     margin-top: 0;
 }
+
+/* tabled forms */
+#form-container .object-form td {
+    text-align: center;
+}
+
+#submit-row input {
+    margin: 0 .5em;
+}
+
+#table-forms-container #submit-row {
+    padding-top: 3em;
+}
+#table-forms-container #submit-row input {
+    float: left;
+}
+#table-forms-container #submit-row input[type=submit] {
+    float: right;
+}
+
+input[type=submit].delete-button {
+    background: var(--delete-button-bg);
+}
+input[type=submit].delete-button:hover {
+    background: var(--delete-button-hover-bg);
+}

@@ -40,7 +40,7 @@ html[data-theme="light"],
 
     --darkened-bg: #f8f8f8; /* A bit darker than --body-bg */
     --selected-bg: #e4e4e4; /* E.g. selected table cells */
-    --selected-row: #ffc;
+    --selected-row: #ffc;    
 
     --button-fg: #fff;
     --button-bg: var(--secondary);
@@ -51,6 +51,8 @@ html[data-theme="light"],
     --close-button-hover-bg: #333;
     --delete-button-bg: #ba2121;
     --delete-button-hover-bg: #a41515;
+    --reset-button-bg: #6d6d6d;
+    --reset-button--hover-bg: #555555;
 
     --object-tools-fg: var(--button-fg);
     --object-tools-bg: var(--close-button-bg);
@@ -86,7 +88,7 @@ html[data-theme="light"],
         "Segoe UI Symbol",
         "Noto Color Emoji";
 
-    color-scheme: light;
+    color-scheme: light;    
 }
 
 html, body {
@@ -528,7 +530,7 @@ select[multiple] {
 
 /* FORM BUTTONS */
 
-.button, input[type=submit], input[type=button], .submit-row input, a.button {
+.button, input[type=submit], input[type=button], .submit-row input, a.button, input[type=reset] {
     background: var(--button-bg);
     padding: 10px 15px;
     border: none;
@@ -546,6 +548,14 @@ a.button {
 .button:focus, input[type=submit]:focus, input[type=button]:focus,
 .button:hover, input[type=submit]:hover, input[type=button]:hover {
     background: var(--button-hover-bg);
+}
+
+input[type=reset] {
+    background: var(--reset-button-bg);
+}
+
+input[type=reset]:active, input[type=reset]:focus, input[type=reset]:hover {
+    background: var(--reset-button--hover-bg);
 }
 
 .button[disabled], input[type=submit][disabled], input[type=button][disabled] {
@@ -1196,4 +1206,17 @@ a.deletelink:focus, a.deletelink:hover {
 
 .cartridge-form {
     padding: 20px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.table-centered {
+    margin: 0 auto;
+}
+
+thead tr td {
+    font-weight: bold;
+    text-align: center;
 }

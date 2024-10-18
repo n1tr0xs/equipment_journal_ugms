@@ -1,9 +1,0 @@
-{% extends "base.html" %}
-
-{% block content %}
-    <h1> Cartridge list </h1>
-    <a href="{% url 'add-cartridge' %}"> Add cartridge </a>
-    {% for cartridge in object_list %}
-        <p> {{ cartridge.name }}: {{ cartridge.number }} </p>
-    {% endfor %}
-{% endblock %}
