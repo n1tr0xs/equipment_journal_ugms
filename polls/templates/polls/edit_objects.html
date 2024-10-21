@@ -12,8 +12,8 @@
     <div id="table-forms-container">
         <div id="submit-row">
             <input type="reset" value="Сбросить">
-            <input type="submit" value="Удалить отмеченые" formaction="delete" class="delete-button">            
             <input type="submit" value="Изменить данные">
+            <input type="submit" value="Удалить отмеченые" formaction="delete" class="delete-button">            
         </div>
         {% include "polls/forms_to_table.html" with deletion_flag=True %}
     </div>
