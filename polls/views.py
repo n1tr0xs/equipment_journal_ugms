@@ -56,7 +56,7 @@ class BaseAddView(LoginRequiredMixin, TemplateView):
         return ' '.join((self.heading_prefix, self.formset_class.model._meta.verbose_name_plural))
 
 
-class BaseBulkEditView(LoginRequiredMixin, TemplateView):
+class BaseEditView(LoginRequiredMixin, TemplateView):
     template_name = 'polls/edit_objects.html'
     heading_prefix = 'Изменить'
     formset_class = None  # set the formset
@@ -113,6 +113,6 @@ class CartridgeAddView(BaseAddView):
     success_url = reverse_lazy('cartridge-edit')
 
 
-class CartridgeBulkEditView(BaseBulkEditView):
+class CartridgeEditView(BaseEditView):
     formset_class = CartridgeFormSet
     success_url = reverse_lazy('cartridge-edit')
