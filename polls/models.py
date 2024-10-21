@@ -142,6 +142,9 @@ class MFP(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlaced):
         verbose_name_plural = 'МФУ'
         ordering = ['name', 'technical_condition', 'worksite']
 
+    def __str__(self):
+        return f'{self.name}, {self.worksite}'
+
 
 class UPS(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlaced):
     class Meta:
@@ -155,6 +158,7 @@ class MeteoUnit(NamedEntity, Inventoried, TechnicalConditionEntity, StructurePla
         verbose_name = 'Прибор (гидро / метео / агро)'
         verbose_name_plural = 'Приборы (гидро / метео / агро)'
         ordering = ['name', 'technical_condition', 'structure']
+
     verification_date = models.DateField(verbose_name='Дата поверки', null=True)
 
 
