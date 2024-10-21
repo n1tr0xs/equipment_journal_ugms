@@ -41,12 +41,6 @@ class BaseAddView(LoginRequiredMixin, TemplateView):
         return self.heading_prefix + ' ' + self.model_name._meta.verbose_name_plural
 
 
-class CartridgeAddView(BaseAddView):
-    model_name = Cartridge
-    formset_class = CartridgeAddFormSet
-    success_url = reverse_lazy('cartridge-list')
-
-
 class BaseBulkEditView(LoginRequiredMixin, TemplateView):
     template_name = 'polls/edit_objects.html'
     heading_prefix = 'Изменить'
@@ -77,15 +71,9 @@ class BaseBulkEditView(LoginRequiredMixin, TemplateView):
         return self.heading_prefix + ' ' + self.model_name._meta.verbose_name_plural
 
 
-class CartridgeBulkEditView(BaseBulkEditView):
-    model_name = Cartridge
-    formset_class = CartridgeEditFormSet
-    success_url = reverse_lazy('cartridge-list')
-
-
-class CartridgeBulkDeleteView(LoginRequiredMixin, TemplateView):
-    model = Cartridge
-    success_url = reverse_lazy('cartridge-list')
+class BaseBulkDeleteView(LoginRequiredMixin, TemplateView):
+    model_name = None  # set the model
+    success_url = reverse_lazy('')  # set the success url redirect
 
     def get(self, *args, **kwargs):
         return redirect(self.success_url)
@@ -97,8 +85,25 @@ class CartridgeBulkDeleteView(LoginRequiredMixin, TemplateView):
             if deletion_flag == 'on':
                 object_id = int(self.request.POST.get(f'form-{form_id}-id', -1))  # get object id
                 try:
-                    self.model.objects.get(id=object_id).delete()  # deleting object from DB
-                except self.model.DoesNotExist:
+                    self.model_name.objects.get(id=object_id).delete()  # deleting object from DB
+                except self.model_name.DoesNotExist:
                     continue
 
         return redirect(self.success_url)
+
+
+class CartridgeAddView(BaseAddView):
+    model_name = Cartridge
+    formset_class = CartridgeAddFormSet
+    success_url = reverse_lazy('cartridge-list')
+
+
+class CartridgeBulkEditView(BaseBulkEditView):
+    model_name = Cartridge
+    formset_class = CartridgeEditFormSet
+    success_url = reverse_lazy('cartridge-list')
+
+
+class CartridgeBulkDeleteView(BaseBulkDeleteView):
+    model_name = Cartridge
+    success_url = reverse_lazy('cartridge-list')
