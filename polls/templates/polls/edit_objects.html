@@ -1,15 +1,55 @@
 {% extends "polls/base_form.html" %}
 
 {% block content %}
-    <form action="" method="post">
-        {% csrf_token %}
-        <div id="table-forms-container">
-            <div id="submit-row">
-                <input type="reset" value="Сбросить">
-                <input type="submit" value="Изменить данные">
-                <input type="submit" value="Удалить отмеченые" formaction="delete" class="delete-button">            
-            </div>
-            {% include "polls/forms_to_table.html" with deletion_flag=True %}
+<form action="" method="post">
+    {% csrf_token %}
+    <div id="table-forms-container">
+        <div id="submit-row">
+            <input type="reset" value="Сбросить">
+            <input type="submit" value="Изменить данные">
+            <input type="submit" value="Удалить отмеченые" formaction="delete" class="delete-button">            
         </div>
-    </form>
+        {% if not forms.count %}
+        {{ forms.not_form_errors }}
+        <table class="table-centered tabled-forms" style="width: 100%">
+            <caption class="text-center sticked-top"> {{ heading|title }} </caption>
+            <thead name="Table header row" class="sticked-top">
+                <tr>
+                    {% for field in forms.0.visible_fields %}
+                    <td> {{ field.label }} </td>
+                    {% endfor %}
+                    <td> Удалить </td>
+                </tr>
+            </thead>
+            <tbody name="visible forms fields" id="forms-container">
+                {% for form in forms %}
+                <tr class="object-form">
+                    {% for field in form.visible_fields %}
+                    <td>
+                        {{ field.errors }}
+                        {{ field }}
+                    </td>
+                    {% endfor %}
+                    <td> <input type="checkbox" name="form-{{ forloop.counter0 }}-delete" /> </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tbody name="hidden forms fields">
+                {% for form in forms %}
+                <tr>
+                    {% for field in form.hidden_fields %}
+                    {{ field }}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tbody name="forms management form">
+                {{ forms.management_form }}
+            </tbody>
+        </table>
+        {% else %}
+        <h1 style="text-align: center;"> Нет данных </h1>
+        {% endif %}
+    </div>
+</form>
 {% endblock %}
