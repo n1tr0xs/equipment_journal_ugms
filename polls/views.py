@@ -11,32 +11,40 @@ def index(request):
     return render(request, 'polls/base.html')
 
 
-class CartridgeAddView(LoginRequiredMixin, TemplateView):
+class BaseAddView(LoginRequiredMixin, TemplateView):
     template_name = 'polls/add_objects.html'
-    heading = 'Добавить картриджы'
-    success_url = reverse_lazy('cartridge-list')
-    formset_class = CartridgeAddFormSet
+    heading_prefix = 'Добавить'
+    model_name = None  # set the model
+    formset_class = None  # set the formset
+    success_url = reverse_lazy('')  # set the success url redirect
 
     def get(self, *args, **kwargs):
-        forms = self.formset_class(queryset=Cartridge.objects.none())
+        forms = self.formset_class(queryset=self.model_name.objects.none())
         context = {
-            'heading': self.heading,
+            'heading': self.get_heading(),
             'forms': forms,
         }
         return self.render_to_response(context)
 
     def post(self, *args, **kwargs):
         forms = self.formset_class(data=self.request.POST)
-
         if forms.is_valid():
             forms.save()
             return redirect(self.success_url)
-
         context = {
-            'heading': self.heading,
+            'heading': self.get_heading(),
             'forms': forms,
         }
         return self.render_to_response(context)
+
+    def get_heading(self):
+        return self.heading_prefix + ' ' + self.model_name._meta.verbose_name_plural
+
+
+class CartridgeAddView(BaseAddView):
+    model_name = Cartridge
+    formset_class = CartridgeAddFormSet
+    success_url = reverse_lazy('cartridge-list')
 
 
 class CartridgeListView(LoginRequiredMixin, TemplateView):
