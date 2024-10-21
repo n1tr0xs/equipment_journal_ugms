@@ -47,15 +47,16 @@ class CartridgeAddView(BaseAddView):
     success_url = reverse_lazy('cartridge-list')
 
 
-class CartridgeListView(LoginRequiredMixin, TemplateView):
+class BaseListView(LoginRequiredMixin, TemplateView):
     template_name = 'polls/edit_objects.html'
-    heading = 'Картриджы'
-    success_url = reverse_lazy('cartridge-list')
-    formset_class = CartridgeEditFormSet
+    heading_prefix = 'Изменить'
+    model_name = None  # set the model
+    formset_class = None  # set the formset
+    success_url = reverse_lazy('')  # set the success url redirect
 
     def get(self, *args, **kwargs):
         context = {
-            'heading': self.heading,
+            'heading': self.get_heading(),
             'forms': self.formset_class,
         }
         return self.render_to_response(context)
@@ -65,11 +66,21 @@ class CartridgeListView(LoginRequiredMixin, TemplateView):
         if forms.is_valid():
             forms.save()
             return redirect(self.success_url)
+
         context = {
-            'heading': self.heading,
+            'heading': self.get_heading(),
             'forms': forms,
         }
         return self.render_to_response(context)
+
+    def get_heading(self):
+        return self.heading_prefix + ' ' + self.model_name._meta.verbose_name_plural
+
+
+class CartridgeListView(BaseListView):
+    model_name = Cartridge
+    formset_class = CartridgeEditFormSet
+    success_url = reverse_lazy('cartridge-list')
 
 
 class CartridgeBulkDeleteView(LoginRequiredMixin, TemplateView):
