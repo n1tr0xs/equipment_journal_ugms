@@ -14,12 +14,11 @@ def index(request):
 class BaseAddView(LoginRequiredMixin, TemplateView):
     template_name = 'polls/add_objects.html'
     heading_prefix = 'Добавить'
-    model_name = None  # set the model
     formset_class = None  # set the formset
     success_url = reverse_lazy('')  # set the success url redirect
 
     def get(self, *args, **kwargs):
-        forms = self.formset_class(queryset=self.model_name.objects.none())
+        forms = self.formset_class(queryset=self.formset_class.model.objects.none())
         context = {
             'heading': self.get_heading(),
             'forms': forms,
@@ -38,13 +37,12 @@ class BaseAddView(LoginRequiredMixin, TemplateView):
         return self.render_to_response(context)
 
     def get_heading(self):
-        return self.heading_prefix + ' ' + self.model_name._meta.verbose_name_plural
+        return ' '.join((self.heading_prefix, self.formset_class.model._meta.verbose_name_plural))
 
 
 class BaseBulkEditView(LoginRequiredMixin, TemplateView):
     template_name = 'polls/edit_objects.html'
     heading_prefix = 'Изменить'
-    model_name = None  # set the model
     formset_class = None  # set the formset
     success_url = reverse_lazy('')  # set the success url redirect
 
@@ -68,7 +66,7 @@ class BaseBulkEditView(LoginRequiredMixin, TemplateView):
         return self.render_to_response(context)
 
     def get_heading(self):
-        return self.heading_prefix + ' ' + self.model_name._meta.verbose_name_plural
+        return ' '.join((self.heading_prefix, self.formset_class.model._meta.verbose_name_plural))
 
 
 class BaseBulkDeleteView(LoginRequiredMixin, TemplateView):
@@ -81,7 +79,7 @@ class BaseBulkDeleteView(LoginRequiredMixin, TemplateView):
     def post(self, *args, **kwargs):
         total_forms = int(self.request.POST.get('form-TOTAL_FORMS', -1))  # get forms count
         for form_id in range(total_forms):
-            deletion_flag = self.request.POST.get(f'form-{form_id}-delete', 'off')
+            deletion_flag = self.request.POST.get(f'form-{form_id}-delete', 'off')  # get deletion flag
             if deletion_flag == 'on':
                 object_id = int(self.request.POST.get(f'form-{form_id}-id', -1))  # get object id
                 try:
@@ -93,13 +91,11 @@ class BaseBulkDeleteView(LoginRequiredMixin, TemplateView):
 
 
 class CartridgeAddView(BaseAddView):
-    model_name = Cartridge
     formset_class = CartridgeAddFormSet
     success_url = reverse_lazy('cartridge-list')
 
 
 class CartridgeBulkEditView(BaseBulkEditView):
-    model_name = Cartridge
     formset_class = CartridgeEditFormSet
     success_url = reverse_lazy('cartridge-list')
 
