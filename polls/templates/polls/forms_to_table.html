@@ -5,9 +5,9 @@
 
 
 {{ forms.not_form_errors }}
-<h1 class="text-center"> {{ heading|title }} </h1>
-<table class="table-centered" style="width: 100%">
-    <thead name="Table header row">
+<table class="table-centered tabled-forms" style="width: 100%">
+    <caption class="text-center sticked-top"> {{ heading|title }} </caption>
+    <thead name="Table header row" class="sticked-top">
         <tr>
             {% for field in forms.0.visible_fields %}
             <td> {{ field.label }} </td>
@@ -17,7 +17,7 @@
             {% endif %}
         </tr>
     </thead>
-    <tbody name="visible forms fields" id="form-container">
+    <tbody name="visible forms fields" id="forms-container">
         {% for form in forms %}
         <tr class="object-form">
             {% for field in form.visible_fields %}

@@ -10,7 +10,7 @@
 <form action="" method="post">
     {% csrf_token %}
     <div id="table-forms-container">
-        <div id='submit-row'>
+        <div id='submit-row' class="sticked-top">
             <input id="add-form" type="button" value="Добавить еще одну строку">
             <input id="submit-forms" type="submit" value="Добавить объекты в Базу Данных">
         </div>
@@ -20,7 +20,7 @@
 
 <script>
     let objectForm = document.querySelectorAll('.object-form');
-    let container = document.querySelector("#form-container");
+    let container = document.querySelector("#forms-container");
     let addButton = document.querySelector("#add-form");
     let totalForms = document.querySelector("#id_form-TOTAL_FORMS");
     let formNum = objectForm.length-1;
@@ -35,8 +35,11 @@
         formNum++; // Increment the form number
         newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`); // Update the new form to have the correct form number
         container.appendChild(newForm); // Insert the new form at the end of the list of forms
+        newForm.scrollIntoView();
 
         totalForms.setAttribute('value', `${formNum+1}`); // Increment the number of total forms in the management form
     }
+
+    addButton.clicked();
 </script>
 {% endblock %}
