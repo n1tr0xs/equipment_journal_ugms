@@ -515,13 +515,12 @@ form .related-widget-wrapper ul {
     position: sticky;
     top: 0em;
     overflow: hidden;
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    flex-wrap: nowrap;
-    flex-direction: row;
     padding-top: 3em;
     background: var(--body-bg);
+}
+
+#submit-row input[type=submit] {
+    float: right
 }
 
 .tabled-forms caption {
@@ -541,10 +540,6 @@ form .related-widget-wrapper ul {
     padding: 1em;
 }
 
-#submit-row input:last-child {
-    margin-left: auto;
-}
-
 input[type=submit].delete-button {
     background: var(--delete-button-bg);
 }
@@ -555,4 +550,12 @@ input[type=submit].delete-button:hover {
 
 #forms-container .object-form td {
     text-align: center;
+}
+
+.object-form td :focus {
+    overflow: visible;
+}
+
+.object-form td textarea {
+    resize: vertical;
 }
