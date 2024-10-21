@@ -1,8 +1,6 @@
 from django.db import models
 from django.urls import reverse
 
-# Create your models here.
-
 
 class NamedEntity(models.Model):
     class Meta:
@@ -177,7 +175,7 @@ class Cartridge(NamedEntity, TechnicalConditionEntity):
         verbose_name_plural = 'Картриджы'
         ordering = ['name', 'technical_condition', 'refills']
 
-    mfp = models.ForeignKey(MFP, on_delete=models.CASCADE, verbose_name='МФУ', null=True, blank=True, unique=True)
+    mfp = models.OneToOneField(MFP, on_delete=models.CASCADE, verbose_name='МФУ', null=True, blank=True)
     number = models.CharField(max_length=50, verbose_name='Номер картриджа', default='')
     refills = models.PositiveIntegerField(default=0, verbose_name='Количество заправок')
 
