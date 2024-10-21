@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %} {{ heading|title }} {% endblock %}
+
+{% block main %}
+
+{% include "polls/aside.html" %}
+<main class="content" id="content-start"> {% block content %} {% endblock %} </main>
+
+{% endblock %}

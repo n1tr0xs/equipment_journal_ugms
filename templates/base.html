@@ -7,23 +7,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'polls/master.css' %}">
     <link rel="stylesheet" href="{% static 'polls/dark-mode.css' %}">
+    <link rel="stylesheet" href="{% static 'polls/nav-sidebar.css' %}">
+    <link rel="stylesheet" href="{% static 'polls/responsive.css' %}">
     {% block head %} {% endblock %}
     <title> {% block title %} Журнал оргтехники УГМС по ЛНР {% endblock %}</title>
 </head>
 <body>
     <div id='container'>
-        <header id='header'>
+        <header id="header">
             {% block header %}
             {% endblock %}
         </header>
-        <div id='content'>
-            {% block content %}
+        <div id="main" class="main shifted">
+            {% block main %}
             {% endblock %}
         </div>
-        <footer id='footer'>
+        <footer id="footer">
             {% block footer %}
             {% endblock %}
         </footer>
     </div>
+
+    <script>
+        toggleNavBarBtn = document.querySelector('#toggle-nav-side-bar');
+        main = document.querySelector("#main")
+
+        if (localStorage.getItem('navSideBarOpen') != 'false') {
+            main.classList.add("shifted");
+        } else {
+            main.classList.remove("shifted");
+        }
+        toggleNavBarBtn.addEventListener('click', toggleNavBar);
+        function toggleNavBar(e){
+            e.preventDefault();
+            main.classList.toggle("shifted");
+            localStorage.setItem('navSideBarOpen', main.classList.contains("shifted"));
+        }
+    </script>
 </body>
 </html>

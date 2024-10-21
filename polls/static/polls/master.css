@@ -745,27 +745,27 @@ div.breadcrumbs a:focus, div.breadcrumbs a:hover {
 
 .viewlink, .inlineviewlink {
     padding-left: 16px;
-    background: url(../img/icon-viewlink.svg) 0 1px no-repeat;
+    background: url(../polls/img/icon-viewlink.svg) 0 1px no-repeat;
 }
 
 .hidelink {
     padding-left: 16px;
-    background: url(../img/icon-hidelink.svg) 0 1px no-repeat;
+    background: url(../polls/img/icon-hidelink.svg) 0 1px no-repeat;
 }
 
 .addlink {
     padding-left: 16px;
-    background: url(../img/icon-addlink.svg) 0 1px no-repeat;
+    background: url(../polls/img/icon-addlink.svg) 0 1px no-repeat;
 }
 
 .changelink, .inlinechangelink {
     padding-left: 16px;
-    background: url(../img/icon-changelink.svg) 0 1px no-repeat;
+    background: url(../polls/img/icon-changelink.svg) 0 1px no-repeat;
 }
 
 .deletelink {
     padding-left: 16px;
-    background: url(../img/icon-deletelink.svg) 0 1px no-repeat;
+    background: url(../polls/img/icon-deletelink.svg) 0 1px no-repeat;
 }
 
 a.deletelink:link, a.deletelink:visited {
@@ -860,7 +860,7 @@ a.deletelink:focus, a.deletelink:hover {
     display: flex;
     flex-direction: column;
     height: 100%;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 
 #container > .main {
@@ -871,6 +871,7 @@ a.deletelink:focus, a.deletelink:hover {
 .main > .content {
     flex:  1 0;
     max-width: 100%;
+    padding: 0 1.5em;
 }
 
 .skip-to-content-link {

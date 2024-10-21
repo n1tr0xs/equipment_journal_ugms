@@ -1,0 +1,15 @@
+<button id="toggle-nav-side-bar" class="sticky toggle-nav-sidebar"> </button>
+<nav id="nav-sidebar" class="sticky">
+    <table class="module">
+        <caption> Таблицы </caption>
+        <tbody>
+            {% for table_name, hrefs in tables.items %}
+            <tr> 
+                <th> {{ table_name }} </th> 
+                <td> <a class="addlink" href="/{{ hrefs.add }}"> Добавить </a> </td>
+                <td> <a class="changelink" href="/{{ hrefs.edit }}"> Изменить </a> </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</nav>

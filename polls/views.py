@@ -3,11 +3,21 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-from .models import Cartridge
+from .models import Cartridge, Request
 from .forms import CartridgeAddFormSet, CartridgeEditFormSet
+
+TABLES = {
+    model._meta.verbose_name_plural: {
+        'edit': model.__name__.lower() + 's/edit',
+        'add': model.__name__.lower() + 's/add',
+    }
+    for model in (Cartridge, Request)
+}
 
 
 def index(request):
+    if request.user.is_authenticated:
+        return redirect(reverse_lazy('table-list'))
     return render(request, 'polls/base.html')
 
 
@@ -22,6 +32,7 @@ class BaseAddView(LoginRequiredMixin, TemplateView):
         context = {
             'heading': self.get_heading(),
             'forms': forms,
+            'tables': TABLES,
         }
         return self.render_to_response(context)
 
@@ -33,6 +44,7 @@ class BaseAddView(LoginRequiredMixin, TemplateView):
         context = {
             'heading': self.get_heading(),
             'forms': forms,
+            'tables': TABLES,
         }
         return self.render_to_response(context)
 
@@ -50,6 +62,7 @@ class BaseBulkEditView(LoginRequiredMixin, TemplateView):
         context = {
             'heading': self.get_heading(),
             'forms': self.formset_class,
+            'tables': TABLES,
         }
         return self.render_to_response(context)
 
@@ -62,6 +75,7 @@ class BaseBulkEditView(LoginRequiredMixin, TemplateView):
         context = {
             'heading': self.get_heading(),
             'forms': forms,
+            'tables': TABLES,
         }
         return self.render_to_response(context)
 
