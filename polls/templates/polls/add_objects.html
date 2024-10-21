@@ -1,43 +1,37 @@
-{% extends "polls/base.html" %}
-
-{% load static %}
-{% block head %}
-    <link rel="stylesheet" href="{% static 'polls/forms.css' %}">
-{% endblock %}
+{% extends "polls/base_form.html" %}
 
 {% block content %}
-
-<form action="" method="post">
-    {% csrf_token %}
-    <div id="table-forms-container">
-        <div id="submit-row">
-            <input id="add-form" type="button" value="Добавить еще одну строку">
-            <input id="submit-forms" type="submit" value="Добавить объекты в Базу Данных">
+    <form action="" method="post">
+        {% csrf_token %}
+        <div id="table-forms-container">
+            <div id="submit-row">
+                <input id="add-form" type="button" value="Добавить еще одну строку">
+                <input id="submit-forms" type="submit" value="Добавить объекты в Базу Данных">
+            </div>
+            {% include "polls/forms_to_table.html" %}
         </div>
-        {% include "polls/forms_to_table.html" %}
-    </div>
-</form>
+    </form>
 
-<script>
-    let objectForm = document.querySelectorAll('.object-form');
-    let container = document.querySelector("#forms-container");
-    let addButton = document.querySelector("#add-form");
-    let totalForms = document.querySelector("#id_form-TOTAL_FORMS");
-    let formNum = objectForm.length-1;
+    <script>
+        let objectForm = document.querySelectorAll('.object-form');
+        let container = document.querySelector("#forms-container");
+        let addButton = document.querySelector("#add-form");
+        let totalForms = document.querySelector("#id_form-TOTAL_FORMS");
+        let formNum = objectForm.length-1;
 
-    addButton.addEventListener('click', addForm);
-    function addForm(e) {
-        e.preventDefault();
+        addButton.addEventListener('click', addForm);
+        function addForm(e) {
+            e.preventDefault();
 
-        let newForm = objectForm[0].cloneNode(true); // Clone the object form
-        let formRegex = RegExp(`form-(\\d){1}-`,'g'); // Regex to find all instances of the form number
+            let newForm = objectForm[0].cloneNode(true); // Clone the object form
+            let formRegex = RegExp(`form-(\\d){1}-`,'g'); // Regex to find all instances of the form number
 
-        formNum++; // Increment the form number
-        newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`); // Update the new form to have the correct form number
-        container.appendChild(newForm); // Insert the new form at the end of the list of forms
-        newForm.scrollIntoView();
+            formNum++; // Increment the form number
+            newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`); // Update the new form to have the correct form number
+            container.appendChild(newForm); // Insert the new form at the end of the list of forms
+            newForm.scrollIntoView();
 
-        totalForms.setAttribute('value', `${formNum+1}`); // Increment the number of total forms in the management form
-    }
-</script>
+            totalForms.setAttribute('value', `${formNum+1}`); // Increment the number of total forms in the management form
+        }
+    </script>
 {% endblock %}

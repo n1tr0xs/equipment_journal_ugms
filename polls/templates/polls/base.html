@@ -4,7 +4,11 @@
 
 {% block main %}
 
-{% include "polls/aside.html" %}
-<main class="content" id="content-start"> {% block content %} {% endblock %} </main>
+    {% include "polls/aside.html" %}
+
+    <main class="content" id="content-start"> 
+        {% block content %} 
+        {% endblock %} 
+    </main>
 
 {% endblock %}

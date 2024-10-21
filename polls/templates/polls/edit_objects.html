@@ -1,24 +1,15 @@
-{% extends "polls/base.html" %}
-
-{% load static %}
-{% block head %}
-    <link rel="stylesheet" href="{% static 'polls/forms.css' %}">
-{% endblock %}
-
-{% block title %}  {% endblock %}
+{% extends "polls/base_form.html" %}
 
 {% block content %}
-
-<form action="" method="post">
-    {% csrf_token %}
-    <div id="table-forms-container">
-        <div id="submit-row">
-            <input type="reset" value="Сбросить">
-            <input type="submit" value="Изменить данные">
-            <input type="submit" value="Удалить отмеченые" formaction="delete" class="delete-button">            
+    <form action="" method="post">
+        {% csrf_token %}
+        <div id="table-forms-container">
+            <div id="submit-row">
+                <input type="reset" value="Сбросить">
+                <input type="submit" value="Изменить данные">
+                <input type="submit" value="Удалить отмеченые" formaction="delete" class="delete-button">            
+            </div>
+            {% include "polls/forms_to_table.html" with deletion_flag=True %}
         </div>
-        {% include "polls/forms_to_table.html" with deletion_flag=True %}
-    </div>
-</form>
-
+    </form>
 {% endblock %}
