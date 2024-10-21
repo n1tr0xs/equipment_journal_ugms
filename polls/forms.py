@@ -12,16 +12,8 @@ class CartridgeForm(forms.ModelForm):
         }
 
 
-CartridgeAddFormSet = forms.modelformset_factory(
+CartridgeFormSet = forms.modelformset_factory(
     Cartridge,
     form=CartridgeForm,
     fields=['name', 'number', 'technical_condition', 'mfp', 'disabling_reason', 'refills'],
-    extra=1,
-)
-
-CartridgeEditFormSet = forms.modelformset_factory(
-    Cartridge,
-    form=CartridgeForm,
-    fields=['name', 'number', 'technical_condition', 'mfp', 'disabling_reason', 'refills'],
-    extra=0,
 )

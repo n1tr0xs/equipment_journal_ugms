@@ -1,17 +1,17 @@
 from django.urls import reverse_lazy
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
 from .models import Cartridge, Request
-from .forms import CartridgeAddFormSet, CartridgeEditFormSet
+from .forms import CartridgeFormSet
 
-TABLES = {
+TABLES_HREFS = {
     model._meta.verbose_name_plural: {
-        'edit': model.__name__.lower() + 's/edit',
-        'add': model.__name__.lower() + 's/add',
+        'edit': reverse_lazy(model.__name__.lower() + '-edit'),
+        'add': reverse_lazy(model.__name__.lower() + '-add'),
     }
-    for model in (Cartridge, Request)
+    for model in [Cartridge]
 }
 
 
@@ -27,12 +27,16 @@ class BaseAddView(LoginRequiredMixin, TemplateView):
     formset_class = None  # set the formset
     success_url = reverse_lazy('')  # set the success url redirect
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.formset_class.extra = 1
+
     def get(self, *args, **kwargs):
         forms = self.formset_class(queryset=self.formset_class.model.objects.none())
         context = {
             'heading': self.get_heading(),
             'forms': forms,
-            'tables': TABLES,
+            'tables': TABLES_HREFS,
         }
         return self.render_to_response(context)
 
@@ -44,7 +48,7 @@ class BaseAddView(LoginRequiredMixin, TemplateView):
         context = {
             'heading': self.get_heading(),
             'forms': forms,
-            'tables': TABLES,
+            'tables': TABLES_HREFS,
         }
         return self.render_to_response(context)
 
@@ -58,11 +62,15 @@ class BaseBulkEditView(LoginRequiredMixin, TemplateView):
     formset_class = None  # set the formset
     success_url = reverse_lazy('')  # set the success url redirect
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.formset_class.extra = 0
+
     def get(self, *args, **kwargs):
         context = {
             'heading': self.get_heading(),
             'forms': self.formset_class,
-            'tables': TABLES,
+            'tables': TABLES_HREFS,
         }
         return self.render_to_response(context)
 
@@ -75,7 +83,7 @@ class BaseBulkEditView(LoginRequiredMixin, TemplateView):
         context = {
             'heading': self.get_heading(),
             'forms': forms,
-            'tables': TABLES,
+            'tables': TABLES_HREFS,
         }
         return self.render_to_response(context)
 
@@ -105,15 +113,15 @@ class BaseBulkDeleteView(LoginRequiredMixin, TemplateView):
 
 
 class CartridgeAddView(BaseAddView):
-    formset_class = CartridgeAddFormSet
-    success_url = reverse_lazy('cartridge-list')
+    formset_class = CartridgeFormSet
+    success_url = reverse_lazy('cartridge-edit')
 
 
 class CartridgeBulkEditView(BaseBulkEditView):
-    formset_class = CartridgeEditFormSet
-    success_url = reverse_lazy('cartridge-list')
+    formset_class = CartridgeFormSet
+    success_url = reverse_lazy('cartridge-edit')
 
 
 class CartridgeBulkDeleteView(BaseBulkDeleteView):
     model_name = Cartridge
-    success_url = reverse_lazy('cartridge-list')
+    success_url = reverse_lazy('cartridge-edit')
