@@ -51,13 +51,19 @@ class Structure(NamedEntity):
     physical_place = models.TextField(verbose_name='Физическое расположение')
 
 
-class Post(NamedEntity):
+class StructurePlaced(models.Model):
+    class Meta:
+        abstract = True
+        ordering = ['structure']
+
+    structure = models.ForeignKey(Structure, on_delete=models.CASCADE, verbose_name='Структура', null=True)
+
+
+class Post(NamedEntity, StructurePlaced):
     class Meta:
         verbose_name = 'Должность'
         verbose_name_plural = 'Должности'
         ordering = ['name', 'structure']
-
-    structure = models.ForeignKey(Structure, on_delete=models.CASCADE, verbose_name='Структура')
 
 
 class Worksite(NamedEntity):
@@ -66,7 +72,7 @@ class Worksite(NamedEntity):
         verbose_name_plural = 'Рабочие места'
         ordering = ['name', 'post']
 
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name='Должность')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name='Должность', null=True)
 
 
 class WorksitePlaced(models.Model):
@@ -74,15 +80,7 @@ class WorksitePlaced(models.Model):
         abstract = True
         ordering = ['worksite']
 
-    worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE, verbose_name='Рабочее место', null=True, blank=True)
-
-
-class StructurePlaced(models.Model):
-    class Meta:
-        abstract = True
-        ordering = ['structure']
-
-    structure = models.ForeignKey(Structure, on_delete=models.CASCADE, verbose_name='Структура', null=True, blank=True)
+    worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE, verbose_name='Рабочее место', null=True)
 
 
 class PeripheralType(NamedEntity):
@@ -128,7 +126,7 @@ class Computer(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlace
         ordering = ['name', 'technical_condition', 'worksite', 'ip_address']
 
     configuration = models.ForeignKey(ComputerConfiguration, on_delete=models.CASCADE, verbose_name='Конфигурация (сборка)')
-    comment = models.CharField(max_length=100, verbose_name='Комменарий', null=True, blank=True)
+    comment = models.CharField(max_length=100, verbose_name='Комменарий', default='', blank=True)
 
 
 class Monitor(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlaced):
@@ -176,7 +174,7 @@ class Cartridge(NamedEntity, TechnicalConditionEntity):
         ordering = ['name', 'technical_condition', 'refills']
 
     mfp = models.OneToOneField(MFP, on_delete=models.CASCADE, verbose_name='МФУ', null=True, blank=True)
-    number = models.CharField(max_length=50, verbose_name='Номер картриджа', default='')
+    number = models.CharField(max_length=50, verbose_name='Номер картриджа', default='', null=True, blank=True, unique=True)
     refills = models.PositiveIntegerField(default=0, verbose_name='Количество заправок')
 
     def get_absolute_url(self):
