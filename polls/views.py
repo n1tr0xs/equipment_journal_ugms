@@ -47,7 +47,7 @@ class CartridgeAddView(BaseAddView):
     success_url = reverse_lazy('cartridge-list')
 
 
-class BaseListView(LoginRequiredMixin, TemplateView):
+class BaseBulkEditView(LoginRequiredMixin, TemplateView):
     template_name = 'polls/edit_objects.html'
     heading_prefix = 'Изменить'
     model_name = None  # set the model
@@ -77,7 +77,7 @@ class BaseListView(LoginRequiredMixin, TemplateView):
         return self.heading_prefix + ' ' + self.model_name._meta.verbose_name_plural
 
 
-class CartridgeListView(BaseListView):
+class CartridgeBulkEditView(BaseBulkEditView):
     model_name = Cartridge
     formset_class = CartridgeEditFormSet
     success_url = reverse_lazy('cartridge-list')
