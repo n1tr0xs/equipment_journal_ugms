@@ -860,6 +860,7 @@ a.deletelink:focus, a.deletelink:hover {
     display: flex;
     flex-direction: column;
     height: 100%;
+    overflow: scroll;
 }
 
 #container > .main {
@@ -887,7 +888,7 @@ a.deletelink:focus, a.deletelink:hover {
 }
 
 #content {
-    padding: 20px 40px;
+    padding: 0px 40px 20px 40px;
 }
 
 .dashboard #content {
@@ -947,6 +948,9 @@ a.deletelink:focus, a.deletelink:hover {
     padding: 10px 40px;
     background: var(--header-bg);
     color: var(--header-color);
+    overflow: hidden;
+    position: sticky;
+    top: 0em;
 }
 
 #header a:link, #header a:visited, #logout-form button {

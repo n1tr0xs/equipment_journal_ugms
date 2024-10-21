@@ -513,7 +513,7 @@ form .related-widget-wrapper ul {
 /* tabled forms */
 #submit-row {
     position: sticky;
-    top: 0em;
+    top: 1.45em;
     overflow: hidden;
     padding-top: 3em;
     background: var(--body-bg);
@@ -526,13 +526,13 @@ form .related-widget-wrapper ul {
 .tabled-forms caption {
     font-size: 2em;
     position: sticky;
-    top: 2.9em;
+    top: 3.65em;
     background: var(--body-bg);
 }
 
 .tabled-forms thead {
     position: sticky;
-    top: 8.45em;
+    top: 9.90em;
     background: var(--body-bg);
 }
 
