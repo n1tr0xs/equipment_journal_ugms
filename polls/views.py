@@ -65,6 +65,7 @@ class BaseBulkEditView(LoginRequiredMixin, TemplateView):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.formset_class.extra = 0
+        self.model = self.formset_class.model
 
     def get(self, *args, **kwargs):
         context = {
@@ -75,6 +76,9 @@ class BaseBulkEditView(LoginRequiredMixin, TemplateView):
         return self.render_to_response(context)
 
     def post(self, *args, **kwargs):
+        if self.request.POST.get('DeleteAction', 0):
+            return self.delete(*args, **kwargs)
+
         forms = self.formset_class(data=self.request.POST)
         if forms.is_valid():
             forms.save()
@@ -87,29 +91,21 @@ class BaseBulkEditView(LoginRequiredMixin, TemplateView):
         }
         return self.render_to_response(context)
 
-    def get_heading(self):
-        return ' '.join((self.heading_prefix, self.formset_class.model._meta.verbose_name_plural))
-
-
-class BaseBulkDeleteView(LoginRequiredMixin, TemplateView):
-    model_name = None  # set the model
-    success_url = reverse_lazy('')  # set the success url redirect
-
-    def get(self, *args, **kwargs):
-        return redirect(self.success_url)
-
-    def post(self, *args, **kwargs):
+    def delete(self, *args, **kwargs):
         total_forms = int(self.request.POST.get('form-TOTAL_FORMS', -1))  # get forms count
         for form_id in range(total_forms):
             deletion_flag = self.request.POST.get(f'form-{form_id}-delete', 'off')  # get deletion flag
             if deletion_flag == 'on':
                 object_id = int(self.request.POST.get(f'form-{form_id}-id', -1))  # get object id
                 try:
-                    self.model_name.objects.get(id=object_id).delete()  # deleting object from DB
-                except self.model_name.DoesNotExist:
+                    self.model.objects.get(id=object_id).delete()  # deleting object from DB
+                except self.model.DoesNotExist:
                     continue
 
         return redirect(self.success_url)
+
+    def get_heading(self):
+        return ' '.join((self.heading_prefix, self.formset_class.model._meta.verbose_name_plural))
 
 
 class CartridgeAddView(BaseAddView):
@@ -119,9 +115,4 @@ class CartridgeAddView(BaseAddView):
 
 class CartridgeBulkEditView(BaseBulkEditView):
     formset_class = CartridgeFormSet
-    success_url = reverse_lazy('cartridge-edit')
-
-
-class CartridgeBulkDeleteView(BaseBulkDeleteView):
-    model_name = Cartridge
     success_url = reverse_lazy('cartridge-edit')

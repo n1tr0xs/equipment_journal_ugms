@@ -7,49 +7,63 @@
         <div id="submit-row">
             <input type="reset" value="Сбросить">
             <input type="submit" value="Изменить данные">
-            <input type="submit" value="Удалить отмеченые" formaction="delete" class="delete-button">            
+            <input type="submit" value="Удалить отмеченые" class="delete-button" id="delete-button">            
         </div>
-        {% if not forms.count %}
-        {{ forms.not_form_errors }}
-        <table class="table-centered tabled-forms" style="width: 100%">
-            <caption class="text-center sticked-top"> {{ heading|title }} </caption>
-            <thead name="Table header row" class="sticked-top">
-                <tr>
-                    {% for field in forms.0.visible_fields %}
-                    <td> {{ field.label }} </td>
+        {% if forms|length %}
+            {{ forms.not_form_errors }}
+            <table class="table-centered tabled-forms" style="width: 100%">
+                <caption class="text-center sticked-top"> {{ heading|title }} </caption>
+                <thead name="Table header row" class="sticked-top">
+                    <tr>
+                        {% for field in forms.0.visible_fields %}
+                        <td> {{ field.label }} </td>
+                        {% endfor %}
+                        <td> Удалить </td>
+                    </tr>
+                </thead>
+                <tbody name="visible forms fields" id="forms-container">
+                    {% for form in forms %}
+                    <tr class="object-form">
+                        {% for field in form.visible_fields %}
+                        <td>
+                            {{ field.errors }}
+                            {{ field }}
+                        </td>
+                        {% endfor %}
+                        <td> <input type="checkbox" name="form-{{ forloop.counter0 }}-delete" /> </td>
+                    </tr>
                     {% endfor %}
-                    <td> Удалить </td>
-                </tr>
-            </thead>
-            <tbody name="visible forms fields" id="forms-container">
-                {% for form in forms %}
-                <tr class="object-form">
-                    {% for field in form.visible_fields %}
-                    <td>
-                        {{ field.errors }}
+                </tbody>
+                <tbody name="hidden forms fields">
+                    {% for form in forms %}
+                    <tr>
+                        {% for field in form.hidden_fields %}
                         {{ field }}
-                    </td>
+                        {% endfor %}
+                    </tr>
                     {% endfor %}
-                    <td> <input type="checkbox" name="form-{{ forloop.counter0 }}-delete" /> </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-            <tbody name="hidden forms fields">
-                {% for form in forms %}
-                <tr>
-                    {% for field in form.hidden_fields %}
-                    {{ field }}
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </tbody>
-            <tbody name="forms management form">
-                {{ forms.management_form }}
-            </tbody>
-        </table>
+                </tbody>
+                <tbody name="forms management form">
+                    {{ forms.management_form }}
+                </tbody>
+            </table>
         {% else %}
-        <h1 style="text-align: center;"> Нет данных </h1>
+            <h1 style="text-align: center;"> Нет данных </h1>
         {% endif %}
     </div>
 </form>
+
+<script>
+    d = document.querySelector('#delete-button');
+    d.addEventListener('click', dr);
+    function dr(e){
+        e.preventDefault();
+        inp = document.createElement('input');
+        inp.type = 'hidden'
+        inp.name = 'DeleteAction'
+        inp.value = 1;
+        d.form.appendChild(inp);
+        d.form.submit();
+    }
+</script>
 {% endblock %}
