@@ -73,7 +73,7 @@ class BaseEditView(LoginRequiredMixin, TemplateView):
             'heading': self.get_heading(),
             'forms': self.get_queryset(),
             'tables': TABLES_HREFS,
-            'add_href': f'/{self.formset_class.model._meta.model._meta.model_name}/add',
+            'add_href': reverse_lazy(self.formset_class.model._meta.model._meta.model_name + '-add'),
         }
         return self.render_to_response(context)
 
