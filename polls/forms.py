@@ -2,24 +2,6 @@ from django import forms
 
 from .models import Structure, Post, Worksite, PeripheralType, ComputerConfiguration, Peripheral, NetworkEquipment, Computer, Monitor, MFP, UPS, MeteoUnit, Server, Cartridge, Request
 
-'''
-Structure
-Post
-Worksite
-PeripheralType
-ComputerConfiguration
-Peripheral
-NetworkEquipment
-Computer
-Monitor
-MFP
-UPS
-MeteoUnit
-Server
-Cartridge
-Request
-'''
-
 
 class StructureForm(forms.ModelForm):
     class Meta:
