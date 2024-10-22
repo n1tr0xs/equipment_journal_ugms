@@ -1,17 +1,17 @@
 from django.urls import reverse_lazy
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
-from .models import Cartridge, Request
-from .forms import CartridgeFormSet
+from .models import Structure, Post, Worksite, PeripheralType, ComputerConfiguration, Peripheral, NetworkEquipment, Computer, Monitor, MFP, UPS, MeteoUnit, Server, Cartridge, Request
+from .forms import StructureFormSet, PostFormSet, WorksiteFormSet, PeripheralTypeFormSet, ComputerConfigurationFormSet, PeripheralFormSet, NetworkEquipmentFormSet, ComputerFormSet, MonitorFormSet, MFPFormSet, UPSFormSet, MeteoUnitFormSet, ServerFormSet, CartridgeFormSet, RequestFormSet
 
 TABLES_HREFS = {
     model._meta.verbose_name_plural: {
         'edit': reverse_lazy(model.__name__.lower() + '-edit'),
         'add': reverse_lazy(model.__name__.lower() + '-add'),
     }
-    for model in [Cartridge]
+    for model in [Structure, Post, Worksite, PeripheralType, ComputerConfiguration, Peripheral, NetworkEquipment, Computer, Monitor, MFP, UPS, MeteoUnit, Server, Cartridge, Request]
 }
 
 
@@ -108,6 +108,7 @@ class BaseEditView(LoginRequiredMixin, TemplateView):
         return ' '.join((self.heading_prefix, self.formset_class.model._meta.verbose_name_plural))
 
 
+'''
 class CartridgeAddView(BaseAddView):
     formset_class = CartridgeFormSet
     success_url = reverse_lazy('cartridge-edit')
@@ -116,3 +117,154 @@ class CartridgeAddView(BaseAddView):
 class CartridgeEditView(BaseEditView):
     formset_class = CartridgeFormSet
     success_url = reverse_lazy('cartridge-edit')
+'''
+
+
+class StructureAddView(BaseAddView):
+    formset_class = StructureFormSet
+    success_url = reverse_lazy('structure-edit')
+
+
+class StructureEditView(BaseEditView):
+    formset_class = StructureFormSet
+    success_url = reverse_lazy('structure-edit')
+
+
+class PostAddView(BaseAddView):
+    formset_class = PostFormSet
+    success_url = reverse_lazy('post-edit')
+
+
+class PostEditView(BaseEditView):
+    formset_class = PostFormSet
+    success_url = reverse_lazy('post-edit')
+
+
+class WorksiteAddView(BaseAddView):
+    formset_class = WorksiteFormSet
+    success_url = reverse_lazy('worksite-edit')
+
+
+class WorksiteEditView(BaseEditView):
+    formset_class = WorksiteFormSet
+    success_url = reverse_lazy('worksite-edit')
+
+
+class PeripheralTypeAddView(BaseAddView):
+    formset_class = PeripheralTypeFormSet
+    success_url = reverse_lazy('peripheraltype-edit')
+
+
+class PeripheralTypeEditView(BaseEditView):
+    formset_class = PeripheralTypeFormSet
+    success_url = reverse_lazy('peripheraltype-edit')
+
+
+class ComputerConfigurationAddView(BaseAddView):
+    formset_class = ComputerConfigurationFormSet
+    success_url = reverse_lazy('computerconfiguration-edit')
+
+
+class ComputerConfigurationEditView(BaseEditView):
+    formset_class = ComputerConfigurationFormSet
+    success_url = reverse_lazy('computerconfiguration-edit')
+
+
+class PeripheralAddView(BaseAddView):
+    formset_class = PeripheralFormSet
+    success_url = reverse_lazy('peripheral-edit')
+
+
+class PeripheralEditView(BaseEditView):
+    formset_class = PeripheralFormSet
+    success_url = reverse_lazy('peripheral-edit')
+
+
+class NetworkEquipmentAddView(BaseAddView):
+    formset_class = NetworkEquipmentFormSet
+    success_url = reverse_lazy('networkequipment-edit')
+
+
+class NetworkEquipmentEditView(BaseEditView):
+    formset_class = NetworkEquipmentFormSet
+    success_url = reverse_lazy('networkequipment-edit')
+
+
+class ComputerAddView(BaseAddView):
+    formset_class = ComputerFormSet
+    success_url = reverse_lazy('computer-edit')
+
+
+class ComputerEditView(BaseEditView):
+    formset_class = ComputerFormSet
+    success_url = reverse_lazy('computer-edit')
+
+
+class MonitorAddView(BaseAddView):
+    formset_class = MonitorFormSet
+    success_url = reverse_lazy('monitor-edit')
+
+
+class MonitorEditView(BaseEditView):
+    formset_class = MonitorFormSet
+    success_url = reverse_lazy('monitor-edit')
+
+
+class MFPAddView(BaseAddView):
+    formset_class = MFPFormSet
+    success_url = reverse_lazy('mfp-edit')
+
+
+class MFPEditView(BaseEditView):
+    formset_class = MFPFormSet
+    success_url = reverse_lazy('mfp-edit')
+
+
+class UPSAddView(BaseAddView):
+    formset_class = UPSFormSet
+    success_url = reverse_lazy('ups-edit')
+
+
+class UPSEditView(BaseEditView):
+    formset_class = UPSFormSet
+    success_url = reverse_lazy('ups-edit')
+
+
+class MeteoUnitAddView(BaseAddView):
+    formset_class = MeteoUnitFormSet
+    success_url = reverse_lazy('meteounit-edit')
+
+
+class MeteoUnitEditView(BaseEditView):
+    formset_class = MeteoUnitFormSet
+    success_url = reverse_lazy('meteounit-edit')
+
+
+class ServerAddView(BaseAddView):
+    formset_class = ServerFormSet
+    success_url = reverse_lazy('server-edit')
+
+
+class ServerEditView(BaseEditView):
+    formset_class = ServerFormSet
+    success_url = reverse_lazy('server-edit')
+
+
+class CartridgeAddView(BaseAddView):
+    formset_class = CartridgeFormSet
+    success_url = reverse_lazy('cartridge-edit')
+
+
+class CartridgeEditView(BaseEditView):
+    formset_class = CartridgeFormSet
+    success_url = reverse_lazy('cartridge-edit')
+
+
+class RequestAddView(BaseAddView):
+    formset_class = RequestFormSet
+    success_url = reverse_lazy('request-edit')
+
+
+class RequestEditView(BaseEditView):
+    formset_class = RequestFormSet
+    success_url = reverse_lazy('request-edit')
