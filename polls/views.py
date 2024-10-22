@@ -7,10 +7,7 @@ from .models import Structure, Post, Worksite, PeripheralType, ComputerConfigura
 from .forms import StructureFormSet, PostFormSet, WorksiteFormSet, PeripheralTypeFormSet, ComputerConfigurationFormSet, PeripheralFormSet, NetworkEquipmentFormSet, ComputerFormSet, MonitorFormSet, MFPFormSet, UPSFormSet, MeteoUnitFormSet, ServerFormSet, CartridgeFormSet, RequestFormSet
 
 TABLES_HREFS = {
-    model._meta.verbose_name_plural: {
-        'edit': reverse_lazy(model.__name__.lower() + '-edit'),
-        'add': reverse_lazy(model.__name__.lower() + '-add'),
-    }
+    model._meta.verbose_name_plural: reverse_lazy(model.__name__.lower() + '-edit')
     for model in [Structure, Post, Worksite, PeripheralType, ComputerConfiguration, Peripheral, NetworkEquipment, Computer, Monitor, MFP, UPS, MeteoUnit, Server, Cartridge, Request]
 }
 
@@ -76,6 +73,7 @@ class BaseEditView(LoginRequiredMixin, TemplateView):
             'heading': self.get_heading(),
             'forms': self.get_queryset(),
             'tables': TABLES_HREFS,
+            'add_href': f'/{self.formset_class.model._meta.model._meta.model_name}/add',
         }
         return self.render_to_response(context)
 

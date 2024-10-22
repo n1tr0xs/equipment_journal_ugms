@@ -6,6 +6,7 @@
     <div id="table-forms-container">
         <div id="submit-row">
             <input type="reset" value="Сбросить">
+            <a href="{{ add_href }}"> <input type="button" value="Добавить оборудование" id="add-button"> </a>
             <input type="submit" value="Изменить данные">
             <input type="submit" value="Удалить отмеченые" class="delete-button" id="delete-button">            
         </div>
@@ -64,6 +65,13 @@
         inp.value = 1;
         d.form.appendChild(inp);
         d.form.submit();
+    }
+
+    addBtn = document.querySelector("#add-button");
+    // addBtn.addEventListener('click', gotoAdd);
+    function gotoAdd(e){
+        e.preventDefault();
+
     }
 </script>
 {% endblock %}
