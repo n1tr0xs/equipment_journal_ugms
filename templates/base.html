@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{% static 'polls/dark-mode.css' %}">
     <link rel="stylesheet" href="{% static 'polls/nav-sidebar.css' %}">
     <link rel="stylesheet" href="{% static 'polls/responsive.css' %}">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"> </script>
     {% block head %} {% endblock %}
     <title> {% block title %} Журнал оргтехники УГМС по ЛНР {% endblock %}</title>
 </head>
@@ -16,14 +17,18 @@
     <div id='container'>
         <header id="header">
             {% block header %}
+            <div style="margin-left: auto;">
                 {% if user.is_authenticated %}
                     <form action="/accounts/logout/" method="POST">
                         {% csrf_token %}
                         <input type="submit" value="Выйти">
                     </form>
                 {% else %}
-                    <a href="{% url 'login' %}"> Войти </a>
+                    <form action="{% url 'login' %}">
+                        <input type="submit" value="Войти">
+                    </form>
                 {% endif %}
+            </div>
             {% endblock %}
         </header>
         <div id="main" class="main shifted">
