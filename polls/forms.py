@@ -233,12 +233,3 @@ RequestToDoFormSet = forms.modelformset_factory(
     Request,
     form=RequestToDoForm,
 )
-
-
-class RequestCreateForm(forms.ModelForm):
-    class Meta:
-        model = Request
-        fields = ['description', 'worksite']
-        widgets = {
-            'description': forms.Textarea(attrs={'rows': 1}),
-        }

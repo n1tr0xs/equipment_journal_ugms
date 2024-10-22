@@ -1,0 +1,19 @@
+{% extends "polls/base_form.html" %}
+
+{% block content %}
+
+<div>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <table class="table-centered tabled-forms">
+            {{ form.as_table }}
+            <tr>
+                <td colspan=" {{ form.fields|length }}" style="text-align: center;"> 
+                    <input type="submit" value="Отправить запрос" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+{% endblock %}

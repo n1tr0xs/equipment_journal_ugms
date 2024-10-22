@@ -1,7 +1,7 @@
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, CreateView, DetailView
 
 from .models import Structure, Post, Worksite, PeripheralType, ComputerConfiguration, Peripheral, NetworkEquipment, Computer, Monitor, MFP, UPS, MeteoUnit, Server, Cartridge, Request
 from .forms import StructureFormSet, PostFormSet, WorksiteFormSet, PeripheralTypeFormSet, ComputerConfigurationFormSet, PeripheralFormSet, NetworkEquipmentFormSet, ComputerFormSet, MonitorFormSet, MFPFormSet, UPSFormSet, MeteoUnitFormSet, ServerFormSet, CartridgeFormSet, RequestFormSet, RequestToDoFormSet
@@ -288,3 +288,12 @@ class RequestToDoView(BaseEditView):
             'tables': TABLES_HREFS,
         }
         return self.render_to_response(context)
+
+
+class RequestCreateView(CreateView):
+    model = Request
+    fields = ['description', 'worksite']
+
+
+class RequestDetailView(DetailView):
+    model = Request
