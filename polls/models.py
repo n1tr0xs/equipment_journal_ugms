@@ -52,7 +52,7 @@ class StructurePlaced(models.Model):
     class Meta:
         abstract = True
 
-    structure = models.ForeignKey(Structure, on_delete=models.CASCADE, verbose_name='Структура', null=True)
+    structure = models.ForeignKey(Structure, on_delete=models.CASCADE, verbose_name='Структура', null=True, blank=True)
 
 
 class Post(NamedEntity, StructurePlaced):
@@ -69,14 +69,14 @@ class Worksite(NamedEntity):
         verbose_name = 'Рабочее место'
         verbose_name_plural = 'Рабочие места'
 
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name='Должность', null=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name='Должность', null=True, blank=True)
 
 
 class WorksitePlaced(models.Model):
     class Meta:
         abstract = True
 
-    worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE, verbose_name='Рабочее место', null=True)
+    worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE, verbose_name='Рабочее место', null=True, blank=True)
 
 
 class PeripheralType(NamedEntity):
@@ -201,10 +201,10 @@ class Request(WorksitePlaced):
         IN_WORK = 1, 'В работе'
         COMPLETED = 2, 'Выполнен'
 
-    description = models.TextField(default='', verbose_name='Описание запроса')
-    status = models.IntegerField(choices=RequestStatus, verbose_name='Статус запроса', default=RequestStatus.CREATED)
-    created_at = models.DateTimeField(null=True, verbose_name='Создан')
-    completed_at = models.DateTimeField(null=True, verbose_name='Выполнен')
+    description = models.TextField(default='', verbose_name='Описание запроса', blank=True)
+    status = models.IntegerField(choices=RequestStatus, verbose_name='Статус запроса', default=RequestStatus.CREATED, blank=True)
+    created_at = models.DateTimeField(null=True, verbose_name='Создан', blank=True)
+    completed_at = models.DateTimeField(null=True, verbose_name='Выполнен', blank=True)
 
     def __str__(self):
         return '{self.id}'

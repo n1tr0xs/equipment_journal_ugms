@@ -559,3 +559,7 @@ input[type=submit].delete-button:hover {
 .object-form td textarea {
     resize: vertical;
 }
+
+#delete-button {
+    margin-right: .3em;
+}

@@ -37,4 +37,5 @@ urlpatterns = [
     path('request/add', views.RequestAddView.as_view(), name='request-add'),
 
     path('request/todo', views.RequestToDoView.as_view(), name='request-todo'),
+    path('request/create', views.RequestCreateView.as_view(), name='request-create')
 ]

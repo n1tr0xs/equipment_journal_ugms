@@ -201,9 +201,44 @@ class RequestForm(forms.ModelForm):
         widgets = {
             'description': forms.Textarea(attrs={'rows': 1}),
         }
+        help_texts = {
+            'created_at': 'Дата в формате DD.MM.YYYY hh:mm:ss',
+            'completed_at': 'Дата в формате DD.MM.YYYY hh:mm:ss',
+        }
 
 
 RequestFormSet = forms.modelformset_factory(
     Request,
     form=RequestForm,
 )
+
+
+class RequestToDoForm(forms.ModelForm):
+    class Meta:
+        model = Request
+        fields = ['description', 'worksite', 'status', 'created_at', 'completed_at']
+        widgets = {
+            'worksite': forms.Select(attrs={'readonly': True}),
+            'description': forms.Textarea(attrs={'rows': 1}),
+            'created_at': forms.DateTimeInput(attrs={'readonly': True}),
+            'completed_at': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        }
+        help_texts = {
+            'created_at': 'Дата в формате DD.MM.YYYY hh:mm:ss',
+            'completed_at': 'Дата в формате DD.MM.YYYY hh:mm:ss',
+        }
+
+
+RequestToDoFormSet = forms.modelformset_factory(
+    Request,
+    form=RequestToDoForm,
+)
+
+
+class RequestCreateForm(forms.ModelForm):
+    class Meta:
+        model = Request
+        fields = ['description', 'worksite']
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 1}),
+        }

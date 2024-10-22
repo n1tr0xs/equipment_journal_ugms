@@ -6,9 +6,7 @@
     <div id="table-forms-container">
         <div id="submit-row">
             <input type="reset" value="Сбросить">
-            <a href="{{ add_href }}"> <input type="button" value="Добавить оборудование" id="add-button"> </a>
             <input type="submit" value="Изменить данные">
-            <input type="submit" value="Удалить отмеченые" class="delete-button" id="delete-button">            
         </div>
         {% if forms|length %}
             {{ forms.not_form_errors }}
@@ -59,18 +57,5 @@
         {% endif %}
     </div>
 </form>
-
-<script>
-    deleteBtn = document.querySelector('#delete-button');
-    deleteBtn.addEventListener('click', dr);
-    function dr(e){
-        e.preventDefault();
-        inp = document.createElement('input');
-        inp.type = 'hidden'
-        inp.name = 'DeleteAction'
-        inp.value = 1;
-        deleteBtn.form.appendChild(inp);
-        deleteBtn.form.submit();
-    }
 </script>
 {% endblock %}

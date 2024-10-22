@@ -2,10 +2,9 @@ from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
-from django.db.models import Q
 
 from .models import Structure, Post, Worksite, PeripheralType, ComputerConfiguration, Peripheral, NetworkEquipment, Computer, Monitor, MFP, UPS, MeteoUnit, Server, Cartridge, Request
-from .forms import StructureFormSet, PostFormSet, WorksiteFormSet, PeripheralTypeFormSet, ComputerConfigurationFormSet, PeripheralFormSet, NetworkEquipmentFormSet, ComputerFormSet, MonitorFormSet, MFPFormSet, UPSFormSet, MeteoUnitFormSet, ServerFormSet, CartridgeFormSet, RequestFormSet
+from .forms import StructureFormSet, PostFormSet, WorksiteFormSet, PeripheralTypeFormSet, ComputerConfigurationFormSet, PeripheralFormSet, NetworkEquipmentFormSet, ComputerFormSet, MonitorFormSet, MFPFormSet, UPSFormSet, MeteoUnitFormSet, ServerFormSet, CartridgeFormSet, RequestFormSet, RequestToDoFormSet
 
 TABLES_HREFS = {
     model._meta.verbose_name_plural: reverse_lazy(model.__name__.lower() + '-edit')
@@ -79,7 +78,6 @@ class BaseEditView(LoginRequiredMixin, TemplateView):
     def post(self, *args, **kwargs):
         if self.request.POST.get('DeleteAction', 0):
             return self.delete(*args, **kwargs)
-
         forms = self.formset_class(data=self.request.POST)
         if forms.is_valid():
             forms.save()
@@ -260,7 +258,9 @@ class RequestEditView(BaseEditView):
 
 
 class RequestToDoView(BaseEditView):
-    formset_class = RequestFormSet
+    template_name = 'polls/todo_objects.html'
+    formset_class = RequestToDoFormSet
+    heading_prefix = 'Активные '
     success_url = reverse_lazy('request-edit')
 
     def get_queryset(self):
@@ -268,3 +268,23 @@ class RequestToDoView(BaseEditView):
             status__in=[Request.RequestStatus.CREATED, Request.RequestStatus.IN_WORK]
         )
         return queryset
+
+    def post(self, *args, **kwargs):
+        if self.request.POST.get('DeleteAction', 0):
+            return self.delete(*args, **kwargs)
+        forms = self.formset_class(data=self.request.POST)
+        if forms.is_valid():
+            for form in forms:
+                obj = form.save(commit=False)
+                if 'completed_at' in form.changed_data:
+                    obj.status = Request.RequestStatus.COMPLETED
+                obj.save()
+            forms.save()
+            return redirect(self.success_url)
+
+        context = {
+            'heading': self.get_heading(),
+            'forms': forms,
+            'tables': TABLES_HREFS,
+        }
+        return self.render_to_response(context)
