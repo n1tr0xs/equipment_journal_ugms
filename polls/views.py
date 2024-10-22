@@ -31,7 +31,7 @@ class BaseAddView(LoginRequiredMixin, TemplateView):
         context = {
             'heading': self.get_heading(),
             'forms': forms,
-            'tables': TABLES_HREFS,
+            'nav_sidebar_tables': TABLES_HREFS,
         }
         return self.render_to_response(context)
 
@@ -43,7 +43,7 @@ class BaseAddView(LoginRequiredMixin, TemplateView):
         context = {
             'heading': self.get_heading(),
             'forms': forms,
-            'tables': TABLES_HREFS,
+            'nav_sidebar_tables': TABLES_HREFS,
         }
         return self.render_to_response(context)
 
@@ -70,7 +70,7 @@ class BaseEditView(LoginRequiredMixin, TemplateView):
         context = {
             'heading': self.get_heading(),
             'forms': self.formset_class(queryset=self.get_queryset()),
-            'tables': TABLES_HREFS,
+            'nav_sidebar_tables': TABLES_HREFS,
             'add_href': reverse_lazy(self.formset_class.model._meta.model._meta.model_name + '-add'),
         }
         return self.render_to_response(context)
@@ -86,7 +86,7 @@ class BaseEditView(LoginRequiredMixin, TemplateView):
         context = {
             'heading': self.get_heading(),
             'forms': forms,
-            'tables': TABLES_HREFS,
+            'nav_sidebar_tables': TABLES_HREFS,
         }
         return self.render_to_response(context)
 
@@ -285,7 +285,7 @@ class RequestToDoView(BaseEditView):
         context = {
             'heading': self.get_heading(),
             'forms': forms,
-            'tables': TABLES_HREFS,
+            'nav_sidebar_tables': TABLES_HREFS,
         }
         return self.render_to_response(context)
 
@@ -294,6 +294,16 @@ class RequestCreateView(CreateView):
     model = Request
     fields = ['description', 'worksite']
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['nav_sidebar_tables'] = TABLES_HREFS
+        return context
+
 
 class RequestDetailView(DetailView):
     model = Request
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['nav_sidebar_tables'] = TABLES_HREFS
+        return context
