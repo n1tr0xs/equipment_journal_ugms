@@ -67,10 +67,14 @@ class BaseEditView(LoginRequiredMixin, TemplateView):
         self.formset_class.extra = 0
         self.model = self.formset_class.model
 
+    def get_queryset(self):
+        queryset = self.formset_class.model.objects.all()
+        return self.formset_class(queryset=queryset)
+
     def get(self, *args, **kwargs):
         context = {
             'heading': self.get_heading(),
-            'forms': self.formset_class,
+            'forms': self.get_queryset(),
             'tables': TABLES_HREFS,
         }
         return self.render_to_response(context)
@@ -106,18 +110,6 @@ class BaseEditView(LoginRequiredMixin, TemplateView):
 
     def get_heading(self):
         return ' '.join((self.heading_prefix, self.formset_class.model._meta.verbose_name_plural))
-
-
-'''
-class CartridgeAddView(BaseAddView):
-    formset_class = CartridgeFormSet
-    success_url = reverse_lazy('cartridge-edit')
-
-
-class CartridgeEditView(BaseEditView):
-    formset_class = CartridgeFormSet
-    success_url = reverse_lazy('cartridge-edit')
-'''
 
 
 class StructureAddView(BaseAddView):
