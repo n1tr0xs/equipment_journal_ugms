@@ -3,8 +3,10 @@
 {% block title %} {{ heading|title }} {% endblock %}
 
 {% block main %}
-
-    {% include "polls/aside.html" %}
+    
+    {% if user.is_authenticated %}
+        {% include "polls/aside.html" %}
+    {% endif %}
 
     <main class="content" id="content-start"> 
         {% block content %} 

@@ -2,6 +2,7 @@ from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
+from django.db.models import Q
 
 from .models import Structure, Post, Worksite, PeripheralType, ComputerConfiguration, Peripheral, NetworkEquipment, Computer, Monitor, MFP, UPS, MeteoUnit, Server, Cartridge, Request
 from .forms import StructureFormSet, PostFormSet, WorksiteFormSet, PeripheralTypeFormSet, ComputerConfigurationFormSet, PeripheralFormSet, NetworkEquipmentFormSet, ComputerFormSet, MonitorFormSet, MFPFormSet, UPSFormSet, MeteoUnitFormSet, ServerFormSet, CartridgeFormSet, RequestFormSet
@@ -13,8 +14,6 @@ TABLES_HREFS = {
 
 
 def index(request):
-    if request.user.is_authenticated:
-        return redirect(reverse_lazy('table-list'))
     return render(request, 'polls/base.html')
 
 
@@ -66,12 +65,12 @@ class BaseEditView(LoginRequiredMixin, TemplateView):
 
     def get_queryset(self):
         queryset = self.formset_class.model.objects.all()
-        return self.formset_class(queryset=queryset)
+        return queryset
 
     def get(self, *args, **kwargs):
         context = {
             'heading': self.get_heading(),
-            'forms': self.get_queryset(),
+            'forms': self.formset_class(queryset=self.get_queryset()),
             'tables': TABLES_HREFS,
             'add_href': reverse_lazy(self.formset_class.model._meta.model._meta.model_name + '-add'),
         }
@@ -258,3 +257,14 @@ class RequestAddView(BaseAddView):
 class RequestEditView(BaseEditView):
     formset_class = RequestFormSet
     success_url = reverse_lazy('request-edit')
+
+
+class RequestToDoView(BaseEditView):
+    formset_class = RequestFormSet
+    success_url = reverse_lazy('request-edit')
+
+    def get_queryset(self):
+        queryset = self.formset_class.model.objects.filter(
+            status__in=[Request.RequestStatus.CREATED, Request.RequestStatus.IN_WORK]
+        )
+        return queryset

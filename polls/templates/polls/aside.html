@@ -1,13 +1,21 @@
 <button id="toggle-nav-side-bar" class="sticky toggle-nav-sidebar"> </button>
 <nav id="nav-sidebar" class="sticky">
     <table class="module">
-        <caption> Таблицы </caption>
+        <caption> Модерация таблиц </caption>
         <tbody>
             {% for table_name, href in tables.items %}
             <tr> 
                 <th> <a href="{{ href }}"> {{ table_name }} </a> </th> 
             </tr>
             {% endfor %}
+        </tbody>
+    </table>
+    <table class='module'>
+        <caption> Рабочая область </caption>
+        <tbody>
+            <tr>
+                <th> <a href="{% url 'request-todo' %}"> Запросы </a></th>
+            </tr>
         </tbody>
     </table>
 </nav>
