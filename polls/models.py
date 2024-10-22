@@ -191,9 +191,6 @@ class Cartridge(NamedEntity, TechnicalConditionEntity):
     def __str__(self):
         return f'{self.name} {self.mfp}'
 
-    def get_absolute_url(self):
-        return reverse('cartridge-detail', kwargs={'pk': self.pk})
-
 
 class Request(WorksitePlaced):
     class Meta:
