@@ -1,7 +1,9 @@
 {% extends "polls/base_form.html" %}
 
-{% block content %}
+{% block title %} Создать запрос {% endblock %}
 
+{% block content %}
+<h1 style="text-align: center;"> Создать запрос </h1>
 <div>
     <form action="" method="POST">
         {% csrf_token %}

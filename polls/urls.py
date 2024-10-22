@@ -5,6 +5,7 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+
     path('structure/edit', views.StructureEditView.as_view(), name='structure-edit'),
     path('structure/add', views.StructureAddView.as_view(), name='structure-add'),
     path('post/edit', views.PostEditView.as_view(), name='post-edit'),

@@ -1,5 +1,5 @@
 from django.urls import reverse_lazy
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, CreateView, DetailView
 
@@ -13,7 +13,9 @@ TABLES_HREFS = {
 
 
 def index(request):
-    return render(request, 'polls/base.html')
+    if request.user.is_authenticated:
+        return redirect(reverse_lazy('request-todo'))
+    return redirect(reverse_lazy('request-create'))
 
 
 class BaseAddView(LoginRequiredMixin, TemplateView):
