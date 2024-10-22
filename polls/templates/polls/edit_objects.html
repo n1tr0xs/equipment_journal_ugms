@@ -12,7 +12,7 @@
         {% if forms|length %}
             {{ forms.not_form_errors }}
             <table class="table-centered tabled-forms" style="width: 100%">
-                <caption class="text-center sticked-top"> {{ heading|title }} </caption>
+                <caption class="text-center sticked-top"> {{ heading }} </caption>
                 <thead name="Table header row" class="sticked-top">
                     <tr>
                         {% for field in forms.0.visible_fields %}
