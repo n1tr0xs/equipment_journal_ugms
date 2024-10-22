@@ -16,6 +16,14 @@
     <div id='container'>
         <header id="header">
             {% block header %}
+                {% if user.is_authenticated %}
+                    <form action="/accounts/logout/" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" value="Выйти">
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}"> Войти </a>
+                {% endif %}
             {% endblock %}
         </header>
         <div id="main" class="main shifted">

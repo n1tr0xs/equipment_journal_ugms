@@ -17,7 +17,6 @@
                         {% for field in forms.0.visible_fields %}
                         <td> {{ field.label }} </td>
                         {% endfor %}
-                        <td> Удалить </td>
                     </tr>
                 </thead>
                 <tbody name="visible forms fields" id="forms-container">
@@ -35,7 +34,6 @@
                             {% endif %}
                         </td>
                         {% endfor %}
-                        <td> <input type="checkbox" name="form-{{ forloop.counter0 }}-delete" /> </td>
                     </tr>
                     {% endfor %}
                 </tbody>
