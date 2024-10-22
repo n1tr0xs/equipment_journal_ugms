@@ -861,7 +861,7 @@ a.deletelink:focus, a.deletelink:hover {
     flex-direction: column;
     height: 100%;
     overflow-y: scroll;
-    overflow-x: clip;
+    overflow-x: auto;
 }
 
 #container > .main {
