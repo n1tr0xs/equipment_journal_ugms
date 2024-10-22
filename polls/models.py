@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.urls import reverse
 from django.db import models
 
@@ -77,7 +79,7 @@ class WorksitePlaced(models.Model):
     class Meta:
         abstract = True
 
-    worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE, verbose_name='Рабочее место', null=True, blank=True)
+    worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE, verbose_name='Рабочее место', null=True)
 
 
 class PeripheralType(NamedEntity):
@@ -202,13 +204,10 @@ class Request(WorksitePlaced):
         IN_WORK = 1, 'В работе'
         COMPLETED = 2, 'Выполнен'
 
-    description = models.TextField(default='', verbose_name='Описание запроса', blank=True)
+    description = models.TextField(default='', verbose_name='Описание запроса')
     status = models.IntegerField(choices=RequestStatus, verbose_name='Статус запроса', default=RequestStatus.CREATED, blank=True)
-    created_at = models.DateTimeField(null=True, verbose_name='Создан', blank=True)
+    created_at = models.DateTimeField(default=datetime.now, verbose_name='Создан')
     completed_at = models.DateTimeField(null=True, verbose_name='Выполнен', blank=True)
 
-    def __str__(self):
-        return '{self.id}'
-
     def get_absolute_url(self):
-        return reverse('index')
+        return reverse('request-detail', kwargs={'pk': self.pk})

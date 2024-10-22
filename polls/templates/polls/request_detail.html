@@ -1,0 +1,26 @@
+{% extends "polls/base.html" %}
+
+{% block content %}
+
+<div style="padding: 20px">
+<table class="table-centered tabled-forms">
+    <caption> Запрос № {{ request.id }} </caption>
+    <tr> 
+        <th> Описание запроса </th>
+        <td> {{ request.description }} </td>
+    </tr>
+    <tr>
+        <th> Рабочее место </th>
+        <td> {{ request.worksite }} </td>
+    </tr>
+    <tr>
+        <th> Создан </th>
+        <td> {{ request.created_at }} </td>
+    </tr>
+    <tr>
+        <th> Статус запроса </th>
+        <td> {{ request.get_status_display }} </td>
+    </tr>
+</table>
+</div>
+{% endblock %}
