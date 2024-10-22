@@ -2,18 +2,25 @@
 <nav id="nav-sidebar" class="sticky">
     <table class="module">
         <tbody>
-            {% for table_name, href in nav_sidebar_tables.items %}
+            {% for desc, href in nav_sidebar_data.moderation_tables.items %}
             <tr class="clickable-row" data-href="{{ href }}"> 
-                <th> {{ table_name }} </th> 
+                <th> {{ desc }} </th> 
             </tr>
             {% endfor %}
         </tbody>
     </table>
     <table class='module'>
-        <tbody>
-            <tr class="clickable-row" data-href="{% url 'request-todo' %}"> 
-                <th> Активные запросы </th> 
+        <tbody> 
+            {% for desc, data in nav_sidebar_data.feedback.items %}
+            <tr class="clickable-row" data-href={{ data.href }}>
+                <th> 
+                    {{ desc }}
+                </th>
+                <th class='blink'>
+                    {{ data.counter }} 
+                </th>
             </tr>
+            {% endfor %}
         </tbody>
     </table>
     <script>
@@ -23,19 +30,4 @@
             });
         });
     </script>
-    <style>
-        .clickable-row {
-            cursor: pointer;
-        }
-        #nav-sidebar tr:nth-child(odd).clickable-row:hover {
-            background: #000000;
-        }
-        #nav-sidebar tr:nth-child(even).clickable-row:hover {
-            background: #181818;
-        }
-        #nav-sidebar tr:nth-child(odd),
-        #nav-sidebar  tr:nth-child(even) {
-            background: #417690;
-        }
-    </style>
 </nav>

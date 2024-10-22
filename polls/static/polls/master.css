@@ -59,34 +59,34 @@ html[data-theme="light"],
     --object-tools-hover-bg: var(--close-button-hover-bg);
 
     --font-family-primary:
-        "Segoe UI",
-        system-ui,
-        Roboto,
-        "Helvetica Neue",
-        Arial,
-        sans-serif,
-        "Apple Color Emoji",
-        "Segoe UI Emoji",
-        "Segoe UI Symbol",
-        "Noto Color Emoji";
+    "Segoe UI",
+    system-ui,
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji";
     --font-family-monospace:
-        ui-monospace,
-        Menlo,
-        Monaco,
-        "Cascadia Mono",
-        "Segoe UI Mono",
-        "Roboto Mono",
-        "Oxygen Mono",
-        "Ubuntu Monospace",
-        "Source Code Pro",
-        "Fira Mono",
-        "Droid Sans Mono",
-        "Courier New",
-        monospace,
-        "Apple Color Emoji",
-        "Segoe UI Emoji",
-        "Segoe UI Symbol",
-        "Noto Color Emoji";
+    ui-monospace,
+    Menlo,
+    Monaco,
+    "Cascadia Mono",
+    "Segoe UI Mono",
+    "Roboto Mono",
+    "Oxygen Mono",
+    "Ubuntu Monospace",
+    "Source Code Pro",
+    "Fira Mono",
+    "Droid Sans Mono",
+    "Courier New",
+    monospace,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji";
 
     color-scheme: light;    
 }
@@ -280,7 +280,7 @@ hr {
 }
 
 div.help ul {
-     margin-bottom: 0;
+   margin-bottom: 0;
 }
 
 .help-tooltip {
@@ -1231,6 +1231,7 @@ thead tr td {
   position:relative;
 
 }
+
 [data-tip]:before {
   content:'';
   /* hides the tooltip when not hovered */
@@ -1257,6 +1258,7 @@ thead tr td {
   width:0;
   height:0;
 }
+
 [data-tip]:after {
   display:none;
   content:attr(data-tip);
@@ -1276,7 +1278,23 @@ thead tr td {
   white-space:nowrap;
   word-wrap:normal;
 }
+
 [data-tip]:hover:before,
 [data-tip]:hover:after {
   display:block;
+}
+
+.blink {
+  animation: blink-animation 1s steps(5, start) infinite;
+  -webkit-animation: blink-animation 1s steps(5, start) infinite;
+}
+@keyframes blink-animation {
+  to {
+    visibility: hidden;
+}
+}
+@-webkit-keyframes blink-animation {
+  to {
+    visibility: hidden;
+}
 }

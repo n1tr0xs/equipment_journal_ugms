@@ -1,4 +1,3 @@
-from django.contrib.auth import logout
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -7,9 +6,17 @@ from django.views.generic import TemplateView, CreateView, DetailView
 from .models import Structure, Post, Worksite, PeripheralType, ComputerConfiguration, Peripheral, NetworkEquipment, Computer, Monitor, MFP, UPS, MeteoUnit, Server, Cartridge, Request
 from .forms import StructureFormSet, PostFormSet, WorksiteFormSet, PeripheralTypeFormSet, ComputerConfigurationFormSet, PeripheralFormSet, NetworkEquipmentFormSet, ComputerFormSet, MonitorFormSet, MFPFormSet, UPSFormSet, MeteoUnitFormSet, ServerFormSet, CartridgeFormSet, RequestFormSet, RequestToDoFormSet
 
-TABLES_HREFS = {
-    model._meta.verbose_name_plural: reverse_lazy(model.__name__.lower() + '-edit')
-    for model in [Structure, Post, Worksite, PeripheralType, ComputerConfiguration, Peripheral, NetworkEquipment, Computer, Monitor, MFP, UPS, MeteoUnit, Server, Cartridge, Request]
+NAV_SIDE_BAR_DATA = {
+    'moderation_tables': {
+        model._meta.verbose_name_plural: reverse_lazy(model.__name__.lower() + '-edit')
+        for model in [Structure, Post, Worksite, PeripheralType, ComputerConfiguration, Peripheral, NetworkEquipment, Computer, Monitor, MFP, UPS, MeteoUnit, Server, Cartridge, Request]
+    },
+    'feedback': {
+        'Активные запросы': {
+            'href': reverse_lazy('request-todo'),
+            'counter': len(Request.objects.filter(status__in=[0])),
+        },
+    },
 }
 
 
@@ -34,7 +41,7 @@ class BaseAddView(LoginRequiredMixin, TemplateView):
         context = {
             'heading': self.get_heading(),
             'forms': forms,
-            'nav_sidebar_tables': TABLES_HREFS,
+            'nav_sidebar_data': NAV_SIDE_BAR_DATA,
         }
         return self.render_to_response(context)
 
@@ -46,7 +53,7 @@ class BaseAddView(LoginRequiredMixin, TemplateView):
         context = {
             'heading': self.get_heading(),
             'forms': forms,
-            'nav_sidebar_tables': TABLES_HREFS,
+            'nav_sidebar_data': NAV_SIDE_BAR_DATA,
         }
         return self.render_to_response(context)
 
@@ -73,7 +80,7 @@ class BaseEditView(LoginRequiredMixin, TemplateView):
         context = {
             'heading': self.get_heading(),
             'forms': self.formset_class(queryset=self.get_queryset()),
-            'nav_sidebar_tables': TABLES_HREFS,
+            'nav_sidebar_data': NAV_SIDE_BAR_DATA,
             'add_href': reverse_lazy(self.formset_class.model._meta.model._meta.model_name + '-add'),
         }
         return self.render_to_response(context)
@@ -89,7 +96,7 @@ class BaseEditView(LoginRequiredMixin, TemplateView):
         context = {
             'heading': self.get_heading(),
             'forms': forms,
-            'nav_sidebar_tables': TABLES_HREFS,
+            'nav_sidebar_data': NAV_SIDE_BAR_DATA,
         }
         return self.render_to_response(context)
 
@@ -288,7 +295,7 @@ class RequestToDoView(BaseEditView):
         context = {
             'heading': self.get_heading(),
             'forms': forms,
-            'nav_sidebar_tables': TABLES_HREFS,
+            'nav_sidebar_data': NAV_SIDE_BAR_DATA,
         }
         return self.render_to_response(context)
 
@@ -299,7 +306,7 @@ class RequestCreateView(CreateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['nav_sidebar_tables'] = TABLES_HREFS
+        context['nav_sidebar_data'] = NAV_SIDE_BAR_DATA
         return context
 
 
@@ -308,5 +315,5 @@ class RequestDetailView(DetailView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['nav_sidebar_tables'] = TABLES_HREFS
+        context['nav_sidebar_data'] = NAV_SIDE_BAR_DATA
         return context
