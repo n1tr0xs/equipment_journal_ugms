@@ -65,6 +65,9 @@ class Post(NamedEntity, StructurePlaced):
         verbose_name_plural = 'Должности'
         ordering = ['name', 'structure']
 
+    def __str__(self):
+        return f'{self.name}'
+
 
 class Worksite(NamedEntity):
     class Meta:
@@ -111,12 +114,18 @@ class Peripheral(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePla
 
     peripheral_type = models.ForeignKey(PeripheralType, on_delete=models.CASCADE, verbose_name='Тип периферии')
 
+    def __str__(self):
+        return f'{self.name}, {self.worksite}'
+
 
 class NetworkEquipment(NamedEntity, Inventoried, TechnicalConditionEntity, StructurePlaced, IPEntity):
     class Meta:
         verbose_name = 'Сетевое оборудование'
         verbose_name_plural = 'Сетевое оборудование'
         ordering = ['name', 'technical_condition', 'structure', 'ip_address']
+
+    def __str__(self):
+        return f'{self.name} {self.ip_address}'
 
 
 class Computer(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlaced, IPEntity):
@@ -128,12 +137,18 @@ class Computer(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlace
     configuration = models.ForeignKey(ComputerConfiguration, on_delete=models.CASCADE, verbose_name='Конфигурация (сборка)')
     comment = models.CharField(max_length=100, verbose_name='Комменарий', default='', blank=True)
 
+    def __str__(self):
+        return f'{self.name}, {self.worksite}'
+
 
 class Monitor(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlaced):
     class Meta:
         verbose_name = 'Монитор'
         verbose_name_plural = 'Мониторы'
         ordering = ['name', 'technical_condition', 'worksite']
+
+    def __str__(self):
+        return f'{self.name}, {self.worksite}'
 
 
 class MFP(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlaced):
@@ -152,6 +167,9 @@ class UPS(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlaced):
         verbose_name_plural = 'ИБП'
         ordering = ['name', 'technical_condition', 'worksite']
 
+    def __str__(self):
+        return f'{self.name}, {self.worksite}'
+
 
 class MeteoUnit(NamedEntity, Inventoried, TechnicalConditionEntity, StructurePlaced):
     class Meta:
@@ -161,6 +179,9 @@ class MeteoUnit(NamedEntity, Inventoried, TechnicalConditionEntity, StructurePla
 
     verification_date = models.DateField(verbose_name='Дата поверки', null=True)
 
+    def __str__(self):
+        return f'{self.name}, {self.structure}'
+
 
 class Server(NamedEntity, Inventoried, TechnicalConditionEntity, StructurePlaced, IPEntity):
     class Meta:
@@ -169,6 +190,9 @@ class Server(NamedEntity, Inventoried, TechnicalConditionEntity, StructurePlaced
         ordering = ['name', 'technical_condition', 'structure', 'ip_address']
 
     purpose = models.TextField(default='', verbose_name='Назначение')
+
+    def __str__(self):
+        return f'{self.name} - {self.ip_address}'
 
 
 class Cartridge(NamedEntity, TechnicalConditionEntity):
@@ -180,6 +204,9 @@ class Cartridge(NamedEntity, TechnicalConditionEntity):
     mfp = models.OneToOneField(MFP, on_delete=models.CASCADE, verbose_name='МФУ', null=True, blank=True)
     number = models.CharField(max_length=50, verbose_name='Номер картриджа', default='', null=True, blank=True, unique=True)
     refills = models.PositiveIntegerField(default=0, verbose_name='Количество заправок')
+
+    def __str__(self):
+        return f'{self.name} {self.mfp}'
 
     def get_absolute_url(self):
         return reverse('cartridge-detail', kwargs={'pk': self.pk})
@@ -200,3 +227,6 @@ class Request(WorksitePlaced):
     status = models.IntegerField(choices=RequestStatus, verbose_name='Статус запроса', default=RequestStatus.CREATED)
     created_at = models.DateTimeField(null=True, verbose_name='Создан')
     completed_at = models.DateTimeField(null=True, verbose_name='Выполнен')
+
+    def __str__(self):
+        return '{self.id}'
