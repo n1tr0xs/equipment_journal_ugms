@@ -18,15 +18,14 @@ class IPEntity(models.Model):
         abstract = True
 
     ip_address = models.GenericIPAddressField(protocol='ipv4', null=True, blank=True, unique=True, verbose_name='IP адрес')
-    # ip_address = models.CharField(max_length=15, null=True, blank=True, unique=True, verbose_name='IP адрес')
 
 
 class Inventoried(models.Model):
     class Meta:
         abstract = True
 
-    inventory_number = models.CharField(max_length=50, default='', unique=True, verbose_name='Инвентарный номер')
-    serial_number = models.CharField(max_length=50, default='', unique=True, verbose_name='Серийный номер')
+    inventory_number = models.CharField(max_length=50, default='', blank=True, unique=True, verbose_name='Инвентарный номер')
+    serial_number = models.CharField(max_length=50, default='', blank=True, unique=True, verbose_name='Серийный номер')
 
 
 class TechnicalCondition(models.IntegerChoices):
@@ -80,7 +79,7 @@ class WorksitePlaced(models.Model):
     class Meta:
         abstract = True
 
-    worksite = models.ForeignKey(Worksite, on_delete=models.SET_NULL, null=True, verbose_name='Рабочее место')
+    worksite = models.ForeignKey(Worksite, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Рабочее место')
 
 
 class PeripheralType(NamedEntity):
@@ -209,7 +208,7 @@ class Cartridge(NamedEntity, TechnicalConditionEntity):
         verbose_name = 'Картридж'
         verbose_name_plural = 'Картриджы'
 
-    number = models.CharField(max_length=50, default='', null=True, blank=True, unique=True, verbose_name='Номер картриджа')
+    number = models.CharField(max_length=50, default='', blank=True, unique=True, verbose_name='Номер картриджа')
     refills = models.PositiveIntegerField(default=0, verbose_name='Количество заправок')
     current_mfp = models.OneToOneField(MFP, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='МФУ')
 
