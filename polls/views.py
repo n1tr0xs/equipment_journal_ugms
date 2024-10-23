@@ -14,7 +14,7 @@ NAV_SIDE_BAR_DATA = {
     'feedback': {
         'Активные запросы': {
             'href': reverse_lazy('request-todo'),
-            'counter': len(Request.objects.filter(status__in=[0])),
+            'counter': len(Request.objects.filter(status__exact=Request.RequestStatus.CREATED)),
         },
     },
 }

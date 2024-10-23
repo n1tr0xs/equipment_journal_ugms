@@ -1,5 +1,4 @@
 from datetime import datetime
-
 from django.urls import reverse
 from django.db import models
 
@@ -18,15 +17,16 @@ class IPEntity(models.Model):
     class Meta:
         abstract = True
 
-    ip_address = models.CharField(max_length=15, verbose_name='IP адрес', null=True, blank=True, unique=True)
+    ip_address = models.GenericIPAddressField(protocol='ipv4', null=True, blank=True, unique=True, verbose_name='IP адрес')
+    # ip_address = models.CharField(max_length=15, null=True, blank=True, unique=True, verbose_name='IP адрес')
 
 
 class Inventoried(models.Model):
     class Meta:
         abstract = True
 
-    inventory_number = models.CharField(max_length=50, unique=True, default='', verbose_name='Инвентарный номер')
-    serial_number = models.CharField(max_length=50, unique=True, default='', verbose_name='Серийный номер')
+    inventory_number = models.CharField(max_length=50, default='', unique=True, verbose_name='Инвентарный номер')
+    serial_number = models.CharField(max_length=50, default='', unique=True, verbose_name='Серийный номер')
 
 
 class TechnicalConditionEntity(models.Model):
@@ -39,8 +39,8 @@ class TechnicalConditionEntity(models.Model):
         DISABLED = 2, 'Снят'
         REPAIRING = 3, 'Ремонт'
 
-    technical_condition = models.IntegerField(choices=TechnicalCondition, verbose_name='Техническое состояние', default=TechnicalCondition.READY_TO_USE)
-    disabling_reason = models.TextField(default='', verbose_name='Причина снятия', blank=True)
+    technical_condition = models.IntegerField(choices=TechnicalCondition, default=TechnicalCondition.READY_TO_USE, verbose_name='Техническое состояние')
+    disabling_reason = models.TextField(default='', blank=True, verbose_name='Причина снятия')
 
 
 class Structure(NamedEntity):
@@ -55,7 +55,7 @@ class StructurePlaced(models.Model):
     class Meta:
         abstract = True
 
-    structure = models.ForeignKey(Structure, on_delete=models.CASCADE, verbose_name='Структура', null=True, blank=True)
+    structure = models.ForeignKey(Structure, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Структура')
 
 
 class Post(NamedEntity, StructurePlaced):
@@ -72,14 +72,14 @@ class Worksite(NamedEntity):
         verbose_name = 'Рабочее место'
         verbose_name_plural = 'Рабочие места'
 
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name='Должность', null=True, blank=True)
+    post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Должность')
 
 
 class WorksitePlaced(models.Model):
     class Meta:
         abstract = True
 
-    worksite = models.ForeignKey(Worksite, on_delete=models.CASCADE, verbose_name='Рабочее место', null=True)
+    worksite = models.ForeignKey(Worksite, on_delete=models.SET_NULL, null=True, verbose_name='Рабочее место')
 
 
 class PeripheralType(NamedEntity):
@@ -105,7 +105,7 @@ class Peripheral(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePla
         verbose_name = 'Периферия'
         verbose_name_plural = 'Периферия'
 
-    peripheral_type = models.ForeignKey(PeripheralType, on_delete=models.CASCADE, verbose_name='Тип периферии')
+    peripheral_type = models.ForeignKey(PeripheralType, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Тип периферии')
 
     def __str__(self):
         return f'{self.name}, {self.worksite}'
@@ -125,8 +125,8 @@ class Computer(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlace
         verbose_name = 'Компьютер'
         verbose_name_plural = 'Компьютеры'
 
-    configuration = models.ForeignKey(ComputerConfiguration, on_delete=models.CASCADE, verbose_name='Конфигурация (сборка)')
-    comment = models.CharField(max_length=100, verbose_name='Комменарий', default='', blank=True)
+    comment = models.CharField(max_length=100, default='', blank=True, verbose_name='Комменарий')
+    configuration = models.ForeignKey(ComputerConfiguration, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Конфигурация (сборка)')
 
     def __str__(self):
         return f'{self.name}, {self.worksite}'
@@ -164,7 +164,7 @@ class MeteoUnit(NamedEntity, Inventoried, TechnicalConditionEntity, StructurePla
         verbose_name = 'Прибор (гидро / метео / агро)'
         verbose_name_plural = 'Приборы (гидро / метео / агро)'
 
-    verification_date = models.DateField(verbose_name='Дата поверки', null=True)
+    verification_date = models.DateField(null=True, blank=True, verbose_name='Дата поверки', help_text='Дата и время в формате DD.MM.YYYY hh:mm:ss')
 
     def __str__(self):
         return f'{self.name}, {self.structure}'
@@ -175,7 +175,7 @@ class Server(NamedEntity, Inventoried, TechnicalConditionEntity, StructurePlaced
         verbose_name = 'Сервер'
         verbose_name_plural = 'Сервера'
 
-    purpose = models.TextField(default='', verbose_name='Назначение')
+    purpose = models.TextField(default='', blank=True, verbose_name='Назначение')
 
     def __str__(self):
         return f'{self.name} - {self.ip_address}'
@@ -186,9 +186,9 @@ class Cartridge(NamedEntity, TechnicalConditionEntity):
         verbose_name = 'Картридж'
         verbose_name_plural = 'Картриджы'
 
-    mfp = models.OneToOneField(MFP, on_delete=models.CASCADE, verbose_name='МФУ', null=True, blank=True)
-    number = models.CharField(max_length=50, verbose_name='Номер картриджа', default='', null=True, blank=True, unique=True)
+    number = models.CharField(max_length=50, default='', null=True, blank=True, unique=True, verbose_name='Номер картриджа')
     refills = models.PositiveIntegerField(default=0, verbose_name='Количество заправок')
+    mfp = models.OneToOneField(MFP, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='МФУ')
 
     def __str__(self):
         return f'{self.name} {self.mfp}'
@@ -205,9 +205,9 @@ class Request(WorksitePlaced):
         COMPLETED = 2, 'Выполнен'
 
     description = models.TextField(default='', verbose_name='Описание запроса')
-    status = models.IntegerField(choices=RequestStatus, verbose_name='Статус запроса', default=RequestStatus.CREATED, blank=True)
-    created_at = models.DateTimeField(default=datetime.now, verbose_name='Создан')
-    completed_at = models.DateTimeField(null=True, verbose_name='Выполнен', blank=True)
+    status = models.IntegerField(choices=RequestStatus, default=RequestStatus.CREATED, blank=True, verbose_name='Статус запроса')
+    created_at = models.DateTimeField(default=datetime.now, verbose_name='Создан', help_text='Дата и время в формате DD.MM.YYYY hh:mm:ss')
+    completed_at = models.DateTimeField(null=True, blank=True, verbose_name='Выполнен', help_text='Дата и время в формате DD.MM.YYYY hh:mm:ss')
 
     def get_absolute_url(self):
         return reverse('request-detail', kwargs={'pk': self.pk})
