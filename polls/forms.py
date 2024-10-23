@@ -127,7 +127,7 @@ MonitorFormSet = forms.modelformset_factory(
 class MFPForm(forms.ModelForm):
     class Meta:
         model = MFP
-        fields = ['name', 'inventory_number', 'serial_number', 'technical_condition', 'disabling_reason', 'worksite']
+        fields = ['name', 'inventory_number', 'serial_number', 'technical_condition', 'installed_cartridge', 'disabling_reason', 'worksite']
         widgets = {'disabling_reason': forms.Textarea(attrs={'rows': 1}), }
 
 
@@ -182,7 +182,7 @@ ServerFormSet = forms.modelformset_factory(
 class CartridgeForm(forms.ModelForm):
     class Meta:
         model = Cartridge
-        fields = ['name', 'number', 'technical_condition', 'mfp', 'disabling_reason', 'refills']
+        fields = ['name', 'number', 'technical_condition', 'current_mfp', 'disabling_reason', 'refills']
         widgets = {
             'disabling_reason': forms.Textarea(attrs={'rows': 1}),
         }

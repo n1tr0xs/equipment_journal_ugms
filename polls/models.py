@@ -1,6 +1,7 @@
 from datetime import datetime
 from django.urls import reverse
 from django.db import models
+from django.db.models import Q
 
 
 class NamedEntity(models.Model):
@@ -146,6 +147,29 @@ class MFP(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlaced):
         verbose_name = 'МФУ'
         verbose_name_plural = 'МФУ'
 
+    installed_cartridge = models.OneToOneField('Cartridge', on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Картридж')
+
+    def save(self, *args, **kwargs):
+        # change previous cartridge mfp to `Null`, state to `
+        try:
+            prev_cartridge = Cartridge.objects.get(current_mfp=self)
+            prev_cartridge.current_mfp_id = None
+            prev_cartridge.save()
+        except Cartridge.DoesNotExist:
+            prev_cartridge = None
+
+        selected_cartridge = self.installed_cartridge
+        try:
+            selected_cartridge.current_mfp_id = self.id
+            selected_cartridge.save()
+        except AttributeError:
+            pass
+
+        print(f'{ prev_cartridge = }')
+        print(f'{ selected_cartridge = }')
+
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f'{self.name}, {self.worksite}'
 
@@ -188,10 +212,17 @@ class Cartridge(NamedEntity, TechnicalConditionEntity):
 
     number = models.CharField(max_length=50, default='', null=True, blank=True, unique=True, verbose_name='Номер картриджа')
     refills = models.PositiveIntegerField(default=0, verbose_name='Количество заправок')
-    mfp = models.OneToOneField(MFP, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='МФУ')
+    current_mfp = models.OneToOneField(MFP, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='МФУ')
+
+    def save(self, *args, **kwargs):
+        if (self.current_mfp_id is None) and (self.technical_condition == TechnicalConditionEntity.TechnicalCondition.IN_WORK):
+            self.technical_condition = TechnicalConditionEntity.TechnicalCondition.DISABLED
+        if (self.current_mfp_id) and (self.technical_condition in [TechnicalConditionEntity.TechnicalCondition.DISABLED, TechnicalConditionEntity.TechnicalCondition.READY_TO_USE, TechnicalConditionEntity.TechnicalCondition.REPAIRING]):
+            self.technical_condition = TechnicalConditionEntity.TechnicalCondition.IN_WORK
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.name} {self.mfp}'
+        return f'{self.name} {self.number}, {self.current_mfp}'
 
 
 class Request(WorksitePlaced):
