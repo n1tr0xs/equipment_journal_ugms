@@ -1,7 +1,6 @@
 from datetime import datetime
 from django.urls import reverse
 from django.db import models
-from django.db.models import Q
 
 
 class NamedEntity(models.Model):
@@ -33,8 +32,8 @@ class Inventoried(models.Model):
 class TechnicalCondition(models.IntegerChoices):
     READY_TO_USE = 0, 'Готов к установке'
     IN_WORK = 1, 'В работе'
-    DISABLED = 2, 'Снят'
-    REPAIRING = 3, 'Ремонт'
+    DISABLED = 2, 'Снят (нерабочий)'
+    REPAIRING = 3, 'В ремонте'
 
 
 class TechnicalConditionEntity(models.Model):
@@ -150,26 +149,25 @@ class MFP(NamedEntity, Inventoried, TechnicalConditionEntity, WorksitePlaced):
 
     installed_cartridge = models.OneToOneField('Cartridge', on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Картридж')
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, triggered=False, **kwargs):
+        super().save(*args, **kwargs)
+        if triggered:
+            return
+
         # change previous cartridge mfp to `Null`, state to `
         try:
             prev_cartridge = Cartridge.objects.get(current_mfp=self)
             prev_cartridge.current_mfp_id = None
-            prev_cartridge.save()
+            prev_cartridge.save(triggered=True)
         except Cartridge.DoesNotExist:
-            prev_cartridge = None
-
+            pass
+        # change selected cartridge mfp to self
         selected_cartridge = self.installed_cartridge
         try:
-            selected_cartridge.current_mfp_id = self.id
-            selected_cartridge.save()
+            selected_cartridge.current_mfp = self
+            selected_cartridge.save(triggered=True)
         except AttributeError:
             pass
-
-        print(f'{ prev_cartridge = }')
-        print(f'{ selected_cartridge = }')
-
-        super().save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.name}, {self.worksite}'
@@ -215,12 +213,32 @@ class Cartridge(NamedEntity, TechnicalConditionEntity):
     refills = models.PositiveIntegerField(default=0, verbose_name='Количество заправок')
     current_mfp = models.OneToOneField(MFP, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='МФУ')
 
-    def save(self, *args, **kwargs):
-        if (self.current_mfp_id is None) and (self.technical_condition == TechnicalCondition.IN_WORK):
-            self.technical_condition = TechnicalCondition.DISABLED
-        if (self.current_mfp_id) and (self.technical_condition in [TechnicalCondition.DISABLED, TechnicalCondition.READY_TO_USE, TechnicalCondition.REPAIRING]):
-            self.technical_condition = TechnicalCondition.IN_WORK
+    def save(self, *args, triggered=False, **kwargs):
+        if (self.current_mfp_id):
+            if (self.technical_condition in [TechnicalCondition.DISABLED, TechnicalCondition.READY_TO_USE, TechnicalCondition.REPAIRING]):
+                self.technical_condition = TechnicalCondition.IN_WORK
+        if (self.current_mfp_id is None):
+            if (self.technical_condition == TechnicalCondition.IN_WORK):
+                self.technical_condition = TechnicalCondition.DISABLED
+
         super().save(*args, **kwargs)
+
+        if triggered:
+            return
+
+        try:
+            prev_mfp = MFP.objects.get(installed_cartridge=self)
+            prev_mfp.installed_cartridge = None
+            prev_mfp.save(triggered=True)
+        except MFP.DoesNotExist:
+            pass
+
+        selected_mfp = self.current_mfp
+        try:
+            selected_mfp.installed_cartridge = self
+            selected_mfp.save(triggered=True)
+        except AttributeError:
+            pass
 
     def __str__(self):
         return f'{self.name} {self.number}, {self.current_mfp}'
