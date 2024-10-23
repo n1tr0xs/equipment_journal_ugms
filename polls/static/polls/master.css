@@ -953,6 +953,9 @@ a.deletelink:focus, a.deletelink:hover {
     overflow: hidden;
     position: sticky;
     top: 0em;
+    align-content: space-between;
+    flex-wrap: nowrap;
+    flex-direction: row;
 }
 
 #header a:link, #header a:visited, #logout-form button {
