@@ -523,6 +523,10 @@ form .related-widget-wrapper ul {
     float: right
 }
 
+.tabled-forms {
+    width: 100%;
+}
+
 .tabled-forms caption {
     font-size: 2em;
     position: sticky;

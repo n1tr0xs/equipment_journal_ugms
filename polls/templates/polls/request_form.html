@@ -3,14 +3,14 @@
 {% block title %} Создать запрос {% endblock %}
 
 {% block content %}
-<h1 style="text-align: center;"> Создать запрос </h1>
+<h1 class="text-center"> Создать запрос </h1>
 <div>
     <form action="" method="POST">
         {% csrf_token %}
         <table class="table-centered tabled-forms">
             {{ form.as_table }}
             <tr>
-                <td colspan=" {{ form.fields|length }}" style="text-align: center;"> 
+                <td colspan="{{ form.fields|length }}" class="text-center"> 
                     <input type="submit" value="Отправить запрос" />
                 </td>
             </tr>
