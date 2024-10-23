@@ -17,7 +17,9 @@
                     {{ desc }}
                 </th>
                 <th class='blink'>
+                    {% if data.counter %}
                     {{ data.counter }} 
+                    {% endif %}
                 </th>
             </tr>
             {% endfor %}
@@ -25,8 +27,16 @@
     </table>
     <script>
         jQuery(document).ready(function($) {
+            // left click
             $(".clickable-row").click(function() {
                 window.location = $(this).data("href");
+            });
+
+            // middle click
+            $(".clickable-row").mouseup(function(e) {
+                if (e.which == 2) {
+                    window.open($(this).data("href"), '_blank');
+                }
             });
         });
     </script>
