@@ -26,11 +26,27 @@ def index(request):
     return redirect(reverse_lazy('request-create'))
 
 
-class BaseAddView(LoginRequiredMixin, TemplateView):
-    template_name = 'polls/add_objects.html'
+class BaseView(TemplateView):
+    template_name = 'polls/forms_in_table.html'
+    heading_prefix = None
+    formset_class = None
+    success_url = reverse_lazy('index')
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data()
+        context['nav_sidebar_data'] = NAV_SIDE_BAR_DATA
+        context['heading'] = self.get_heading()
+        return context
+
+    def get_heading(self):
+        try:
+            return ' '.join([self.heading_prefix, self.formset_class.model._meta.verbose_name_plural])
+        except (TypeError, AttributeError):
+            return ''
+
+
+class BaseAddView(LoginRequiredMixin, BaseView):
     heading_prefix = 'Добавить'
-    formset_class = None  # set the formset
-    success_url = reverse_lazy('')  # set the success url redirect
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -38,11 +54,9 @@ class BaseAddView(LoginRequiredMixin, TemplateView):
 
     def get(self, *args, **kwargs):
         forms = self.formset_class(queryset=self.formset_class.model.objects.none())
-        context = {
-            'heading': self.get_heading(),
-            'forms': forms,
-            'nav_sidebar_data': NAV_SIDE_BAR_DATA,
-        }
+        context = self.get_context_data()
+        context['forms'] = forms
+        context['add_form_button'] = True
         return self.render_to_response(context)
 
     def post(self, *args, **kwargs):
@@ -50,22 +64,13 @@ class BaseAddView(LoginRequiredMixin, TemplateView):
         if forms.is_valid():
             forms.save()
             return redirect(self.success_url)
-        context = {
-            'heading': self.get_heading(),
-            'forms': forms,
-            'nav_sidebar_data': NAV_SIDE_BAR_DATA,
-        }
+        context = self.get_context_data()
+        context['forms'] = forms
         return self.render_to_response(context)
 
-    def get_heading(self):
-        return ' '.join((self.heading_prefix, self.formset_class.model._meta.verbose_name_plural))
 
-
-class BaseEditView(LoginRequiredMixin, TemplateView):
-    template_name = 'polls/edit_objects.html'
+class BaseEditView(LoginRequiredMixin, BaseView):
     heading_prefix = 'Изменить'
-    formset_class = None  # set the formset
-    success_url = reverse_lazy('')  # set the success url redirect
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -76,28 +81,29 @@ class BaseEditView(LoginRequiredMixin, TemplateView):
         queryset = self.formset_class.model.objects.all()
         return queryset
 
+    def get_context_data(self):
+        context = super().get_context_data()
+        context['add_href'] = reverse_lazy(self.formset_class.model._meta.model._meta.model_name + '-add')
+        context['deletion_flag'] = True
+        context['no_forms_text'] = 'Нет данных'
+        return context
+
     def get(self, *args, **kwargs):
-        context = {
-            'heading': self.get_heading(),
-            'forms': self.formset_class(queryset=self.get_queryset()),
-            'nav_sidebar_data': NAV_SIDE_BAR_DATA,
-            'add_href': reverse_lazy(self.formset_class.model._meta.model._meta.model_name + '-add'),
-        }
+        context = self.get_context_data()
+        context['forms'] = self.formset_class(queryset=self.get_queryset())
         return self.render_to_response(context)
 
     def post(self, *args, **kwargs):
         if self.request.POST.get('DeleteAction', 0):
             return self.delete(*args, **kwargs)
+
         forms = self.formset_class(data=self.request.POST)
         if forms.is_valid():
             forms.save()
             return redirect(self.success_url)
 
-        context = {
-            'heading': self.get_heading(),
-            'forms': forms,
-            'nav_sidebar_data': NAV_SIDE_BAR_DATA,
-        }
+        context = super().get_context_data()
+        context['forms'] = forms
         return self.render_to_response(context)
 
     def delete(self, *args, **kwargs):
@@ -268,16 +274,22 @@ class RequestEditView(BaseEditView):
 
 
 class RequestToDoView(BaseEditView):
-    template_name = 'polls/todo_objects.html'
     formset_class = RequestToDoFormSet
     heading_prefix = 'Активные '
-    success_url = reverse_lazy('request-edit')
+    success_url = reverse_lazy('request-todo')
 
     def get_queryset(self):
         queryset = self.formset_class.model.objects.filter(
             status__in=[RequestStatus.CREATED, RequestStatus.IN_WORK]
         )
         return queryset
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        context['add_href'] = None
+        context['deletion_flag'] = False
+        context['no_forms_text'] = 'Все запросы выполнены!'
+        return context
 
     def post(self, *args, **kwargs):
         if self.request.POST.get('DeleteAction', 0):
@@ -292,11 +304,8 @@ class RequestToDoView(BaseEditView):
             forms.save()
             return redirect(self.success_url)
 
-        context = {
-            'heading': self.get_heading(),
-            'forms': forms,
-            'nav_sidebar_data': NAV_SIDE_BAR_DATA,
-        }
+        context = self.get_context_data()
+        context['forms'] = forms
         return self.render_to_response(context)
 
 
