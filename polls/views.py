@@ -7,7 +7,7 @@ from .models import Structure, Post, Worksite, PeripheralType, ComputerConfigura
 from .forms import StructureFormSet, PostFormSet, WorksiteFormSet, PeripheralTypeFormSet, ComputerConfigurationFormSet, PeripheralFormSet, NetworkEquipmentFormSet, ComputerFormSet, MonitorFormSet, MFPFormSet, UPSFormSet, MeteoUnitFormSet, ServerFormSet, CartridgeFormSet, RequestFormSet, RequestToDoFormSet
 
 NAV_SIDE_BAR_DATA = {
-    'moderation_tables': {
+    'moderation': {
         model._meta.verbose_name_plural: reverse_lazy(model.__name__.lower() + '-edit')
         for model in [Structure, Post, Worksite, PeripheralType, ComputerConfiguration, Peripheral, NetworkEquipment, Computer, Monitor, MFP, UPS, MeteoUnit, Server, Cartridge, Request]
     },
