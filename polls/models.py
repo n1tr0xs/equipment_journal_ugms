@@ -30,15 +30,16 @@ class Inventoried(models.Model):
     serial_number = models.CharField(max_length=50, default='', unique=True, verbose_name='Серийный номер')
 
 
+class TechnicalCondition(models.IntegerChoices):
+    READY_TO_USE = 0, 'Готов к установке'
+    IN_WORK = 1, 'В работе'
+    DISABLED = 2, 'Снят'
+    REPAIRING = 3, 'Ремонт'
+
+
 class TechnicalConditionEntity(models.Model):
     class Meta:
         abstract = True
-
-    class TechnicalCondition(models.IntegerChoices):
-        READY_TO_USE = 0, 'Готов к установке'
-        IN_WORK = 1, 'В работе'
-        DISABLED = 2, 'Снят'
-        REPAIRING = 3, 'Ремонт'
 
     technical_condition = models.IntegerField(choices=TechnicalCondition, default=TechnicalCondition.READY_TO_USE, verbose_name='Техническое состояние')
     disabling_reason = models.TextField(default='', blank=True, verbose_name='Причина снятия')
@@ -215,25 +216,26 @@ class Cartridge(NamedEntity, TechnicalConditionEntity):
     current_mfp = models.OneToOneField(MFP, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='МФУ')
 
     def save(self, *args, **kwargs):
-        if (self.current_mfp_id is None) and (self.technical_condition == TechnicalConditionEntity.TechnicalCondition.IN_WORK):
-            self.technical_condition = TechnicalConditionEntity.TechnicalCondition.DISABLED
-        if (self.current_mfp_id) and (self.technical_condition in [TechnicalConditionEntity.TechnicalCondition.DISABLED, TechnicalConditionEntity.TechnicalCondition.READY_TO_USE, TechnicalConditionEntity.TechnicalCondition.REPAIRING]):
-            self.technical_condition = TechnicalConditionEntity.TechnicalCondition.IN_WORK
+        if (self.current_mfp_id is None) and (self.technical_condition == TechnicalCondition.IN_WORK):
+            self.technical_condition = TechnicalCondition.DISABLED
+        if (self.current_mfp_id) and (self.technical_condition in [TechnicalCondition.DISABLED, TechnicalCondition.READY_TO_USE, TechnicalCondition.REPAIRING]):
+            self.technical_condition = TechnicalCondition.IN_WORK
         super().save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.name} {self.number}, {self.current_mfp}'
 
 
+class RequestStatus(models.IntegerChoices):
+    CREATED = 0, 'Создан'
+    IN_WORK = 1, 'В работе'
+    COMPLETED = 2, 'Выполнен'
+
+
 class Request(WorksitePlaced):
     class Meta:
         verbose_name = 'Запрос'
         verbose_name_plural = 'Запросы'
-
-    class RequestStatus(models.IntegerChoices):
-        CREATED = 0, 'Создан'
-        IN_WORK = 1, 'В работе'
-        COMPLETED = 2, 'Выполнен'
 
     description = models.TextField(default='', verbose_name='Описание запроса')
     status = models.IntegerField(choices=RequestStatus, default=RequestStatus.CREATED, blank=True, verbose_name='Статус запроса')

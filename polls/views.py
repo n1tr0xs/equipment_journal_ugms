@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, CreateView, DetailView
 
-from .models import Structure, Post, Worksite, PeripheralType, ComputerConfiguration, Peripheral, NetworkEquipment, Computer, Monitor, MFP, UPS, MeteoUnit, Server, Cartridge, Request
+from .models import Structure, Post, Worksite, PeripheralType, ComputerConfiguration, Peripheral, NetworkEquipment, Computer, Monitor, MFP, UPS, MeteoUnit, Server, Cartridge, Request, RequestStatus
 from .forms import StructureFormSet, PostFormSet, WorksiteFormSet, PeripheralTypeFormSet, ComputerConfigurationFormSet, PeripheralFormSet, NetworkEquipmentFormSet, ComputerFormSet, MonitorFormSet, MFPFormSet, UPSFormSet, MeteoUnitFormSet, ServerFormSet, CartridgeFormSet, RequestFormSet, RequestToDoFormSet
 
 NAV_SIDE_BAR_DATA = {
@@ -14,7 +14,7 @@ NAV_SIDE_BAR_DATA = {
     'feedback': {
         'Активные запросы': {
             'href': reverse_lazy('request-todo'),
-            'counter': len(Request.objects.filter(status__exact=Request.RequestStatus.CREATED)),
+            'counter': len(Request.objects.filter(status__exact=RequestStatus.CREATED)),
         },
     },
 }
@@ -275,7 +275,7 @@ class RequestToDoView(BaseEditView):
 
     def get_queryset(self):
         queryset = self.formset_class.model.objects.filter(
-            status__in=[Request.RequestStatus.CREATED, Request.RequestStatus.IN_WORK]
+            status__in=[RequestStatus.CREATED, RequestStatus.IN_WORK]
         )
         return queryset
 
@@ -287,7 +287,7 @@ class RequestToDoView(BaseEditView):
             for form in forms:
                 obj = form.save(commit=False)
                 if 'completed_at' in form.changed_data:
-                    obj.status = Request.RequestStatus.COMPLETED
+                    obj.status = RequestStatus.COMPLETED
                 obj.save()
             forms.save()
             return redirect(self.success_url)
