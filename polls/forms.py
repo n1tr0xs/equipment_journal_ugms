@@ -22,7 +22,6 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['name', 'structure']
-        widgets = {}
 
 
 PostFormSet = forms.modelformset_factory(
@@ -35,7 +34,6 @@ class WorksiteForm(forms.ModelForm):
     class Meta:
         model = Worksite
         fields = ['name', 'post']
-        widgets = {}
 
 
 WorksiteFormSet = forms.modelformset_factory(
@@ -48,7 +46,6 @@ class PeripheralTypeForm(forms.ModelForm):
     class Meta:
         model = PeripheralType
         fields = ['name']
-        widgets = {}
 
 
 PeripheralTypeFormSet = forms.modelformset_factory(
@@ -76,7 +73,9 @@ class PeripheralForm(forms.ModelForm):
     class Meta:
         model = Peripheral
         fields = ['name', 'peripheral_type', 'inventory_number', 'serial_number', 'technical_condition', 'disabling_reason', 'worksite']
-        widgets = {'disabling_reason': forms.Textarea(attrs={'rows': 1}), }
+        widgets = {
+            'disabling_reason': forms.Textarea(attrs={'rows': 1}),
+        }
 
 
 PeripheralFormSet = forms.modelformset_factory(
@@ -89,7 +88,9 @@ class NetworkEquipmentForm(forms.ModelForm):
     class Meta:
         model = NetworkEquipment
         fields = ['name', 'inventory_number', 'serial_number', 'technical_condition', 'disabling_reason', 'structure', 'ip_address']
-        widgets = {'disabling_reason': forms.Textarea(attrs={'rows': 1}), }
+        widgets = {
+            'disabling_reason': forms.Textarea(attrs={'rows': 1}),
+        }
 
 
 NetworkEquipmentFormSet = forms.modelformset_factory(
@@ -102,7 +103,9 @@ class ComputerForm(forms.ModelForm):
     class Meta:
         model = Computer
         fields = ['name', 'configuration', 'comment', 'inventory_number', 'serial_number', 'technical_condition', 'disabling_reason', 'worksite', 'ip_address']
-        widgets = {'disabling_reason': forms.Textarea(attrs={'rows': 1}), }
+        widgets = {
+            'disabling_reason': forms.Textarea(attrs={'rows': 1}),
+        }
 
 
 ComputerFormSet = forms.modelformset_factory(
@@ -115,7 +118,9 @@ class MonitorForm(forms.ModelForm):
     class Meta:
         model = Monitor
         fields = ['name', 'inventory_number', 'serial_number', 'technical_condition', 'disabling_reason', 'worksite']
-        widgets = {'disabling_reason': forms.Textarea(attrs={'rows': 1}), }
+        widgets = {
+            'disabling_reason': forms.Textarea(attrs={'rows': 1}),
+        }
 
 
 MonitorFormSet = forms.modelformset_factory(
@@ -128,7 +133,9 @@ class MFPForm(forms.ModelForm):
     class Meta:
         model = MFP
         fields = ['name', 'inventory_number', 'serial_number', 'technical_condition', 'installed_cartridge', 'disabling_reason', 'worksite']
-        widgets = {'disabling_reason': forms.Textarea(attrs={'rows': 1}), }
+        widgets = {
+            'disabling_reason': forms.Textarea(attrs={'rows': 1}),
+        }
 
 
 MFPFormSet = forms.modelformset_factory(
@@ -141,7 +148,9 @@ class UPSForm(forms.ModelForm):
     class Meta:
         model = UPS
         fields = ['name', 'inventory_number', 'serial_number', 'technical_condition', 'disabling_reason', 'worksite']
-        widgets = {'disabling_reason': forms.Textarea(attrs={'rows': 1}), }
+        widgets = {
+            'disabling_reason': forms.Textarea(attrs={'rows': 1}),
+        }
 
 
 UPSFormSet = forms.modelformset_factory(
@@ -154,7 +163,9 @@ class MeteoUnitForm(forms.ModelForm):
     class Meta:
         model = MeteoUnit
         fields = ['name', 'inventory_number', 'serial_number', 'technical_condition', 'disabling_reason', 'structure', 'verification_date']
-        widgets = {'disabling_reason': forms.Textarea(attrs={'rows': 1}), }
+        widgets = {
+            'disabling_reason': forms.Textarea(attrs={'rows': 1}),
+        }
 
 
 MeteoUnitFormSet = forms.modelformset_factory(

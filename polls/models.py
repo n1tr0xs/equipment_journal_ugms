@@ -186,7 +186,7 @@ class MeteoUnit(NamedEntity, Inventoried, TechnicalConditionEntity, StructurePla
         verbose_name = 'Прибор (гидро / метео / агро)'
         verbose_name_plural = 'Приборы (гидро / метео / агро)'
 
-    verification_date = models.DateField(null=True, blank=True, verbose_name='Дата поверки', help_text='Дата и время в формате DD.MM.YYYY hh:mm:ss')
+    verification_date = models.DateField(null=True, blank=True, verbose_name='Дата поверки', help_text='Дата в формате DD.MM.YYYY')
 
     def __str__(self):
         return f'{self.name}, {self.structure}'
