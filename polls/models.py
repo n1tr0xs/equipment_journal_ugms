@@ -24,8 +24,8 @@ class Inventoried(models.Model):
     class Meta:
         abstract = True
 
-    inventory_number = models.CharField(max_length=50, default='', blank=True, unique=True, verbose_name='Инвентарный номер')
-    serial_number = models.CharField(max_length=50, default='', blank=True, unique=True, verbose_name='Серийный номер')
+    inventory_number = models.CharField(max_length=50, null=True, blank=True, unique=True, verbose_name='Инвентарный номер')
+    serial_number = models.CharField(max_length=50, null=True, blank=True, unique=True, verbose_name='Серийный номер')
 
 
 class TechnicalCondition(models.IntegerChoices):
