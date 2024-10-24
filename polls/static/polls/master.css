@@ -950,9 +950,9 @@ a.deletelink:focus, a.deletelink:hover {
     padding: 0;
     background: var(--header-bg);
     color: var(--header-color);
-    overflow: hidden;
+    overflow: visible;
     position: sticky;
-    top: 0em;
+    top: 0;
     align-content: space-between;
     flex-wrap: nowrap;
     flex-direction: row;
