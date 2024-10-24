@@ -120,7 +120,7 @@ NetworkEquipmentFormSet = forms.modelformset_factory(
 class ComputerForm(forms.ModelForm):
     class Meta:
         model = Computer
-        fields = ['name', 'configuration', 'comment', 'inventory_number', 'serial_number', 'technical_condition', 'disabling_reason', 'worksite', 'ip_address']
+        fields = ['name', 'ip_address', 'inventory_number', 'serial_number', 'technical_condition', 'worksite', 'configuration', 'comment', 'disabling_reason']
         widgets = {
             'disabling_reason': forms.Textarea(attrs={'rows': 1}),
         }
