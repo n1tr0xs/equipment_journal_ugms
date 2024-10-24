@@ -14,6 +14,14 @@ class SelectStructure(forms.Select):
         return option
 
 
+class DisablingReasonInput(forms.Textarea):
+    def __init__(self, attrs=None):
+        default_attrs = {'cols': 40, 'rows': 1}
+        if attrs:
+            default_attrs.update(attrs)
+        super().__init__(default_attrs)
+
+
 class StructureForm(forms.ModelForm):
     class Meta:
         model = Structure
@@ -92,7 +100,7 @@ class PeripheralForm(forms.ModelForm):
         model = Peripheral
         fields = ['name', 'peripheral_type', 'inventory_number', 'serial_number', 'technical_condition', 'disabling_reason', 'worksite']
         widgets = {
-            'disabling_reason': forms.Textarea(attrs={'rows': 1}),
+            'disabling_reason': DisablingReasonInput(),
         }
 
 
@@ -107,7 +115,7 @@ class NetworkEquipmentForm(forms.ModelForm):
         model = NetworkEquipment
         fields = ['name', 'inventory_number', 'serial_number', 'technical_condition', 'disabling_reason', 'structure', 'ip_address']
         widgets = {
-            'disabling_reason': forms.Textarea(attrs={'rows': 1}),
+            'disabling_reason': DisablingReasonInput(),
         }
 
 
@@ -122,7 +130,7 @@ class ComputerForm(forms.ModelForm):
         model = Computer
         fields = ['name', 'ip_address', 'inventory_number', 'serial_number', 'technical_condition', 'worksite', 'configuration', 'comment', 'disabling_reason']
         widgets = {
-            'disabling_reason': forms.Textarea(attrs={'rows': 1}),
+            'disabling_reason': DisablingReasonInput(),
         }
 
 
@@ -137,7 +145,7 @@ class MonitorForm(forms.ModelForm):
         model = Monitor
         fields = ['name', 'inventory_number', 'serial_number', 'technical_condition', 'disabling_reason', 'worksite']
         widgets = {
-            'disabling_reason': forms.Textarea(attrs={'rows': 1}),
+            'disabling_reason': DisablingReasonInput(),
         }
 
 
@@ -152,7 +160,7 @@ class MFPForm(forms.ModelForm):
         model = MFP
         fields = ['name', 'inventory_number', 'serial_number', 'technical_condition', 'installed_cartridge', 'disabling_reason', 'worksite']
         widgets = {
-            'disabling_reason': forms.Textarea(attrs={'rows': 1}),
+            'disabling_reason': DisablingReasonInput(),
         }
 
 
@@ -167,7 +175,7 @@ class UPSForm(forms.ModelForm):
         model = UPS
         fields = ['name', 'inventory_number', 'serial_number', 'technical_condition', 'disabling_reason', 'worksite']
         widgets = {
-            'disabling_reason': forms.Textarea(attrs={'rows': 1}),
+            'disabling_reason': DisablingReasonInput(),
         }
 
 
@@ -182,7 +190,7 @@ class MeteoUnitForm(forms.ModelForm):
         model = MeteoUnit
         fields = ['name', 'inventory_number', 'serial_number', 'technical_condition', 'disabling_reason', 'structure', 'verification_date']
         widgets = {
-            'disabling_reason': forms.Textarea(attrs={'rows': 1}),
+            'disabling_reason': DisablingReasonInput(),
         }
 
 
@@ -197,7 +205,7 @@ class ServerForm(forms.ModelForm):
         model = Server
         fields = ['name', 'inventory_number', 'serial_number', 'technical_condition', 'disabling_reason', 'structure', 'ip_address', 'purpose']
         widgets = {
-            'disabling_reason': forms.Textarea(attrs={'rows': 1}),
+            'disabling_reason': DisablingReasonInput(),
             'purpose': forms.Textarea(attrs={'rows': 1}),
         }
 
@@ -213,7 +221,7 @@ class CartridgeForm(forms.ModelForm):
         model = Cartridge
         fields = ['name', 'number', 'technical_condition', 'current_mfp', 'disabling_reason', 'refills']
         widgets = {
-            'disabling_reason': forms.Textarea(attrs={'rows': 1}),
+            'disabling_reason': DisablingReasonInput(),
         }
 
 
