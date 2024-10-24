@@ -48,7 +48,7 @@ class Structure(NamedEntity):
         verbose_name = 'Отдел / подразделение'
         verbose_name_plural = 'Отделы / подразеления'
 
-    abbreviative = models.CharField(max_length=10, default='', blank=True, verbose_name='Сокращение')
+    abbreviative = models.CharField(max_length=10, default='', blank=True, unique=True, verbose_name='Сокращение')
     physical_place = models.TextField(verbose_name='Физическое расположение')
 
     def __str__(self):

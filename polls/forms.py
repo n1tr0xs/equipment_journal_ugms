@@ -3,6 +3,17 @@ from django import forms
 from .models import Structure, Post, Worksite, PeripheralType, ComputerConfiguration, Peripheral, NetworkEquipment, Computer, Monitor, MFP, UPS, MeteoUnit, Server, Cartridge, Request
 
 
+class SelectStructure(forms.Select):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def create_option(self, *args, **kwargs):
+        option = super().create_option(*args, **kwargs)
+        if option['value']:
+            option['attrs']['title'] = Structure.objects.get(abbreviative__exact=option['label']).name
+        return option
+
+
 class StructureForm(forms.ModelForm):
     class Meta:
         model = Structure
@@ -24,11 +35,16 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['name', 'structure']
+        widgets = {
+            'structure': SelectStructure(),
+        }
 
 
 PostFormSet = forms.modelformset_factory(
     Post,
     form=PostForm,
+
+
 )
 
 
