@@ -7,10 +7,10 @@ class SelectStructure(forms.Select):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def create_option(self, *args, **kwargs):
-        option = super().create_option(*args, **kwargs)
+    def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
+        option = super().create_option(name, value, label, selected, index, subindex, attrs)
         if option['value']:
-            option['attrs']['title'] = Structure.objects.get(short_name__exact=option['label']).name
+            option['attrs']['title'] = value.instance.name
         return option
 
 
