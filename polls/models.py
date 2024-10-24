@@ -45,17 +45,21 @@ class TechnicalConditionEntity(models.Model):
 
 class Structure(NamedEntity):
     class Meta:
-        verbose_name = 'Структура'
-        verbose_name_plural = 'Структуры'
+        verbose_name = 'Отдел / подразделение'
+        verbose_name_plural = 'Отделы / подразеления'
 
+    abbreviative = models.CharField(max_length=10, default='', blank=True, verbose_name='Сокращение')
     physical_place = models.TextField(verbose_name='Физическое расположение')
+
+    def __str__(self):
+        return f'{self.abbreviative}'
 
 
 class StructurePlaced(models.Model):
     class Meta:
         abstract = True
 
-    structure = models.ForeignKey(Structure, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Структура')
+    structure = models.ForeignKey(Structure, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Отдел / подразделение')
 
 
 class Post(NamedEntity, StructurePlaced):
@@ -72,7 +76,11 @@ class Worksite(NamedEntity):
         verbose_name = 'Рабочее место'
         verbose_name_plural = 'Рабочие места'
 
+    name = models.CharField(max_length=100, default='', verbose_name='ФИО')
     post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Должность')
+
+    def __str__(self):
+        return f'{self.name}, {self.post}'
 
 
 class WorksitePlaced(models.Model):

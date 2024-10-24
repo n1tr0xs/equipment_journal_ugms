@@ -6,8 +6,10 @@ from .models import Structure, Post, Worksite, PeripheralType, ComputerConfigura
 class StructureForm(forms.ModelForm):
     class Meta:
         model = Structure
-        fields = ['name', 'physical_place']
+        fields = ['abbreviative', 'name', 'physical_place']
         widgets = {
+            'abbreviative': forms.TextInput(attrs={'size': 10}),
+            'name': forms.TextInput(attrs={'size': 50}),
             'physical_place': forms.Textarea(attrs={'rows': 1}),
         }
 
