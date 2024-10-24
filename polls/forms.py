@@ -10,16 +10,16 @@ class SelectStructure(forms.Select):
     def create_option(self, *args, **kwargs):
         option = super().create_option(*args, **kwargs)
         if option['value']:
-            option['attrs']['title'] = Structure.objects.get(abbreviative__exact=option['label']).name
+            option['attrs']['title'] = Structure.objects.get(short_name__exact=option['label']).name
         return option
 
 
 class StructureForm(forms.ModelForm):
     class Meta:
         model = Structure
-        fields = ['abbreviative', 'name', 'physical_place']
+        fields = ['short_name', 'name', 'physical_place']
         widgets = {
-            'abbreviative': forms.TextInput(attrs={'size': 10}),
+            'short_name': forms.TextInput(attrs={'size': 10}),
             'name': forms.TextInput(attrs={'size': 50}),
             'physical_place': forms.Textarea(attrs={'rows': 1}),
         }
