@@ -70,37 +70,32 @@
 </form>
 
 <script>
-    deleteBtn = document.querySelector('#delete-button');
-    deleteBtn.addEventListener('click', dr);
-    function dr(e){
-        e.preventDefault();
-        inp = document.createElement('input');
-        inp.type = 'hidden'
-        inp.name = 'DeleteAction'
-        inp.value = 1;
-        deleteBtn.form.appendChild(inp);
-        deleteBtn.form.submit();
-    }
-</script>
-<script>
-    let objectForm = document.querySelectorAll('.object-form');
-    let container = document.querySelector("#forms-container");
-    let addButton = document.querySelector("#add-form");
-    let totalForms = document.querySelector("#id_form-TOTAL_FORMS");
-    let formNum = objectForm.length-1;
+    // delete button handler
+    jQuery(document).ready(function($) {
+        form = $("#main-form");
+        $("#delete-button").click(function(event){
+            event.preventDefault();
+            form.append(
+                $("<input type='hidden' name='DeleteAction' value=1>")
+            ).submit();
+        });    
+    });
 
-    addButton.addEventListener('click', addForm);
-    function addForm(e) {
-        e.preventDefault();
+    // add form button handler  
+    jQuery(document).ready(function($) {
+        objectForm = $(".object-form");
+        container = $("#forms-container");
+        totalForms = $("#id_form-TOTAL_FORMS");
+        formNum = objectForm.length;
+        formRegex = RegExp(`form-(\\d)+-`,'g');
 
-        let newForm = objectForm[0].cloneNode(true); // Clone the object form
-        let formRegex = RegExp(`form-(\\d){1}-`,'g'); // Regex to find all instances of the form number
-
-        formNum++; // Increment the form number
-        newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`); // Update the new form to have the correct form number        
-        container.insertBefore(newForm, container.firstChild);
-
-        totalForms.setAttribute('value', `${formNum+1}`); // Increment the number of total forms in the management form
-    };
+        $("#add-form").click(function(event){
+            event.preventDefault();
+            newForm = objectForm.first().clone();
+            newForm.html(newForm.html().replace(formRegex, `form-${formNum}-`));
+            container.prepend(newForm);
+            totalForms.attr('value', `${++formNum}`);
+        });    
+    });
 </script>
 {% endblock %}

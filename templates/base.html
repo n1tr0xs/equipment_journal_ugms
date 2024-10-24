@@ -23,14 +23,14 @@
             {% block header %}
             <div style="margin-left: auto;">
                 {% if user.is_authenticated %}
-                    <form action="/accounts/logout/" method="POST">
-                        {% csrf_token %}
-                        <input type="submit" value="Выйти">
-                    </form>
+                <form action="/accounts/logout/" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" value="Выйти">
+                </form>
                 {% else %}
-                    <form action="{% url 'login' %}">
-                        <input type="submit" value="Войти">
-                    </form>
+                <form action="{% url 'login' %}">
+                    <input type="submit" value="Войти">
+                </form>
                 {% endif %}
             </div>
             {% endblock %}
@@ -46,20 +46,22 @@
     </div>
 
     <script>
-        toggleNavBarBtn = document.querySelector('#toggle-nav-side-bar');
-        main = document.querySelector("#main")
+        jQuery(document).ready(function(){
+            toggleNavBarBtn = $("#toggle-nav-side-bar");
+            main = $("#main");
 
-        if (localStorage.getItem('navSideBarOpen') != 'false') {
-            main.classList.add("shifted");
-        } else {
-            main.classList.remove("shifted");
-        }
-        toggleNavBarBtn.addEventListener('click', toggleNavBar);
-        function toggleNavBar(e){
-            e.preventDefault();
-            main.classList.toggle("shifted");
-            localStorage.setItem('navSideBarOpen', main.classList.contains("shifted"));
-        }
+            if (localStorage.getItem("navSideBarOpen") != 'false') {
+                main.addClass("shifted");
+            } else {
+                main.removeClass("shifted");
+            }
+
+            toggleNavBarBtn.click(function(event){
+                event.preventDefault();
+                main.toggleClass("shifted");
+                localStorage.setItem('navSideBarOpen', main.hasClass("shifted"));
+            });
+        });
     </script>
 </body>
 </html>
