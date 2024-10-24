@@ -1,7 +1,15 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block title %} {{ heading }} {% endblock %}
 
+{% block preheader %}
+<div style="display: flex; justify-content: space-evenly; align-items: center;">
+    <img src="{% static 'polls/favicon.png' %}" width="100px" style="margin: 1em 15em 1em 0;">    
+    <div style="font-size: 3em;" class="text-center"> Отдел Информационного Обеспечения и Технического Развития </div>
+</div>
+{% endblock %}
 
 {% block main %}
     
