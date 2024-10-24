@@ -58,6 +58,9 @@ html[data-theme="light"],
     --object-tools-bg: var(--close-button-bg);
     --object-tools-hover-bg: var(--close-button-hover-bg);
 
+    --scrollbar-thumb-hover: var(--button-hover);
+    --scrollbar-thumb: rgb(170, 170, 170);
+
     --font-family-primary:
     "Segoe UI",
     system-ui,
@@ -1300,4 +1303,30 @@ thead tr td {
   to {
     visibility: hidden;
 }
+}
+
+/* scrollbar & selection styling */
+::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+::-moz-selection,
+::selection {
+  background-color: var(--selection);
+  color: var(--text-bright);
 }
