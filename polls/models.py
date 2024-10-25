@@ -17,7 +17,7 @@ class IPEntity(models.Model):
     class Meta:
         abstract = True
 
-    ip_address = models.GenericIPAddressField(protocol='ipv4', null=True, blank=True, unique=True, verbose_name='IP адрес')
+    ip_address = models.GenericIPAddressField(protocol='ipv4', unique=True, verbose_name='IP адрес')
 
 
 class Inventoried(models.Model):
