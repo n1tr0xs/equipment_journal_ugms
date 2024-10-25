@@ -512,15 +512,13 @@ form .related-widget-wrapper ul {
 
 /* tabled forms */
 #submit-row {
+    display: flex;
+    justify-content: space-between;
     position: sticky;
     top: 2.9em;
     overflow: hidden;
     padding-top: 3em;
     background: var(--body-bg);
-}
-
-#submit-row input[type=submit] {
-    float: right
 }
 
 .tabled-forms {
@@ -554,10 +552,6 @@ input[type=submit].delete-button:hover {
 
 #forms-container .object-form td {
     text-align: center;
-}
-
-.object-form td :focus {
-    overflow: visible;
 }
 
 .object-form td textarea {

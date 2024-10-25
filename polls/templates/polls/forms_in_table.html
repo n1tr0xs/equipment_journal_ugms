@@ -5,17 +5,23 @@
     {% csrf_token %}
     <div id="table-forms-container">
         <div id="submit-row">
-            <input type="reset" value="Сбросить">
-            {% if add_href %}
+            <div>
+                <input type="reset" value="Сбросить">
+                {% if add_href %}
                 <a href="{{ add_href }}"> <input type="button" value="Добавить" id="add-button"> </a>
-            {% endif %}
-            {% if add_form_button %}
+                {% endif %}
+            </div>
+            <div>
+                {% if add_form_button %}
                 <input id="add-form" type="button" value="Добавить еще одну строку">
-            {% endif %}
-            <input type="submit" value="Сохранить данные">
-            {% if deletion_flag %}
-                <input type="submit" value="Удалить отмеченые" class="delete-button" id="delete-button">            
-            {% endif %}
+                {% endif %}
+            </div>
+            <div id="submit-buttons">
+                {% if deletion_flag %}
+                    <input type="submit" value="Удалить отмеченые" class="delete-button" id="delete-button">            
+                {% endif %}
+                <input type="submit" value="Сохранить данные">
+            </div>
         </div>
         {% if forms|length %}
             {{ forms.not_form_errors }}

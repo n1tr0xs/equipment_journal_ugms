@@ -863,8 +863,6 @@ a.deletelink:focus, a.deletelink:hover {
     display: flex;
     flex-direction: column;
     height: 100%;
-    overflow-y: scroll;
-    overflow-x: auto;
 }
 
 #container > .main {
@@ -953,7 +951,6 @@ a.deletelink:focus, a.deletelink:hover {
     padding: 0;
     background: var(--header-bg);
     color: var(--header-color);
-    overflow: visible;
     position: sticky;
     top: 0;
     align-content: space-between;
