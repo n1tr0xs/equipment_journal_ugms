@@ -31,8 +31,10 @@
 #nav-sidebar {
     z-index: 15;
     position: sticky;
-    flex: 0 0 17.1875rem;
+    top: 0;
     left: -17.25rem;
+    max-height: 100vh;
+    flex: 0 0 17.1875rem;
     margin-left: -17.25rem;
     border-top: 1px solid transparent;
     border-right: 1px solid var(--hairline-color);

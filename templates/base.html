@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{% static 'polls/dark-mode.css' %}">
     <link rel="stylesheet" href="{% static 'polls/nav-sidebar.css' %}">
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"> </script>
+    <script type="text/javascript" src="{% static 'polls/jquery.doubleScroll.js' %}"> </script>
     {% block additional_head %} {% endblock %}
     <title> {% block title %} Журнал оргтехники УГМС по ЛНР {% endblock %} </title>
 </head>
@@ -18,8 +19,22 @@
             {% block header %}
             {% endblock %}
         </header>
-        {% block after_headeader %}        
-        {% endblock %}
+
+        <nav id="main-nav" class="sticked">
+            <div id="auth-button">
+                {% if user.is_authenticated %}
+                <form action="{% url 'logout' %}" method="POST" id="auth-form">
+                    {% csrf_token %}
+                    <button type="submit" value="Выйти"> Выйти</button>
+                </form>
+                {% else %}
+                <form action="{% url 'login' %}" method="GET" id="auth-form"> 
+                    <button type="submit" value="Войти">  Войти</button>
+                </form>
+                {% endif %}
+            </div>
+        </nav>
+
         <div id="main" class="main shifted">
             {% if user.is_authenticated %} {% include "aside.html" %} {% endif %}
             <main id="content-start">
@@ -29,6 +44,7 @@
                 </div>
             </main>
         </div>
+        
         <footer id="footer">
             {% block footer %}
             {% endblock %}
