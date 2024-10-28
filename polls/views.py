@@ -6,18 +6,20 @@ from django.views.generic import TemplateView, CreateView, DetailView
 from .models import Structure, Post, Worksite, PeripheralType, ComputerConfiguration, Peripheral, NetworkEquipment, Computer, Monitor, MFP, UPS, MeteoUnit, Server, Cartridge, Request, RequestStatus
 from .forms import StructureFormSet, PostFormSet, WorksiteFormSet, PeripheralTypeFormSet, ComputerConfigurationFormSet, PeripheralFormSet, NetworkEquipmentFormSet, ComputerFormSet, MonitorFormSet, MFPFormSet, UPSFormSet, MeteoUnitFormSet, ServerFormSet, CartridgeFormSet, RequestFormSet, RequestToDoFormSet
 
-NAV_SIDE_BAR_DATA = {
-    'moderation': {
-        model._meta.verbose_name_plural: reverse_lazy(model.__name__.lower() + '-edit')
-        for model in [Structure, Post, Worksite, PeripheralType, ComputerConfiguration, Peripheral, NetworkEquipment, Computer, Monitor, MFP, UPS, MeteoUnit, Server, Cartridge, Request]
-    },
-    'feedback': {
-        'Активные запросы': {
-            'href': reverse_lazy('request-todo'),
-            'counter': len(Request.objects.filter(status__exact=RequestStatus.CREATED)),
+
+def get_nav_sidebar_data():
+    return {
+        'moderation': {
+            model._meta.verbose_name_plural: reverse_lazy(model.__name__.lower() + '-edit')
+            for model in [Structure, Post, Worksite, PeripheralType, ComputerConfiguration, Peripheral, NetworkEquipment, Computer, Monitor, MFP, UPS, MeteoUnit, Server, Cartridge, Request]
         },
-    },
-}
+        'feedback': {
+            'Активные запросы': {
+                'href': reverse_lazy('request-todo'),
+                'counter': len(Request.objects.filter(status__exact=RequestStatus.CREATED)),
+            },
+        },
+    }
 
 
 def index(request):
@@ -34,7 +36,7 @@ class BaseView(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data()
-        context['nav_sidebar_data'] = NAV_SIDE_BAR_DATA
+        context['nav_sidebar_data'] = get_nav_sidebar_data
         context['title'] = self.get_title()
         return context
 
@@ -315,7 +317,7 @@ class RequestCreateView(CreateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['nav_sidebar_data'] = NAV_SIDE_BAR_DATA
+        context['nav_sidebar_data'] = get_nav_sidebar_data
         context['title'] = 'Создать запрос'
         return context
 
@@ -325,5 +327,6 @@ class RequestDetailView(DetailView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['nav_sidebar_data'] = NAV_SIDE_BAR_DATA
+        context['title'] = f'Запрос № {context["object"].id}'
+        context['nav_sidebar_data'] = get_nav_sidebar_data
         return context

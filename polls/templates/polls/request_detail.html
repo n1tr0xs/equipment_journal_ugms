@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h1> Запрос № {{ request.id }} </h1>
+<div class="table-wrapper centered">
 <table>
     <tr> 
         <th> Описание запроса </th>
@@ -21,5 +21,6 @@
         <td> {{ request.get_status_display }} </td>
     </tr>
 </table>
+</div>
 
 {% endblock %}

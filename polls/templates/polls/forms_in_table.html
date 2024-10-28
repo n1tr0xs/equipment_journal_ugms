@@ -1,9 +1,11 @@
 {% extends "base_site.html" %}
 
+{% block content_title %} {% endblock %}
+
 {% block content %}
 <form action="" method="post" id="main-form">
     {% csrf_token %}
-    <div class="submit-row">
+    <div id="submit-row" class="submit-row sticked">
         <div>
             <!-- left aligned -->
             <input type="reset" value="Сбросить">
@@ -19,11 +21,12 @@
             <input type="submit" value="Сохранить данные">
         </div>
     </div>
-    <div id="table-forms-container">
+    <div id="table-forms-container" class="double-scroll">
         {% if formset|length %}
         {{ formset.not_form_errors }}
         <table>
-            <thead> 
+            <caption class="sticked"> {{ title }} </caption>
+            <thead class="sticked"> 
                 <tr>
                     {% for field in formset.0.visible_fields %}
                     <td class="bold"> {{ field.label }} </td>
@@ -73,8 +76,8 @@
 </form>
 
 <script>
-    // delete button handler
-    jQuery(document).ready(function($) {
+    {
+        // delete button handler
         form = $("#main-form");
         $("#delete-button").click(function(event){
             event.preventDefault();
@@ -82,10 +85,11 @@
                 $("<input type='hidden' name='DeleteAction' value=1>")
                 ).submit();
         });    
-    });
+    };
 
-    // add form button handler  
-    jQuery(document).ready(function($) {
+    
+    {
+        // add form button handler  
         objectForm = $(".object-form");
         container = $("#forms-container");
         totalForms = $("#id_form-TOTAL_FORMS");
@@ -99,6 +103,12 @@
             container.prepend(newForm);
             totalForms.attr('value', `${++formNum}`);
         });    
-    });
+    };
+
+    {
+        // double scroll
+        $('.double-scroll').doubleScroll();
+    }
+
 </script>
 {% endblock %}

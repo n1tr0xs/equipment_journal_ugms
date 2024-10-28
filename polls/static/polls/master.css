@@ -124,6 +124,7 @@ h1 {
     margin: 0 0 1.25rem;
     font-weight: bold;
     font-size: 1.75rem;
+    width: 100%;
 }
 
 h2 {
@@ -134,11 +135,6 @@ h2 {
 form {
     margin: 0;
     padding: 0;
-}
-
-#main-nav {
-    position: sticky;
-    top: 0;
 }
 
 /* TABLES */
@@ -213,9 +209,9 @@ select {
     transition: .15s;
 }
 a.button {
+    font-size: 0.8125rem;
     color: var(--button-fg);
     vertical-align: middle;
-    padding: .45rem .9375rem;
 }
 
 .button:active, input[type=submit]:active, input[type=button]:active,
@@ -482,7 +478,6 @@ input[type=tel]:focus, textarea:focus, select:focus, .vTextField:focus {
     margin: 0 0 1.25rem;
     flex-flow: row nowrap;
     justify-content: space-between;
-    overflow: hidden;
     background: var(--body-bg);
     width: 100%;
 }
@@ -490,9 +485,11 @@ input[type=tel]:focus, textarea:focus, select:focus, .vTextField:focus {
 #table-forms-container {
     display: block;
     width: 100%; 
-    overflow-x: auto;
-    overflow-y: auto;
     text-align: -webkit-center;
+}
+
+#table-forms-container table {
+    width: 100%;
 }
 
 
@@ -513,3 +510,24 @@ input[type=tel]:focus, textarea:focus, select:focus, .vTextField:focus {
     background-position: 5px 12px;
     overflow-wrap: break-word;
 }
+
+
+/* 
+h1 {
+    background: red;
+    position: fixed;
+    top: 2.19rem;
+}
+
+#submit-row{
+    background: green;
+    position: fixed;
+    top: 4.5rem;
+}
+
+#sticked-thead {
+    background: blue;
+    position: fixed;
+    top: 8rem;
+}
+*/
