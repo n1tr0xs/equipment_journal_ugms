@@ -36,7 +36,7 @@ class BaseView(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data()
-        context['nav_sidebar_data'] = get_nav_sidebar_data
+        context['nav_sidebar_data'] = get_nav_sidebar_data()
         context['title'] = self.get_title()
         return context
 
