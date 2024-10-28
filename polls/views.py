@@ -28,49 +28,49 @@ def index(request):
 
 class BaseView(TemplateView):
     template_name = 'polls/forms_in_table.html'
-    heading_prefix = None
+    title_prefix = None
     formset_class = None
     success_url = reverse_lazy('index')
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data()
         context['nav_sidebar_data'] = NAV_SIDE_BAR_DATA
-        context['heading'] = self.get_heading()
+        context['title'] = self.get_title()
         return context
 
-    def get_heading(self):
+    def get_title(self):
         try:
-            return ' '.join([self.heading_prefix, self.formset_class.model._meta.verbose_name_plural])
+            return ' '.join([self.title_prefix, self.formset_class.model._meta.verbose_name_plural])
         except (TypeError, AttributeError):
             return ''
 
 
 class BaseAddView(LoginRequiredMixin, BaseView):
-    heading_prefix = 'Добавить'
+    title_prefix = 'Добавить'
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.formset_class.extra = 1
 
     def get(self, *args, **kwargs):
-        forms = self.formset_class(queryset=self.formset_class.model.objects.none())
+        formset = self.formset_class(queryset=self.formset_class.model.objects.none())
         context = self.get_context_data()
-        context['forms'] = forms
+        context['formset'] = formset
         context['add_form_button'] = True
         return self.render_to_response(context)
 
     def post(self, *args, **kwargs):
-        forms = self.formset_class(data=self.request.POST)
-        if forms.is_valid():
-            forms.save()
+        formset = self.formset_class(data=self.request.POST)
+        if formset.is_valid():
+            formset.save()
             return redirect(self.success_url)
         context = self.get_context_data()
-        context['forms'] = forms
+        context['formset'] = formset
         return self.render_to_response(context)
 
 
 class BaseEditView(LoginRequiredMixin, BaseView):
-    heading_prefix = 'Изменить'
+    title_prefix = 'Изменить'
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -90,20 +90,20 @@ class BaseEditView(LoginRequiredMixin, BaseView):
 
     def get(self, *args, **kwargs):
         context = self.get_context_data()
-        context['forms'] = self.formset_class(queryset=self.get_queryset())
+        context['formset'] = self.formset_class(queryset=self.get_queryset())
         return self.render_to_response(context)
 
     def post(self, *args, **kwargs):
         if self.request.POST.get('DeleteAction', 0):
             return self.delete(*args, **kwargs)
 
-        forms = self.formset_class(data=self.request.POST)
-        if forms.is_valid():
-            forms.save()
+        formset = self.formset_class(data=self.request.POST)
+        if formset.is_valid():
+            formset.save()
             return redirect(self.success_url)
 
         context = super().get_context_data()
-        context['forms'] = forms
+        context['formset'] = formset
         return self.render_to_response(context)
 
     def delete(self, *args, **kwargs):
@@ -119,8 +119,8 @@ class BaseEditView(LoginRequiredMixin, BaseView):
 
         return redirect(self.success_url)
 
-    def get_heading(self):
-        return ' '.join((self.heading_prefix, self.formset_class.model._meta.verbose_name_plural))
+    def get_title(self):
+        return ' '.join((self.title_prefix, self.formset_class.model._meta.verbose_name_plural))
 
 
 class StructureAddView(BaseAddView):
@@ -275,7 +275,7 @@ class RequestEditView(BaseEditView):
 
 class RequestToDoView(BaseEditView):
     formset_class = RequestToDoFormSet
-    heading_prefix = 'Активные '
+    title_prefix = 'Активные '
     success_url = reverse_lazy('request-todo')
 
     def get_queryset(self):
@@ -294,18 +294,18 @@ class RequestToDoView(BaseEditView):
     def post(self, *args, **kwargs):
         if self.request.POST.get('DeleteAction', 0):
             return self.delete(*args, **kwargs)
-        forms = self.formset_class(data=self.request.POST)
-        if forms.is_valid():
-            for form in forms:
+        formset = self.formset_class(data=self.request.POST)
+        if formset.is_valid():
+            for form in formset:
                 obj = form.save(commit=False)
                 if 'completed_at' in form.changed_data:
                     obj.status = RequestStatus.COMPLETED
                 obj.save()
-            forms.save()
+            formset.save()
             return redirect(self.success_url)
 
         context = self.get_context_data()
-        context['forms'] = forms
+        context['formset'] = formset
         return self.render_to_response(context)
 
 
@@ -316,6 +316,7 @@ class RequestCreateView(CreateView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['nav_sidebar_data'] = NAV_SIDE_BAR_DATA
+        context['title'] = 'Создать запрос'
         return context
 
 

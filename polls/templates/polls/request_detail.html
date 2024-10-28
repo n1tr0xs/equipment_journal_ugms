@@ -1,11 +1,9 @@
-{% extends "polls/base.html" %}
-
-{% block title %} Запрос №{{ request.id }} {% endblock %}
+{% extends "base_site.html" %}
 
 {% block content %}
 
-<h1 class="text-center"> Запрос № {{ request.id }} </h1>
-<table class="table-centered tabled-forms">
+<h1> Запрос № {{ request.id }} </h1>
+<table>
     <tr> 
         <th> Описание запроса </th>
         <td> {{ request.description }} </td>
@@ -23,4 +21,5 @@
         <td> {{ request.get_status_display }} </td>
     </tr>
 </table>
+
 {% endblock %}

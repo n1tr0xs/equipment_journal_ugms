@@ -4,26 +4,27 @@ body {
     height: auto;
 }
 
-body #header {
+#header {
     height: auto;
     padding: 15px 16px;
     justify-content: center;
+    background: var(--secondary);
 }
 
-body #header h1 {
+#header h1 {
     font-size: 1.125rem;
     margin: 0;
 }
 
-body #header h1 a {
-    color: var(--header-link-color);
+#header > :first-child {
+    margin: 0;
 }
 
-body #content {
+#content {
     padding: 20px;
 }
 
-body #container {
+#container {
     background: var(--body-bg);
     border: 1px solid var(--hairline-color);
     border-radius: 4px;
@@ -50,11 +51,8 @@ body .form-row #id_username, body .form-row #id_password {
 }
 
 body .submit-row {
+    display: block;
     padding: 1em 0 0 0;
     margin: 0;
-    text-align: center;
-}
-
-body .password-reset-link {
     text-align: center;
 }

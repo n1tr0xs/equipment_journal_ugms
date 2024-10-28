@@ -1,21 +1,18 @@
-{% extends "polls/base_form.html" %}
-
-{% block title %} Создать запрос {% endblock %}
+{% extends "base_site.html" %}
 
 {% block content %}
-<h1 class="text-center"> Создать запрос </h1>
-<div style="margin: 0 auto; width: min-content;">
-    <form action="" method="POST">
-        {% csrf_token %}
-        <table class="table-centered tabled-forms">
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class='table-wrapper centered'>
+        <table>
             {{ form.as_table }}
             <tr>
-                <td colspan="{{ form.fields|length }}" class="text-center"> 
+                <td colspan="{{ form.fields|length }}"> 
                     <input type="submit" value="Отправить запрос" />
                 </td>
             </tr>
         </table>
-    </form>
-</div>
+    </div>
+</form>
 
 {% endblock %}

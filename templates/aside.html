@@ -1,0 +1,60 @@
+<button id="toggle-nav-sidebar" class="toggle-nav-sidebar"> </button>
+<nav id="nav-sidebar">
+    <table class="module">
+        <tbody>
+            {% for desc, href in nav_sidebar_data.moderation.items %}
+            <tr class="clickable-row" data-href="{{ href }}"> 
+                <th> {{ desc }} </th> 
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <table class='module'>
+        <tbody> 
+            {% for desc, data in nav_sidebar_data.feedback.items %}
+            <tr class="clickable-row" data-href={{ data.href }}>
+                <th> 
+                    {{ desc }}
+                    <span class='blink'>
+                        {% if data.counter %} {{ data.counter }} {% endif %}
+                    </span>
+                </th>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</nav>
+
+<script>
+    jQuery(document).ready(function($) {
+        // left click
+        $(".clickable-row").click(function() {
+            window.location = $(this).data("href");
+        });
+
+        // middle click
+        $(".clickable-row").mouseup(function(e) {
+            if (e.which == 2) {
+                window.open($(this).data("href"), '_blank');
+            }
+        });
+    });
+
+    jQuery(document).ready(function(){
+        // nav sibe bar toggle button
+        toggleNavBarBtn = $("#toggle-nav-sidebar");
+        main = $("#main");
+
+        if (localStorage.getItem("navSideBarOpen") != 'false') {
+            main.addClass("shifted");
+        } else {
+            main.removeClass("shifted");
+        }
+
+        toggleNavBarBtn.click(function(event){
+            event.preventDefault();
+            main.toggleClass("shifted");
+            localStorage.setItem('navSideBarOpen', main.hasClass("shifted"));
+        });
+    });
+</script>

@@ -8,58 +8,31 @@
     <link rel="stylesheet" href="{% static 'polls/master.css' %}">
     <link rel="stylesheet" href="{% static 'polls/dark-mode.css' %}">
     <link rel="stylesheet" href="{% static 'polls/nav-sidebar.css' %}">
-    <link rel="stylesheet" href="{% static 'polls/responsive.css' %}">
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"> </script>
-    {% block head %} {% endblock %}
-    <title> {% block title %} Журнал оргтехники УГМС по ЛНР {% endblock %}</title>
+    {% block additional_head %} {% endblock %}
+    <title> {% block title %} Журнал оргтехники УГМС по ЛНР {% endblock %} </title>
 </head>
 <body>
-    <div id='container'>        
-        {% block preheader %}
-        {% endblock %}
+    <div id="container">
         <header id="header">
             {% block header %}
-            <div style="margin-left: auto;">
-                {% if user.is_authenticated %}
-                <form action="/accounts/logout/" method="POST">
-                    {% csrf_token %}
-                    <input type="submit" value="Выйти">
-                </form>
-                {% else %}
-                <form action="{% url 'login' %}">
-                    <input type="submit" value="Войти">
-                </form>
-                {% endif %}
-            </div>
             {% endblock %}
         </header>
+        {% block after_headeader %}        
+        {% endblock %}
         <div id="main" class="main shifted">
-            {% block main %}
-            {% endblock %}
+            {% if user.is_authenticated %} {% include "aside.html" %} {% endif %}
+            <main id="content-start">
+                <div id="content">
+                    {% block content_title %} <h1> {{ title }} </h1> {% endblock %}
+                    {% block content %} Базовый шаблон. {% endblock %}
+                </div>
+            </main>
         </div>
         <footer id="footer">
             {% block footer %}
             {% endblock %}
         </footer>
     </div>
-
-    <script>
-        jQuery(document).ready(function(){
-            toggleNavBarBtn = $("#toggle-nav-side-bar");
-            main = $("#main");
-
-            if (localStorage.getItem("navSideBarOpen") != 'false') {
-                main.addClass("shifted");
-            } else {
-                main.removeClass("shifted");
-            }
-
-            toggleNavBarBtn.click(function(event){
-                event.preventDefault();
-                main.toggleClass("shifted");
-                localStorage.setItem('navSideBarOpen', main.hasClass("shifted"));
-            });
-        });
-    </script>
 </body>
 </html>

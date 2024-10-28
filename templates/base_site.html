@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block header %}
+<img src="{% static 'polls/favicon.png' %}" width="100px">    
+<h1> Отдел Информационного Обеспечения и Технического Развития </h1>
+{% endblock %}
+
+{% block after_headeader %}
+<nav id="main-nav">
+    <div id="auth-button">
+        {% if user.is_authenticated %}
+        <form action="{% url 'logout' %}" method="POST" id="auth-form">
+            {% csrf_token %}
+            <button type="submit" value="Выйти"> Выйти</button>
+        </form>
+        {% else %}
+        <form action="{% url 'login' %}" method="GET" id="auth-form"> 
+            <button type="submit" value="Войти">  Войти</button>
+        </form>
+        {% endif %}
+    </div>
+</nav>
+{% endblock %}
+
+
+{% block content %} Базовый шаблон страниц сайта. {% endblock %}
+
+
+</body>
+</html>

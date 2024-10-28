@@ -1,76 +1,73 @@
-{% extends "polls/base_form.html" %}
+{% extends "base_site.html" %}
 
 {% block content %}
 <form action="" method="post" id="main-form">
     {% csrf_token %}
-    <div id="table-forms-container">
-        <div id="submit-row">
-            <div>
-                <input type="reset" value="Сбросить">
-                {% if add_href %}
-                <a href="{{ add_href }}"> <input type="button" value="Добавить" id="add-button"> </a>
-                {% endif %}
-            </div>
-            <div>
-                {% if add_form_button %}
-                <input id="add-form" type="button" value="Добавить еще одну строку">
-                {% endif %}
-            </div>
-            <div id="submit-buttons">
-                {% if deletion_flag %}
-                    <input type="submit" value="Удалить отмеченые" class="delete-button" id="delete-button">            
-                {% endif %}
-                <input type="submit" value="Сохранить данные">
-            </div>
+    <div class="submit-row">
+        <div>
+            <!-- left aligned -->
+            <input type="reset" value="Сбросить">
+            {% if add_href %} <a href="{{ add_href }}" class="button"> Добавить </a> {% endif %}
+            {% if add_form_button %} <input id="add-form" type="button" value="Добавить еще одну строку"> {% endif %}
         </div>
-        {% if forms|length %}
-            {{ forms.not_form_errors }}
-            <table class="table-centered tabled-forms">
-                <caption class="text-center sticked-top"> {{ heading }} </caption>
-                <thead name="Table header row" class="sticked-top">
-                    <tr>
-                        {% for field in forms.0.visible_fields %}
-                        <td> {{ field.label }} </td>
-                        {% endfor %}
-                        {% if deletion_flag %}
-                            <td> Удалить </td>
-                        {% endif %}
-                    </tr>
-                </thead>
-                <tbody name="visible forms fields" id="forms-container">
-                    {% for form in forms %}
-                    <tr class="object-form">
-                        {% for field in form.visible_fields %}
-                        <td>
-                            {{ field.errors }}
-                            {% if field.help_text %}
-                                <div data-tip="{{ field.help_text }}"> {{ field }} </div>
-                            {% else %}
-                                {{ field }}
-                            {% endif %}
-                        </td>
-                        {% endfor %}
-                        {% if deletion_flag %}
-                            <td> <input type="checkbox" name="form-{{ forloop.counter0 }}-delete" /> </td>
-                        {% endif %}
-                    </tr>
+        <div>
+            <!-- centered -->
+        </div>
+        <div>
+            <!-- right aligned -->
+            {% if deletion_flag %} <input type="submit" value="Удалить отмеченые" class="delete-button" id="delete-button"> {% endif %}
+            <input type="submit" value="Сохранить данные">
+        </div>
+    </div>
+    <div id="table-forms-container">
+        {% if formset|length %}
+        {{ formset.not_form_errors }}
+        <table>
+            <thead> 
+                <tr>
+                    {% for field in formset.0.visible_fields %}
+                    <td class="bold"> {{ field.label }} </td>
                     {% endfor %}
-                </tbody>
-                <tbody name="hidden forms fields">
-                    {% for form in forms %}
-                    <tr>
-                        {% for field in form.hidden_fields %}
+                    {% if deletion_flag %}
+                    <td class="bold"> Удалить </td>
+                    {% endif %}
+                </tr>
+            </thead>
+            <!-- Visible fields -->
+            <tbody id="forms-container">
+                {% for form in formset %}
+                <tr class="object-form">
+                    {% for field in form.visible_fields %}
+                    <td>
+                        {{ field.errors }}
+                        {% if field.help_text %} 
+                        <div data-tip="{{ field.help_text }}"> {{ field }} </div>
+                        {% else %} 
                         {{ field }}
-                        {% endfor %}
-                    </tr>
+                        {% endif %}
+                    </td>
                     {% endfor %}
-                </tbody>
-                <tbody name="forms management form">
-                    {{ forms.management_form }}
-                </tbody>
-            </table>
+                    {% if deletion_flag %} <td> <input type="checkbox" name="form-{{ forloop.counter0 }}-delete" /> </td> {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+            <!-- Hidden fields -->
+            <tbody>
+                {% for form in formset %}
+                <tr>
+                    {% for field in form.hidden_fields %}
+                    {{ field }}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+            <!-- formset management form -->
+            <tbody>
+                {{ formset.management_form }}
+            </tbody>
+        </table>
         {% else %}
-            <h1 class="text-center"> {{ no_forms_text }} </h1>
+        <h2> {{ no_forms_text|default:"Нет данных" }} </h2>
         {% endif %}
     </div>
 </form>
@@ -83,7 +80,7 @@
             event.preventDefault();
             form.append(
                 $("<input type='hidden' name='DeleteAction' value=1>")
-            ).submit();
+                ).submit();
         });    
     });
 
