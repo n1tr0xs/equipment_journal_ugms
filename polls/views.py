@@ -265,14 +265,14 @@ class CartridgeEditView(BaseEditView):
     success_url = reverse_lazy('cartridge-edit')
 
 
-class RequestAddView(BaseAddView):
-    formset_class = RequestFormSet
-    success_url = reverse_lazy('request-edit')
-
-
 class RequestEditView(BaseEditView):
     formset_class = RequestFormSet
     success_url = reverse_lazy('request-edit')
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        context['add_href'] = False
+        return context
 
 
 class RequestToDoView(BaseEditView):

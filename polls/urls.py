@@ -36,7 +36,6 @@ urlpatterns = [
     path('cartridge/edit', views.CartridgeEditView.as_view(), name='cartridge-edit'),
     path('cartridge/add', views.CartridgeAddView.as_view(), name='cartridge-add'),
     path('request/edit/', views.RequestEditView.as_view(), name='request-edit'),
-    path('request/add', views.RequestAddView.as_view(), name='request-add'),
 
     path('request/todo', views.RequestToDoView.as_view(), name='request-todo'),
     path('request/create', views.RequestCreateView.as_view(), name='request-create'),
