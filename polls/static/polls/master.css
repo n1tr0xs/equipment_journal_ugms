@@ -34,8 +34,6 @@
     --selected-bg: #1b1b1b;
     --selected-row: #00363a;
 
-    
-
     --button-fg: #fff;
     --button-bg: var(--secondary);
     --button-hover-bg: #205067;
@@ -137,7 +135,6 @@ form {
 }
 
 /* TABLES */
-
 table {
     border-collapse: collapse;
     border-color: var(--border-color);
@@ -180,7 +177,6 @@ tr:nth-child(even) {
 }
 
 /* FORM DEFAULTS */
-
 input, textarea, select {
     margin: 2px 0;
     padding: 2px 3px;
@@ -227,10 +223,6 @@ input[type=reset]:active, input[type=reset]:focus, input[type=reset]:hover {
     background: var(--reset-button--hover-bg);
 }
 
-/*
-Minifiers remove the default (text) "type" attribute from "input" HTML tags.
-Add input:not([type]) to make the CSS stylesheet work the same.
-*/
 input:not([type]), input[type=text], input[type=password], input[type=email],
 input[type=url], input[type=number], input[type=tel], textarea, select,
 .vTextField {
@@ -242,10 +234,6 @@ input[type=url], input[type=number], input[type=tel], textarea, select,
     background-color: var(--body-bg);
 }
 
-/*
-Minifiers remove the default (text) "type" attribute from "input" HTML tags.
-Add input:not([type]) to make the CSS stylesheet work the same.
-*/
 input:not([type]):focus, input[type=text]:focus, input[type=password]:focus,
 input[type=email]:focus, input[type=url]:focus, input[type=number]:focus,
 input[type=tel]:focus, textarea:focus, select:focus, .vTextField:focus {
@@ -253,7 +241,6 @@ input[type=tel]:focus, textarea:focus, select:focus, .vTextField:focus {
 }
 
 /* PAGE STRUCTURE */
-
 #container {
     width: 100%;
     height: 100%;
@@ -265,7 +252,6 @@ input[type=tel]:focus, textarea:focus, select:focus, .vTextField:focus {
 
 #main {
     width: 100%;
-
     display: flex;
     flex-flow: row nowrap;
     flex: 1 0 auto;
@@ -287,7 +273,6 @@ input[type=tel]:focus, textarea:focus, select:focus, .vTextField:focus {
 }
 
 /* HEADER */
-
 #header {
     width: 100%;
     display: flex;
@@ -325,8 +310,7 @@ input[type=tel]:focus, textarea:focus, select:focus, .vTextField:focus {
     color: var(--header-link-color);
 }
 
-
-/* main nav bar */
+/* MAIN NAVIGATION BAR */
 #main-nav {
     width: 100%;
     color: var(--breadcrumbs-fg);
@@ -369,7 +353,6 @@ input[type=tel]:focus, textarea:focus, select:focus, .vTextField:focus {
 }
 
 /* clickable table row */
-
 .rowlink, .rowlink:focus {
     text-decoration: none;
 }
@@ -384,7 +367,6 @@ input[type=tel]:focus, textarea:focus, select:focus, .vTextField:focus {
 }   
 
 /* tips on hover */
-
 [data-tip] {
   position:relative;
 
@@ -392,7 +374,6 @@ input[type=tel]:focus, textarea:focus, select:focus, .vTextField:focus {
 
 [data-tip]:before {
   content:'';
-  /* hides the tooltip when not hovered */
   display:none;
   content:'';
   display:none;
