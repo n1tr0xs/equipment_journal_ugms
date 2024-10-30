@@ -466,6 +466,7 @@ input[type=tel]:focus, textarea:focus, select:focus, .vTextField:focus {
     display: block;
     width: 100%; 
     text-align: -webkit-center;
+    padding-bottom: 2rem;
 }
 
 #table-forms-container table {
