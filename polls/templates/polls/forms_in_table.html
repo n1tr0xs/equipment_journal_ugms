@@ -110,5 +110,27 @@
         $('.double-scroll').doubleScroll();
     }
 
+    {
+        // changes disabled state disabling_reason textarea on select option
+
+        select_inputs = $("select[id^=id_form");
+        disabling_reason_inputs = $("[id^=id_form][id$=disabling_reason]");
+
+        select_inputs.change(function(){
+            selected_value = $(this).val();
+            disabling_reason_input = disabling_reason_inputs[select_inputs.index($(this))];
+            if((selected_value == 0) || (selected_value == 1)) {
+                val = disabling_reason_input.value || disabling_reason_input.getAttribute('data-prev-value');
+                disabling_reason_input.setAttribute('data-prev-value', val);
+                disabling_reason_input.value = '';
+                disabling_reason_input.disabled = true;
+            } else {
+                disabling_reason_input.value = disabling_reason_input.getAttribute('data-prev-value');
+                disabling_reason_input.setAttribute('data-prev-value', '');
+                disabling_reason_input.disabled = false;
+            }
+        });
+    }
+
 </script>
 {% endblock %}
