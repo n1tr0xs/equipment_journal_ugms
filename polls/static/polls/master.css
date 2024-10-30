@@ -1,49 +1,48 @@
-html[data-theme="light"],
 :root {
-    --primary: #79aec8;
+    --primary: #264b5d;
     --secondary: #417690;
     --accent: #f5dd5d;
-    --primary-fg: #fff;
+    --primary-fg: #f7f7f7;
 
-    --body-fg: #333;
-    --body-bg: #fff;
-    --body-quiet-color: #666;
-    --body-medium-color: #444;
-    --body-loud-color: #000;
+    --body-fg: #eeeeee;
+    --body-bg: #121212;
+    --body-quiet-color: #d0d0d0;
+    --body-medium-color: #e0e0e0;
+    --body-loud-color: #ffffff;
 
     --header-color: #ffc;
     --header-branding-color: var(--accent);
     --header-bg: var(--body-bg);
     --header-link-color: var(--primary-fg);
 
-    --breadcrumbs-fg: #c4dce8;
-    --breadcrumbs-link-fg: var(--body-bg);
-    --breadcrumbs-bg: #264b5d;
+    --link-fg: #81d4fa;
+    --link-hover-color: #4ac1f7;
+    --link-selected-fg: #6f94c6;
 
-    --link-fg: #417893;
-    --link-hover-fg: #036;
-    --link-selected-fg: var(--secondary);
+    --hairline-color: #272727;
+    --border-color: #353535;
 
-    --hairline-color: #e8e8e8;
-    --border-color: #ccc;
+    --error-fg: #e35f5f;
+    --message-success-bg: #006b1b;
+    --message-warning-bg: #583305;
+    --message-error-bg: #570808;
 
-    --error-fg: #ba2121;
+    --breadcrumbs-link-fg: #e0e0e0;
+    --breadcrumbs-bg: var(--primary);    
 
-    --message-success-bg: #dfd;
-    --message-warning-bg: #ffc;
-    --message-error-bg: #ffefef;
+    --darkened-bg: #212121;
+    --selected-bg: #1b1b1b;
+    --selected-row: #00363a;
 
-    --darkened-bg: #f8f8f8; /* A bit darker than --body-bg */
-    --selected-bg: #e4e4e4; /* E.g. selected table cells */
-    --selected-row: #ffc;    
+    
 
     --button-fg: #fff;
     --button-bg: var(--secondary);
     --button-hover-bg: #205067;
     --default-button-bg: #205067;
     --default-button-hover-bg: var(--secondary);
-    --close-button-bg: #747474;
-    --close-button-hover-bg: #333;
+    --close-button-bg: #333333;
+    --close-button-hover-bg: #666666;
     --delete-button-bg: #ba2121;
     --delete-button-hover-bg: #a41515;
     --reset-button-bg: #6d6d6d;
@@ -54,7 +53,7 @@ html[data-theme="light"],
     --object-tools-hover-bg: var(--close-button-hover-bg);
 
     --scrollbar-thumb-hover: var(--button-hover);
-    --scrollbar-thumb: rgb(170, 170, 170);
+    --scrollbar-thumb: #484e51;
 
     --font-family-primary: 
     "Segoe UI", 
@@ -88,7 +87,7 @@ html[data-theme="light"],
     "Noto Color Emoji"
     ;
 
-    color-scheme: light;    
+    color-scheme: dark;
 }
 
 html, body {
@@ -510,24 +509,3 @@ input[type=tel]:focus, textarea:focus, select:focus, .vTextField:focus {
     background-position: 5px 12px;
     overflow-wrap: break-word;
 }
-
-
-/* 
-h1 {
-    background: red;
-    position: fixed;
-    top: 2.19rem;
-}
-
-#submit-row{
-    background: green;
-    position: fixed;
-    top: 4.5rem;
-}
-
-#sticked-thead {
-    background: blue;
-    position: fixed;
-    top: 8rem;
-}
-*/
