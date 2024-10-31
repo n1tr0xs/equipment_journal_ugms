@@ -215,6 +215,14 @@ a.button {
     background: var(--button-hover-bg);
 }
 
+input[type=submit].delete-button {
+    background: var(--delete-button-bg);
+}
+
+input[type=submit].delete-button:hover, .delete-button:active, .delete-button:focus {
+    background: var(--delete-button-hover-bg);
+}
+
 input[type=reset] {
     background: var(--reset-button-bg);
 }
