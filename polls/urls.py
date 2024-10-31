@@ -40,4 +40,6 @@ urlpatterns = [
     path('request/todo', views.RequestToDoView.as_view(), name='request-todo'),
     path('request/create', views.RequestCreateView.as_view(), name='request-create'),
     path('request/<pk>', views.RequestDetailView.as_view(), name='request-detail'),
+
+    path('service-history/', views.ServiceHistoryView.as_view(), name='service-history')
 ]
