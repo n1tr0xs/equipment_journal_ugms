@@ -1,6 +1,7 @@
 from django import forms
+import django_filters as filters
 
-from .models import Structure, Post, Worksite, PeripheralType, ComputerConfiguration, Peripheral, NetworkEquipment, Computer, Monitor, MFP, UPS, MeteoUnit, Server, Cartridge, Request
+from .models import Structure, Post, Worksite, PeripheralType, ComputerConfiguration, Peripheral, NetworkEquipment, Computer, Monitor, MFP, UPS, MeteoUnit, Server, Cartridge, Request, DeviceTypeChoices
 
 
 class SelectStructure(forms.Select):
@@ -262,3 +263,9 @@ RequestToDoFormSet = forms.modelformset_factory(
     Request,
     form=RequestToDoForm,
 )
+
+
+class ServiceHistoryFilter(filters.FilterSet):
+    device_type = filters.ChoiceFilter(choices=DeviceTypeChoices)
+    service_date_start = filters.DateRangeFilter()
+    service_date_end = filters.DateRangeFilter()

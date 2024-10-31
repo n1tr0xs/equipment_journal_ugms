@@ -1,0 +1,32 @@
+{% extends "base_site.html" %}
+
+{% block content %}
+
+<form method="get">
+    {{ filter.form.as_p}}
+    <input type="reset" value="Сбросить"/>
+    <input type="submit" value="Фильтровать"/>
+</form>
+<div id="table-forms-container" class="double-scroll">
+    <table>
+        <thead>
+            <tr>
+                <th> Устройство </th>
+                <th> Начало обслуживания </th>
+                <th> Конец обслуживания </th>
+                <th> Причина обслуживания </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj in filter.qs %}
+            <tr>
+                <td> {{ obj.get_device }} </td>
+                <td> {{ obj.service_date_start }} </td>
+                <td> {{ obj.service_date_end }} </td>
+                <td> {{ obj.description }} </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

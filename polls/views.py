@@ -2,22 +2,26 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, CreateView, DetailView
+from django_filters.views import FilterView
 
-from .models import Structure, Post, Worksite, PeripheralType, ComputerConfiguration, Peripheral, NetworkEquipment, Computer, Monitor, MFP, UPS, MeteoUnit, Server, Cartridge, Request, RequestStatus
-from .forms import StructureFormSet, PostFormSet, WorksiteFormSet, PeripheralTypeFormSet, ComputerConfigurationFormSet, PeripheralFormSet, NetworkEquipmentFormSet, ComputerFormSet, MonitorFormSet, MFPFormSet, UPSFormSet, MeteoUnitFormSet, ServerFormSet, CartridgeFormSet, RequestFormSet, RequestToDoFormSet
+from .models import Structure, Post, Worksite, PeripheralType, ComputerConfiguration, Peripheral, NetworkEquipment, Computer, Monitor, MFP, UPS, MeteoUnit, Server, Cartridge, Request, RequestStatus, ServiceHistory, TechnicalCondition
+from .forms import StructureFormSet, PostFormSet, WorksiteFormSet, PeripheralTypeFormSet, ComputerConfigurationFormSet, PeripheralFormSet, NetworkEquipmentFormSet, ComputerFormSet, MonitorFormSet, MFPFormSet, UPSFormSet, MeteoUnitFormSet, ServerFormSet, CartridgeFormSet, RequestFormSet, RequestToDoFormSet, ServiceHistoryFilter
 
 
 def get_nav_sidebar_data():
     return {
         'moderation': {
-            model._meta.verbose_name_plural: reverse_lazy(model.__name__.lower() + '-edit')
-            for model in [Structure, Post, Worksite, PeripheralType, ComputerConfiguration, Peripheral, NetworkEquipment, Computer, Monitor, MFP, UPS, MeteoUnit, Server, Cartridge, Request]
+            model._meta.verbose_name_plural: reverse_lazy(f'{model.__name__.lower()}-edit')
+            for model in [Structure, Post, Worksite, PeripheralType, ComputerConfiguration, Peripheral, NetworkEquipment, Computer, Monitor, MFP, UPS, MeteoUnit, Server, Cartridge, Request, ]
         },
         'feedback': {
             'Активные запросы': {
                 'href': reverse_lazy('request-todo'),
                 'counter': len(Request.objects.filter(status__exact=RequestStatus.CREATED)),
             },
+            'История обслуживания': {
+                'href': reverse_lazy('service-history'),
+            }
         },
     }
 
@@ -85,7 +89,7 @@ class BaseEditView(LoginRequiredMixin, BaseView):
 
     def get_context_data(self):
         context = super().get_context_data()
-        context['add_href'] = reverse_lazy(self.formset_class.model._meta.model._meta.model_name + '-add')
+        context['add_href'] = reverse_lazy(f'{self.model._meta.model._meta.model_name}-add')
         context['deletion_flag'] = True
         context['no_forms_text'] = 'Нет данных'
         return context
@@ -101,6 +105,22 @@ class BaseEditView(LoginRequiredMixin, BaseView):
 
         formset = self.formset_class(data=self.request.POST)
         if formset.is_valid():
+            for form in formset:
+                if 'technical_condition' in form.changed_data:
+                    new_object = form.save(commit=False)
+                    old_object = self.model.objects.get(id=new_object.id)
+                    if new_object.technical_condition in [TechnicalCondition.DISABLED, TechnicalCondition.REPAIRING]:
+                        if old_object.technical_condition in [TechnicalCondition.IN_WORK, TechnicalCondition.READY_TO_USE]:
+                            service = ServiceHistory.objects.create(
+                                device_type=new_object.device_type,
+                                device_id=new_object.id,
+                                description=new_object.disabling_reason,
+                            )
+                            new_object.last_service = service
+                    elif new_object.technical_condition in [TechnicalCondition.IN_WORK, TechnicalCondition.READY_TO_USE]:
+                        if old_object.technical_condition in [TechnicalCondition.DISABLED, TechnicalCondition.REPAIRING]:
+                            service = ServiceHistory.objects.get(pk=old_object.last_service.id)
+                            service.end()
             formset.save()
             return redirect(self.success_url)
 
@@ -329,4 +349,15 @@ class RequestDetailView(DetailView):
         context = super().get_context_data(*args, **kwargs)
         context['title'] = f'Запрос № {context["object"].id}'
         context['nav_sidebar_data'] = get_nav_sidebar_data
+        return context
+
+
+class ServiceHistoryView(FilterView):
+    model = ServiceHistory
+    context_object_name = 'service_history'
+    filterset_class = ServiceHistoryFilter
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['nav_sidebar_data'] = get_nav_sidebar_data()
         return context

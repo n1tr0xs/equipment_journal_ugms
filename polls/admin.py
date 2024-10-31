@@ -106,3 +106,9 @@ class RequestAdmin(admin.ModelAdmin):
     list_display = ['id', 'worksite', 'description', 'status', 'created_at', 'completed_at']
     list_filter = ['worksite', 'status', 'created_at', 'completed_at']
     search_fields = ['description']
+
+
+@admin.register(ServiceHistory)
+class ServiceHistoryAdmin(admin.ModelAdmin):
+    list_display = ['device_type', 'device_id', 'service_date_start', 'service_date_end', 'description']
+    list_filter = ['device_type', 'service_date_start', 'service_date_end']
