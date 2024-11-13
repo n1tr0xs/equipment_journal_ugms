@@ -290,18 +290,16 @@ class Cartridge(NamedEntity, TechnicalConditionEntity):
     device_type = models.IntegerField(choices=DeviceTypeChoices, default=DeviceTypeChoices.CARTRIDGE, verbose_name='Тип устройства')
 
     def save(self, *args, triggered=False, **kwargs):
-        if (self.current_mfp_id):
-            if (self.technical_condition in [TechnicalCondition.DISABLED, TechnicalCondition.READY_TO_USE, TechnicalCondition.REPAIRING]):
-                self.technical_condition = TechnicalCondition.IN_WORK
-        if (self.current_mfp_id is None):
-            if (self.technical_condition == TechnicalCondition.IN_WORK):
-                self.technical_condition = TechnicalCondition.DISABLED
-
-        super().save(*args, **kwargs)
-
         if triggered:
+            if (self.current_mfp_id):
+                if (self.technical_condition in [TechnicalCondition.DISABLED, TechnicalCondition.READY_TO_USE, TechnicalCondition.REPAIRING]):
+                    self.technical_condition = TechnicalCondition.IN_WORK
+            if (self.current_mfp_id is None):
+                if (self.technical_condition == TechnicalCondition.IN_WORK):
+                    self.technical_condition = TechnicalCondition.DISABLED
+            super().save(*args, **kwargs)
             return
-
+        super().save(*args, **kwargs)
         try:
             prev_mfp = MFP.objects.get(installed_cartridge=self)
             prev_mfp.installed_cartridge = None
