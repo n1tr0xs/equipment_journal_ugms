@@ -123,11 +123,12 @@
                     'data-prev-value', disabling_reason_input.value || disabling_reason_input.getAttribute('data-prev-value')
                 );
                 disabling_reason_input.value = '';
-                disabling_reason_input.disabled = true;
+                disabling_reason_input.innerHTML = '';
+                disabling_reason_input.readonly = true;
             } else {
                 disabling_reason_input.value = disabling_reason_input.value || disabling_reason_input.getAttribute('data-prev-value');
                 disabling_reason_input.setAttribute('data-prev-value', '');
-                disabling_reason_input.disabled = false;
+                disabling_reason_input.readonly = false;
             }
         });
     }
