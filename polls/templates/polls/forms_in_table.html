@@ -112,12 +112,12 @@
 
     {
         // changes disabled state disabling_reason textarea on select option
-        select_inputs = $("select[id^=id_form");
+        select_inputs = $("select[id^=id_form][id$=technical_condition]");
         disabling_reason_inputs = $("[id^=id_form][id$=disabling_reason]");        
 
         select_inputs.change(function(){
-            selected_value = $(this).val();
-            disabling_reason_input = disabling_reason_inputs[select_inputs.index($(this))];
+            selected_value = $(this).val();            
+            disabling_reason_input = disabling_reason_inputs[select_inputs.index($(this))];            
             if(['0', '1'].includes(selected_value)) {
                 disabling_reason_input.setAttribute(
                     'data-prev-value', disabling_reason_input.value || disabling_reason_input.getAttribute('data-prev-value')

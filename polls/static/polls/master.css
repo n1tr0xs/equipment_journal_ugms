@@ -499,3 +499,7 @@ input[type=tel]:focus, textarea:focus, select:focus, .vTextField:focus {
     background-position: 5px 12px;
     overflow-wrap: break-word;
 }
+
+.errorlist {
+    color: var(--error-fg);
+}
