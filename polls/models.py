@@ -13,12 +13,6 @@ class NamedEntity(models.Model):
         return f'{self.name}'
 
 
-# class DeviceType(NamedEntity):
-#     class Meta:
-#         verbose_name = 'Тип устройства'
-#         verbose_name_plural = 'Типы устройств'
-
-
 class IPEntity(models.Model):
     class Meta:
         abstract = True
@@ -288,7 +282,7 @@ class Server(NamedEntity, Inventoried, TechnicalConditionEntity, StructurePlaced
 class Cartridge(NamedEntity, TechnicalConditionEntity):
     class Meta:
         verbose_name = 'Картридж'
-        verbose_name_plural = 'Картриджы'
+        verbose_name_plural = 'Картриджи'
 
     number = models.CharField(max_length=50, default='', blank=True, unique=True, verbose_name='Номер картриджа')
     refills = models.PositiveIntegerField(default=0, verbose_name='Количество заправок')

@@ -18,7 +18,7 @@
             {% block header %}
             {% endblock %}
         </header>
-
+        {% block main_nav %}
         <nav id="main-nav" class="sticked">
             <div id="auth-button">
                 {% if user.is_authenticated %}
@@ -33,7 +33,7 @@
                 {% endif %}
             </div>
         </nav>
-
+        {% endblock %}
         <div id="main" class="main shifted">
             {% if user.is_authenticated %} {% include "aside.html" %} {% endif %}
             <main id="content-start">
