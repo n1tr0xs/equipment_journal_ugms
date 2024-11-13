@@ -110,5 +110,5 @@ class RequestAdmin(admin.ModelAdmin):
 
 @admin.register(ServiceHistory)
 class ServiceHistoryAdmin(admin.ModelAdmin):
-    list_display = ['device_type', 'device_id', 'service_date_start', 'service_date_end', 'description']
+    list_display = ['id', 'device_id', 'device_type', 'service_date_start', 'service_date_end', 'description']
     list_filter = ['device_type', 'service_date_start', 'service_date_end']

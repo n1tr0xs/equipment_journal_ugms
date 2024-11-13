@@ -53,7 +53,7 @@ class ServiceHistory(models.Model):
         verbose_name_plural = 'История обслуживания'
     device_id = models.PositiveIntegerField()
     service_date_start = models.DateField(auto_now_add=True, verbose_name='Начало обслуживания', help_text='Начало обслуживания')
-    service_date_end = models.DateField(null=True, verbose_name='Конец обслуживания', help_text='Конец обслуживания')
+    service_date_end = models.DateField(null=True, blank=True, verbose_name='Конец обслуживания', help_text='Конец обслуживания')
     description = models.TextField(verbose_name='Описание', help_text='Описание обслуживания')
     device_type = models.IntegerField(choices=DeviceTypeChoices, null=True, verbose_name='Тип устройства')
 
@@ -94,7 +94,7 @@ class TechnicalConditionEntity(models.Model):
     technical_condition = models.IntegerField(choices=TechnicalCondition, default=TechnicalCondition.READY_TO_USE, verbose_name='Техническое состояние')
     disabling_reason = models.TextField(default='', blank=True, verbose_name='Причина снятия')
     device_type = models.IntegerField(choices=DeviceTypeChoices, null=True, verbose_name='Тип устройства')
-    last_service = models.ForeignKey(ServiceHistory, on_delete=models.SET_NULL, null=True)
+    last_service = models.ForeignKey(ServiceHistory, on_delete=models.SET_NULL, null=True, blank=True)
 
     def get_service_history(self):
         return ServiceHistory.objects.filter(device_type__exact=self.device_type).filter(device_id__exact=self.id)
