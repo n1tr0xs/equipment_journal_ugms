@@ -24,6 +24,7 @@
                 {% if user.is_authenticated %}
                 <form action="{% url 'logout' %}" method="POST" id="auth-form">
                     {% csrf_token %}
+                    <span class='bold'> {{ user.username }} </span>
                     <button type="submit" value="Выйти"> Выйти</button>
                 </form>
                 {% else %}
