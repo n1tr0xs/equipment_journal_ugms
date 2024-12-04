@@ -68,7 +68,7 @@ class BaseAddView(LoginRequiredMixin, BaseView):
     def post(self, *args, **kwargs):
         if not self.request.user.is_staff:
             return redirect(self.success_url)
-        
+
         formset = self.formset_class(data=self.request.POST)
         if formset.is_valid():
             formset.save()
@@ -105,7 +105,7 @@ class BaseEditView(LoginRequiredMixin, BaseView):
     def post(self, *args, **kwargs):
         if not self.request.user.is_staff:
             return redirect(self.success_url)
-        
+
         if self.request.POST.get('DeleteAction', 0):
             return self.delete(*args, **kwargs)
 
@@ -322,7 +322,7 @@ class RequestToDoView(BaseEditView):
     def post(self, *args, **kwargs):
         if not self.request.user.is_staff:
             return redirect(self.success_url)
-        
+
         if self.request.POST.get('DeleteAction', 0):
             return self.delete(*args, **kwargs)
         formset = self.formset_class(data=self.request.POST)

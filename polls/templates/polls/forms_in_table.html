@@ -5,6 +5,7 @@
 {% block content %}
 <form action="" method="post" id="main-form">
     {% csrf_token %}
+    {% if user.is_staff %}
     <div id="submit-row" class="submit-row sticked">
         <div>
             <!-- left aligned -->
@@ -21,6 +22,7 @@
             <input type="submit" value="Сохранить данные">
         </div>
     </div>
+    {% endif %}
     <div id="table-forms-container" class="double-scroll">
         {% if formset|length %}
         {{ formset.not_form_errors }}
